@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clubs Management - MatMaps</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        indigo: {
+                            400: '#E63935',
+                            500: '#B71C1C',
+                            600: '#931A16',
+                            700: '#7A1310',
+                            800: '#5F0E0B',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1) brightness(1);
+            cursor: pointer;
+        }
+        #clubsTableBody tr:hover {
+            background-color: #12131a !important;
+            transition: background-color 0.2s ease-in-out;
+        }
+    </style>
+</head>
+
+<body id="mainBodyFramework" class="bg-gray-950 text-gray-100 font-sans antialiased hidden">
+
+    <div class="flex h-screen overflow-hidden relative">
+
+        <div id="sidebarOverlay"
+            class="fixed inset-0 bg-black/50 z-20 hidden md:hidden transition-opacity duration-300"></div>
+
+        <aside id="sidebarPanel"
+            class="w-64 bg-gray-900 border-r border-gray-800 flex flex-col justify-between fixed md:static inset-y-0 left-0 -translate-x-full md:translate-x-0 z-30 md:z-0 transition-transform duration-300 ease-in-out md:flex">
+            <div>
+                <div class="h-16 flex items-center px-6 border-b border-gray-700 justify-between md:justify-center">
+                    <div class="flex items-center h-full">
+                        <img src="assets/image/matMaps_logo.png" alt="logo" class="h-8 md:h-10" />
+                        <span class="text-xl font-bold text-indigo-400 ml-4">MatMaps</span>
+                    </div>
+                    <button id="closeSidebar" class="text-gray-400 hover:text-white md:hidden text-xl p-1">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <nav class="p-4 space-y-2">
+                    <a href="dashboard.html"
+                        class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-700 hover:text-white transition">
+                        <i class="fa-solid fa-chart-pie w-5"></i> <span>Dashboard</span>
+                    </a>
+                    <a href="clubs.html"
+                        class="flex items-center space-x-3 px-4 py-2.5 rounded-lg bg-indigo-600 text-white transition">
+                        <i class="fa-solid fa-map-pin w-5"></i> <span>Clubs Manager</span>
+                    </a>
+                    <a href="events.html"
+                        class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
+                        <i class="fa-solid fa-calendar-days w-5"></i> <span>Events Manager</span>
+                    </a>
+                    <a href="posts-collections.html"
+                        class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
+                        <i class="fa-solid fa-images w-5"></i> <span>Post Collection</span>
+                    </a>
+                    <a href="comments-reviews.html"
+                        class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
+                        <i class="fa-solid fa-comments w-5"></i> <span>Comments & Reviews</span>
+                    </a>
+                    <a href="user-permissions.html"
+                        class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
+                        <i class="fa-solid fa-users-gear w-5"></i> <span>User Permissions</span>
+                    </a>
+                </nav>
+            </div>
+            <div class="p-4 border-t border-gray-700">
+                <div class="flex items-center space-x-3">
+                    <div
+                        class="w-9 h-9 bg-indigo-500 rounded-full flex items-center justify-center font-bold text-white">
+                        M</div>
+                    <div>
+                        <p class="text-sm font-semibold">MatMaps Test</p>
+                        <p class="text-xs text-gray-500">Admin User</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="flex-1 flex flex-col overflow-y-auto">
+
+            <header
+                class="h-16 bg-gray-900 border-b border-gray-800 flex items-center justify-between px-6 sticky top-0 z-10 shrink-0">
+                <div class="flex items-center space-x-3">
+                    <button id="openSidebar"
+                        class="text-gray-400 hover:text-white md:hidden text-xl p-1 focus:outline-none">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <i class="fa-solid fa-map-pin text-indigo-400 text-lg hidden md:inline-block"></i>
+                    <h1 class="text-lg font-semibold">Clubs Directories</h1>
+                </div>
+                <button id="openAddModalBtn" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold px-4 py-2 rounded-lg flex items-center space-x-2">
+                    <i class="fa-solid fa-plus"></i> <span>Add New Club</span>
+                </button>
+            </header>
+
+            <!-- PRIMARY WRAPPER FOR LIST VIEW (True Full Width Optimized) -->
+            <div id="clubsMainListView" class="py-6 px-4 md:px-8 space-y-8 w-full">
+
+                <!-- Filters & Search Controls -->
+                <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden shadow-md">
+                    <div class="p-6 border-b border-gray-800 flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+                        <div>
+                            <h2 class="text-sm font-bold uppercase tracking-wider text-gray-400">Registered Clubs Pipeline</h2>
+                            <p class="text-xs text-gray-500 mt-0.5">Monitor and manage all onboarded sports centers, verifications and status.</p>
+                        </div>
+
+                        <!-- 1. Search Box Component Grid Area with Sort Filter Left Side -->
+                        <div class="flex items-center space-x-3 w-full sm:w-auto justify-end">
+                            <div class="relative">
+                                <select id="sortClubsFilter" class="bg-gray-950 border border-gray-800 rounded-lg px-3 py-1.5 text-xs font-semibold focus:outline-none focus:border-indigo-500 text-gray-300 cursor-pointer">
+                                    <option value="desc" selected>Last Added (Newest)</option>
+                                    <option value="asc">First Added (Oldest)</option>
+                                </select>
+                            </div>
+                            <div class="relative w-full sm:w-64">
+                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1.5 text-gray-500 text-xs"></i>
+                                <input type="text" placeholder="Search by club name or city..." id="searchClub"
+                                    class="w-full bg-gray-950 border border-gray-800 rounded-lg pl-9 pr-3 py-1.5 text-xs focus:outline-none focus:border-indigo-500">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Clubs Responsive Table -->
+                    <div class="overflow-x-auto relative min-h-[250px]">
+                        <table class="w-full text-left text-sm whitespace-nowrap">
+                            <thead
+                                class="bg-gray-950 text-gray-400 text-xs uppercase font-semibold border-b border-gray-800">
+                                <tr>
+                                    <th class="px-6 py-3.5">Club Identity & Sports</th>
+                                    <th class="px-6 py-3.5">Location / City</th>
+                                    <th class="px-6 py-3.5">Contact Details (Phone, Email, Web)</th>
+                                    <th class="px-6 py-3.5 text-center">Status Badges</th>
+                                    <th class="px-6 py-3.5 text-right w-48">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-800/60" id="clubsTableBody">
+                                <tr id="tableLoaderRow">
+                                    <td colspan="5" class="px-6 py-16 text-center">
+                                        <div class="flex flex-col items-center justify-center space-y-3">
+                                            <div class="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+                                            <p class="text-xs text-gray-500 tracking-wider">Syncing Clubs Matrix with Firestore...</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- FIXED CRITICAL PAGINATION FOOTER WRAPPER -->
+                    <div id="paginationFooter" class="p-4 bg-gray-950/40 border-t border-gray-800 flex items-center justify-between text-xs">
+                        <p class="text-gray-500" id="paginationStatusText">Showing 0-0 of 0 entries</p>
+                        <div class="flex space-x-2">
+                            <button id="prevPageBtn" class="bg-gray-900 border border-gray-800 text-gray-400 px-3 py-1.5 rounded-lg font-medium transition disabled:opacity-40 disabled:cursor-not-allowed hover:text-white">Previous</button>
+                            <button id="nextPageBtn" class="bg-gray-900 border border-gray-800 text-gray-400 px-3 py-1.5 rounded-lg font-medium transition disabled:opacity-40 disabled:cursor-not-allowed hover:text-white">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DYNAMIC APP-SIDE SUB-PAGE FOR CLUB DETAILS VIEW -->
+            <div id="clubDetailsSubPage" class="p-6 max-w-7xl w-full mx-auto space-y-6 hidden">
+                <div class="bg-red-900/10 border border-white/[0.04] rounded-xl p-4 flex items-center justify-between shadow-md">
+                    <button id="btnBackToListView" class="flex items-center space-x-2 text-xs uppercase tracking-wider font-bold text-white bg-indigo-600 hover:bg-indigo-700 px-5 py-2.5 rounded-lg transition shadow-lg">
+                        <i class="fa-solid fa-arrow-left"></i> <span>Return to Club Directory</span>
+                    </button>
+                    <button class="text-gray-400 hover:text-white text-lg p-2"><i class="fa-solid fa-share-nodes"></i></button>
+                </div>
+
+                <div class="bg-gray-900 border border-gray-800 rounded-3xl overflow-hidden shadow-2xl">
+                    
+                    <div id="detailMediaWrapperFrame" class="h-80 bg-gray-955 relative flex items-center justify-center border-b border-gray-800 overflow-hidden">
+                        <img id="detailTopImage" src="" alt="Club Banner" class="w-full h-full object-cover hidden">
+                        
+                        <div id="detailNoMediaBox" class="hidden w-full h-full flex flex-col items-center justify-center space-y-2 text-gray-500 bg-gray-950/50 p-6">
+                            <i class="fa-regular fa-image text-3xl text-gray-700"></i>
+                            <p class="text-xs font-medium tracking-wide">No media or gallery assets uploaded for this club.</p>
+                        </div>
+                        
+                        <div class="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/20 to-transparent pointer-events-none"></div>
+                        <div class="absolute bottom-6 left-6 right-6 flex flex-wrap items-end justify-between gap-4 z-10">
+                            <div class="space-y-2">
+                                <h2 id="detailClubName" class="text-2xl md:text-3xl font-black text-white bg-indigo-600 px-4 py-0.5 rounded-2xl shadow-xl border border-indigo-500/20 inline-block">Club Name</h2>
+                                <div class="flex flex-wrap gap-1.5" id="detailSportsBadgesContainer">
+                                </div>
+                            </div>
+                            <div id="detailVerifiedBadge" class="bg-indigo-600 text-white border border-indigo-500/20 font-black text-xs px-4 py-2 rounded-full shadow-xl flex items-center space-x-2">
+                                <i class="fa-solid fa-circle-check text-white"></i> <span class="font-mono uppercase tracking-wider">Matmaps Verified</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-gray-800/80">
+                        <div class="lg:col-span-8 p-6 space-y-6">
+                            <div class="flex items-start space-x-4 bg-gray-950/40 p-4 border border-gray-800/60 rounded-2xl">
+                                <div class="p-3.5 bg-indigo-600/10 border border-indigo-500/20 rounded-xl text-indigo-400 text-xl"><i class="fa-solid fa-map-location-dot"></i></div>
+                                <div>
+                                    <h4 id="detailCity" class="font-black text-white text-base tracking-wide">[city]</h4>
+                                    <p class="text-xs text-gray-500 font-mono mt-0.5">Location Hub Parameter Specs</p>
+                                </div>
+                            </div>
+
+                            <div class="space-y-2.5">
+                                <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400"><i class="fa-solid fa-align-left mr-2 text-indigo-400"></i>About this club</h3>
+                                <p id="detailDescription" class="text-sm text-gray-300 font-light leading-relaxed whitespace-pre-wrap bg-gray-950/20 border border-gray-800/40 rounded-2xl p-4">[description]</p>
+                            </div>
+
+                            <div class="p-4 bg-indigo-950/10 border border-indigo-900/30 rounded-2xl flex items-center justify-between gap-4">
+                                <div class="space-y-0.5">
+                                    <h4 class="text-sm font-bold text-white tracking-tight">Want to revisit this club?</h4>
+                                    <p class="text-xs text-gray-500 leading-relaxed max-w-md">Bookmark or sync this center node within custom user profile favorites directories directly on user application channels.</p>
+                                </div>
+                                <button class="w-10 h-10 border border-gray-800 bg-gray-950 rounded-full flex items-center justify-center text-indigo-400 text-sm hover:text-white hover:bg-indigo-600 transition shrink-0"><i class="fa-regular fa-heart"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="lg:col-span-4 p-6 space-y-6 bg-gray-950/20">
+                            <div class="space-y-4">
+                                <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider pb-2 border-b border-gray-800"><i class="fa-solid fa-address-book mr-2 text-indigo-400"></i>Contact Information</h3>
+                                
+                                <div class="space-y-4 text-xs">
+                                    <div class="flex items-start space-x-3.5">
+                                        <i class="fa-solid fa-location-dot text-indigo-400 text-sm mt-0.5 w-5 text-center"></i>
+                                        <div>
+                                            <p class="text-gray-400 font-bold mb-0.5">Address Specification</p>
+                                            <p id="detailAddress" class="text-gray-500 font-light leading-relaxed">[address]</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-start space-x-3.5">
+                                        <i class="fa-solid fa-phone text-indigo-400 text-sm mt-0.5 w-5 text-center"></i>
+                                        <div>
+                                            <p class="text-gray-400 font-bold mb-0.5">Phone Line</p>
+                                            <p id="detailPhone" class="text-gray-500 font-mono font-medium">[phone_number]</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-start space-x-3.5">
+                                        <i class="fa-solid fa-globe text-indigo-400 text-sm mt-0.5 w-5 text-center"></i>
+                                        <div>
+                                            <p class="text-gray-400 font-bold mb-0.5">Website URL</p>
+                                            <p id="detailWebsite" class="text-indigo-400 underline break-all font-medium">[website]</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pt-5 border-t border-gray-800 space-y-2">
+                                <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider"><i class="fa-solid fa-star-half-stroke mr-2 text-amber-500"></i>Aggregated Public Rating</h3>
+                                <div class="bg-gray-950/60 border border-gray-800/80 rounded-2xl p-4 flex items-center justify-between">
+                                    <div class="flex items-center space-x-2.5">
+                                        <i class="fa-solid fa-star text-amber-500 text-lg"></i>
+                                        <span id="detailRatingText" class="text-base font-black text-gray-200 font-mono">[rating]</span>
+                                    </div>
+                                    <span id="detailReviewsCountText" class="text-xs font-mono font-bold text-gray-500 bg-gray-900 px-3 py-1 border border-gray-800 rounded-lg">[reviews Count]</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ADD NEW CLUB MODAL -->
+    <div id="addClubModal" class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 hidden backdrop-blur-sm">
+        <div class="bg-gray-900 border border-gray-800 w-full max-w-lg rounded-2xl max-h-[90vh] overflow-y-auto p-6 space-y-5 shadow-2xl relative">
+            <button id="closeAddModalBtn" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl focus:outline-none"><i class="fa-solid fa-xmark"></i></button>
+            <div class="border-b border-gray-800 pb-2">
+                <h3 class="text-base font-bold text-white"><i class="fa-solid fa-square-plus text-indigo-400 mr-2"></i> Add Club</h3>
+            </div>
+            
+            <form id="addClubForm" class="space-y-4 text-xs">
+                <div>
+                    <label class="block text-gray-400 mb-1 font-semibold">Club Image (URL)</label>
+                    <input type="text" id="addLogoUrl" class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500" placeholder="https://example.com/logo.png">
+                </div>
+                <div>
+                    <label class="block text-gray-400 mb-1 font-semibold">Club Name *</label>
+                    <input type="text" id="addName" required class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500" placeholder="Enter club name">
+                </div>
+                <div>
+                    <label class="block text-gray-400 mb-1 font-semibold">Website</label>
+                    <input type="text" id="addWebsite" class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500" value="https://">
+                </div>
+                <div>
+                    <label class="block text-gray-400 mb-1 font-semibold">Phone Number</label>
+                    <input type="text" id="addPhone" class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500" placeholder="[Phone Number]">
+                </div>
+                <div>
+                    <label class="block text-gray-400 mb-1 font-semibold">Email</label>
+                    <input type="email" id="addEmail" class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500" placeholder="[Email]">
+                </div>
+                <div>
+                    <label class="block text-gray-400 mb-1 font-semibold">Address</label>
+                    <input type="text" id="addAddress" class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500" placeholder="Address">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-gray-400 mb-1 font-semibold">City</label>
+                        <input type="text" id="addCity" class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500" placeholder="City">
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 mb-1 font-semibold">Sports Type (Comma Separated)</label>
+                        <input type="text" id="addSports" class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500" placeholder="e.g., MMA, Boxing, BJJ">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-gray-400 mb-1 font-semibold">Description</label>
+                    <textarea id="addDesc" rows="4" class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500 resize-none font-light" placeholder="Club Details&#10;Opening Hours&#10;Class Times"></textarea>
+                </div>
+                <div class="flex justify-end space-x-2 pt-2">
+                    <button type="button" id="cancelAddBtn" class="bg-gray-800 hover:bg-gray-700 text-white font-bold px-4 py-2 rounded-lg transition">Cancel</button>
+                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-6 py-2 rounded-lg transition shadow-md">Save Details</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, query, orderBy, limit, startAfter, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        // 1. Firebase configuration setup (must come first)
+         const firebaseConfig = {
+            apiKey: "AIzaSyAVp1TmwmsaapC3rBtsWVBYbmo3-uFxOEs",
+            authDomain: "matmaps-1f5b2.firebaseapp.com",
+            projectId: "matmaps-1f5b2",
+            storageBucket: "matmaps-1f5b2.firebasestorage.app",
+            messagingSenderId: "735375898638",
+            appId: "1:735375898638:web:3aed1fde4aa7b0a95ae45f",
+            measurementId: "G-TEBMGDJZGF"
+        };
+
+        // 2. Firebase App Initialization (this will follow immediately)
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        // 3. Root guard mechanism (checks after the app initializes)
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = 'login.html';
+            } else {
+                console.log("Welcome Admin:", user.email);
+                const bodyEl = document.getElementById('mainBodyFramework');
+                if (bodyEl) {
+                    bodyEl.classList.remove('hidden');
+                }
+            }
+        });
+
+        //document.getElementById('mainBodyFramework').classList.remove('hidden');
+
+        // Core DOM Elements Mapping
+        const tableBody = document.getElementById('clubsTableBody');
+        const searchInput = document.getElementById('searchClub');
+        const sortClubsFilter = document.getElementById('sortClubsFilter'); 
+        const paginationFooter = document.getElementById('paginationFooter');
+        const paginationStatusText = document.getElementById('paginationStatusText');
+        const prevPageBtn = document.getElementById('prevPageBtn');
+        const nextPageBtn = document.getElementById('nextPageBtn');
+        const addClubModal = document.getElementById('addClubModal');
+        const addClubForm = document.getElementById('addClubForm');
+
+        const clubsMainListView = document.getElementById('clubsMainListView');
+        const clubDetailsSubPage = document.getElementById('clubDetailsSubPage');
+        const btnBackToListView = document.getElementById('btnBackToListView');
+
+        // Pagination Server State Engine Setup (50 items)
+        const itemsPerPage = 20; 
+        let currentPage = 1;
+        let displayedClubs = []; 
+        let pageHistoryDocs = [null]; 
+
+        // ========================================================
+        // Safe Server-Side Pagination (No Index Crash, Full Data Retained)
+        // ========================================================
+        async function fetchClubsFromServerPipeline() {
+            tableBody.innerHTML = `
+                <tr id="tableLoaderRow">
+                    <td colspan="5" class="px-6 py-16 text-center">
+                        <div class="flex flex-col items-center justify-center space-y-3">
+                            <div class="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+                            <p class="text-xs text-gray-500 tracking-wider">Querying next 50 clubs from Firestore server...</p>
+                        </div>
+                    </td>
+                </tr>`;
+
+            try {
+                const clubsCollectionRef = collection(db, "clubs");
+                let clubsQuery;
+                const startDoc = pageHistoryDocs[currentPage - 1];
+
+                // LIKE query: Querying the name field to ensure all your data is loaded.
+                if (startDoc) {
+                    clubsQuery = query(clubsCollectionRef, orderBy("name", "asc"), startAfter(startDoc), limit(itemsPerPage));
+                } else {
+                    clubsQuery = query(clubsCollectionRef, orderBy("name", "asc"), limit(itemsPerPage));
+                }
+
+                const querySnapshot = await getDocs(clubsQuery);
+                displayedClubs = [];
+                
+                querySnapshot.forEach((docSnap) => {
+                    displayedClubs.push({
+                        id: docSnap.id,
+                        ...docSnap.data()
+                    });
+                });
+
+                if (querySnapshot.docs.length > 0) {
+                    const lastVisibleDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
+                    pageHistoryDocs[currentPage] = lastVisibleDoc;
+                }
+
+                executeRenderingPipeline();
+            } catch (error) {
+                console.error("Server-side pagination crashed: ", error);
+                tableBody.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-rose-500">Failed to sync data from server.</td></tr>`;
+            }
+        }
+
+        // ========================================================
+        // Rendering, Safe Sorting and Filter Processing Pipeline
+        // ========================================================
+        function executeRenderingPipeline() {
+            const keyword = searchInput ? searchInput.value.toLowerCase().trim() : "";
+            const orderDirection = sortClubsFilter ? sortClubsFilter.value : "desc";
+
+            // 1. Client-side safe sorting mechanism (sorting based on the 'created time' field rather than the ID or default block).
+            let sortedClubs = [...displayedClubs].sort((a, b) => {
+                let timeA = a.createdTime ? (a.createdTime.toDate ? a.createdTime.toDate().getTime() : new Date(a.createdTime).getTime()) : 0;
+                let timeB = b.createdTime ? (b.createdTime.toDate ? b.createdTime.toDate().getTime() : new Date(b.createdTime).getTime()) : 0;
+                
+                // If neither document has a timestamp, a safe sort will be performed using the ID or name.
+                if (timeA === 0 && timeB === 0) {
+                    return orderDirection === "desc" ? b.id.localeCompare(a.id) : a.id.localeCompare(b.id);
+                }
+                return orderDirection === "desc" ? timeB - timeA : timeA - timeB;
+            });
+
+            // 2. Search Filtering
+            let filtered = sortedClubs.filter(club => {
+                const nameMatch = club.name ? club.name.toLowerCase().includes(keyword) : false;
+                const cityMatch = club.city ? club.city.toLowerCase().includes(keyword) : false;
+
+                let sportsStr = "";
+                if (club.sports_types) {
+                    sportsStr = Array.isArray(club.sports_types) ? club.sports_types.join(", ").toLowerCase() : club.sports_types.toString().toLowerCase();
+                }
+                return nameMatch || cityMatch || sportsStr.includes(keyword);
+            });
+
+            renderTable(filtered);
+
+            if (paginationFooter) {
+                const startEntry = ((currentPage - 1) * itemsPerPage) + 1;
+                const endEntry = startEntry + filtered.length - 1;
+                
+                paginationStatusText.innerText = filtered.length > 0 
+                    ? `Showing ${startEntry}-${endEntry} entries (Server Paginated Page ${currentPage})`
+                    : "No matching entries found on this page.";
+
+                if (prevPageBtn) prevPageBtn.disabled = (currentPage === 1);
+                if (nextPageBtn) nextPageBtn.disabled = (displayedClubs.length < itemsPerPage);
+            }
+        }
+
+        function renderTable(clubsList) {
+            tableBody.innerHTML = '';
+
+            if (clubsList.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-gray-500">No registered clubs found in this segment.</td></tr>`;
+                return;
+            }
+
+            clubsList.forEach((club) => {
+                const docId = club.id;
+
+                let sportsBadges = '';
+                if (club.sports_types) {
+                    let rawSportsStr = Array.isArray(club.sports_types) ? club.sports_types.join(', ') : club.sports_types.toString();
+                    sportsBadges = rawSportsStr.split(',').map(type =>
+                        `<span class="text-[10px] bg-gray-800 text-gray-400 px-2 py-0.5 rounded border border-gray-700/60 font-medium">${type.trim()}</span>`
+                    ).join(' ');
+                }
+
+                const isVerified = club.verified === true || club.verified === "true";
+                const verificationSelectorHTML = `
+                    <select data-id="${docId}" onclick="event.stopPropagation();" class="bg-gray-950 border border-gray-800 rounded-lg px-2 py-1 text-xs font-semibold focus:outline-none update-verify-trigger ${isVerified ? 'text-emerald-400' : 'text-rose-400'}">
+                        <option value="true" ${isVerified ? 'selected' : ''}>Verified</option>
+                        <option value="false" ${!isVerified ? 'selected' : ''}>Unverified</option>
+                    </select>`;
+
+                const currentStatus = club.status || "active";
+                const isStatusActive = currentStatus === "active";
+
+                const row = document.createElement('tr');
+                row.className = "border-b border-gray-800/40 text-gray-300 cursor-pointer";
+                row.innerHTML = `
+                    <td class="px-6 py-4">
+                        <div class="font-bold text-gray-200 text-sm tracking-wide hover:text-indigo-400 transition btn-trigger-subpage" data-id="${docId}">${club.name || 'Unnamed Academy'}</div>
+                        <div class="flex flex-wrap gap-1.5 mt-1.5">${sportsBadges || '<span class="text-xs text-gray-600">No sports defined</span>'}</div>
+                    </td>
+                    <td class="px-6 py-4 text-sm">
+                        <div class="text-gray-300 font-medium">${club.city || 'N/A'}</div>
+                        <div class="text-[11px] text-gray-500 truncate w-48" title="${club.address || ''}">${club.address || ''}</div>
+                    </td>
+                    <td class="px-6 py-4 text-xs space-y-1">
+                        <div class="text-gray-300 font-mono"><i class="fa-solid fa-phone mr-1.5 text-gray-600"></i>${club.phone || 'N/A'}</div>
+                        <div class="text-gray-400"><i class="fa-solid fa-envelope mr-1.5 text-gray-600"></i>${club.email || 'N/A'}</div>
+                        <div class="text-indigo-400 truncate w-48"><i class="fa-solid fa-globe mr-1.5 text-gray-600"></i>${club.website || 'N/A'}</div>
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        <div class="flex items-center justify-center">${verificationSelectorHTML}</div>
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <div class="flex items-center justify-end space-x-3" onclick="event.stopPropagation();">
+                            <select data-id="${docId}" class="bg-gray-950 border border-gray-800 rounded-lg px-2 py-1 text-xs font-semibold focus:outline-none update-status-trigger ${isStatusActive ? 'text-emerald-500' : 'text-gray-500'}">
+                                <option value="active" ${isStatusActive ? 'selected' : ''}>Active</option>
+                                <option value="inactive" ${!isStatusActive ? 'selected' : ''}>Inactive</option>
+                            </select>
+                            <button data-id="${docId}" data-name="${club.name}" class="text-gray-500 hover:text-rose-400 px-2 py-1 border border-gray-800 hover:border-rose-900 bg-gray-950 rounded-lg transition text-xs btn-delete-club flex items-center space-x-1" title="Remove Club">
+                                <i class="fa-solid fa-user-xmark"></i> <span>Remove</span>
+                            </button>
+                        </div>
+                    </td>`;
+                tableBody.appendChild(row);
+            });
+
+            setupDeleteButtons();
+            setupLiveInteractionsPipeline();
+            setupSubPageRedirectionPipeline();
+        }
+
+        function setupSubPageRedirectionPipeline() {
+            document.querySelectorAll('.btn-trigger-subpage').forEach(rowText => {
+                rowText.addEventListener('click', (e) => {
+                    const selectedClubId = rowText.getAttribute('data-id');
+                    const targetClubObj = displayedClubs.find(item => item.id === selectedClubId);
+
+                    if (targetClubObj) {
+                        document.getElementById('detailClubName').innerText = targetClubObj.name || "N/A";
+                        document.getElementById('detailCity').innerText = targetClubObj.city || "N/A";
+                        document.getElementById('detailAddress').innerText = targetClubObj.address || "N/A";
+                        document.getElementById('detailPhone').innerText = targetClubObj.phone || "N/A";
+                        document.getElementById('detailWebsite').innerText = targetClubObj.website || "N/A";
+                        document.getElementById('detailDescription').innerText = targetClubObj.description || "No description loaded inside cluster.";
+                        
+                        document.getElementById('detailRatingText').innerText = targetClubObj.rating !== undefined ? targetClubObj.rating : "0.0";
+                        document.getElementById('detailReviewsCountText').innerText = targetClubObj.reviewsCount !== undefined ? `${targetClubObj.reviewsCount} Reviews` : "0 Reviews";
+
+                        const topImageEl = document.getElementById('detailTopImage');
+                        const noMediaBox = document.getElementById('detailNoMediaBox');
+                        
+                        const realMediaSrc = targetClubObj.logoUrl || targetClubObj.logo || "";
+                        if (realMediaSrc.trim() !== "") {
+                            topImageEl.src = realMediaSrc;
+                            topImageEl.classList.remove('hidden');
+                            noMediaBox.classList.add('hidden');
+                        } else {
+                            topImageEl.classList.add('hidden');
+                            noMediaBox.classList.remove('hidden');
+                        }
+
+                        const badgesContainer = document.getElementById('detailSportsBadgesContainer');
+                        badgesContainer.innerHTML = '';
+                        if (targetClubObj.sports_types) {
+                            let rawSportsStr = Array.isArray(targetClubObj.sports_types) ? targetClubObj.sports_types.join(', ') : targetClubObj.sports_types.toString();
+                            rawSportsStr.split(',').forEach(sport => {
+                                if (sport.trim() !== "") {
+                                    badgesContainer.innerHTML += `<span class="text-[10px] bg-red-800 text-white font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">${sport.trim()}</span>`;
+                                }
+                            });
+                        }
+
+                        const verifiedBadge = document.getElementById('detailVerifiedBadge');
+                        if (targetClubObj.verified === true || targetClubObj.verified === "true") {
+                            verifiedBadge.classList.remove('hidden');
+                        } else {
+                            verifiedBadge.classList.add('hidden');
+                        }
+
+                        clubsMainListView.classList.add('hidden');
+                        clubDetailsSubPage.classList.remove('hidden');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                });
+            });
+        }
+
+        btnBackToListView.addEventListener('click', () => {
+            clubDetailsSubPage.classList.add('hidden');
+            clubsMainListView.classList.remove('hidden');
+        });
+
+        function setupLiveInteractionsPipeline() {
+            document.querySelectorAll('.update-verify-trigger').forEach(select => {
+                select.addEventListener('change', async (e) => {
+                    const docId = e.target.getAttribute('data-id');
+                    const isVerifiedValue = e.target.value === "true";
+                    
+                    try {
+                        await updateDoc(doc(db, "clubs", docId), { verified: isVerifiedValue });
+                        if (isVerifiedValue) {
+                            e.target.className = "bg-gray-950 border border-gray-800 rounded-lg px-2 py-1 text-xs font-semibold focus:outline-none update-verify-trigger text-emerald-400";
+                        } else {
+                            e.target.className = "bg-gray-950 border border-gray-800 rounded-lg px-2 py-1 text-xs font-semibold focus:outline-none update-verify-trigger text-rose-400";
+                        }
+                    } catch (err) {
+                        console.error("Verification state failed: ", err);
+                    }
+                });
+            });
+
+            document.querySelectorAll('.update-status-trigger').forEach(select => {
+                select.addEventListener('change', async (e) => {
+                    const docId = e.target.getAttribute('data-id');
+                    const statusValue = e.target.value;
+                    
+                    try {
+                        await updateDoc(doc(db, "clubs", docId), { status: statusValue });
+                        if (statusValue === "active") {
+                            e.target.className = "bg-gray-950 border border-gray-800 rounded-lg px-2 py-1 text-xs font-semibold focus:outline-none update-status-trigger text-emerald-500";
+                        } else {
+                            e.target.className = "bg-gray-950 border border-gray-800 rounded-lg px-2 py-1 text-xs font-semibold focus:outline-none update-status-trigger text-gray-500";
+                        }
+                    } catch (err) {
+                        console.error("Status state update failed: ", err);
+                    }
+                });
+            });
+        }
+
+        addClubForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const rawSports = document.getElementById('addSports').value;
+            const sportsArray = rawSports.split(',').map(s => s.trim()).filter(s => s !== '');
+
+            try {
+                await addDoc(collection(db, "clubs"), {
+                    name: document.getElementById('addName').value.trim(),
+                    logoUrl: document.getElementById('addLogoUrl').value.trim(),
+                    website: document.getElementById('addWebsite').value.trim(),
+                    phone: document.getElementById('addPhone').value.trim(),
+                    email: document.getElementById('addEmail').value.trim(),
+                    address: document.getElementById('addAddress').value.trim(),
+                    city: document.getElementById('addCity').value.trim(),
+                    sports_types: sportsArray,
+                    description: document.getElementById('addDesc').value.trim(),
+                    verified: false,
+                    status: "active",
+                    isPromoted: false,
+                    featuredFrom: "",
+                    featuredTo: "",
+                    createdTime: new Date() 
+                });
+                addClubModal.classList.add('hidden');
+                alert("New club successfully registered. Refreshing list view...");
+                fetchClubsFromServerPipeline(); 
+            } catch (err) {
+                console.error("Manual injection exception caught: ", err);
+            }
+        });
+
+        // Modal triggers
+        document.getElementById('openAddModalBtn').addEventListener('click', () => {
+            addClubForm.reset();
+            addClubModal.classList.remove('hidden');
+        });
+        document.getElementById('closeAddModalBtn').addEventListener('click', () => addClubModal.classList.add('hidden'));
+        document.getElementById('cancelAddBtn').addEventListener('click', () => addClubModal.classList.add('hidden'));
+
+        if (searchInput) {
+            searchInput.addEventListener('input', () => {
+                executeRenderingPipeline();
+            });
+        }
+
+        // Changing the sort filter will immediately trigger the render pipeline (the database will not crash).
+        if (sortClubsFilter) {
+            sortClubsFilter.addEventListener('change', () => {
+                executeRenderingPipeline();
+            });
+        }
+
+        if (prevPageBtn) {
+            prevPageBtn.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    fetchClubsFromServerPipeline(); 
+                }
+            });
+        }
+
+        if (nextPageBtn) {
+            nextPageBtn.addEventListener('click', () => {
+                if (displayedClubs.length === itemsPerPage) {
+                    currentPage++;
+                    fetchClubsFromServerPipeline(); 
+                }
+            });
+        }
+
+        function setupDeleteButtons() {
+            document.querySelectorAll('.btn-delete-club').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const docId = e.currentTarget.getAttribute('data-id');
+                    const clubName = e.currentTarget.getAttribute('data-name');
+
+                    if (confirm(`Are you sure you want to permanently delete "${clubName}"?`)) {
+                        try {
+                            await deleteDoc(doc(db, "clubs", docId));
+                            alert("Club successfully removed from registry.");
+                            fetchClubsFromServerPipeline(); 
+                        } catch (error) {
+                            console.error("Error purging document: ", error);
+                        }
+                    }
+                });
+            });
+        }
+
+        // Trigger Initial Data Feed
+        fetchClubsFromServerPipeline();
+
+        const openSidebarBtn = document.getElementById('openSidebar');
+        const closeSidebarBtn = document.getElementById('closeSidebar');
+        const sidebarPanel = document.getElementById('sidebarPanel');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+        openSidebarBtn.addEventListener('click', () => {
+            sidebarPanel.classList.remove('-translate-x-full');
+            sidebarOverlay.classList.remove('hidden');
+        });
+
+        function closeMenu() {
+            sidebarPanel.classList.add('-translate-x-full');
+            sidebarOverlay.classList.add('hidden');
+        }
+        closeSidebarBtn.addEventListener('click', closeMenu);
+        sidebarOverlay.addEventListener('click', closeMenu);
+    </script>
+</body>
+
+</html>

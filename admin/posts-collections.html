@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Collection Management - MatMaps</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        indigo: {
+                            400: '#E63935',
+                            500: '#B71C1C',
+                            600: '#931A16',
+                            700: '#7A1310',
+                            800: '#5F0E0B',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .post-card-matrix:hover {
+            background-color: #12131a !important;
+            transition: all 0.2s ease-in-out;
+        }
+    </style>
+</head>
+
+<body id="mainBodyFramework" class="bg-gray-950 text-gray-100 font-sans antialiased hidden">
+
+    <div class="flex h-screen overflow-hidden relative">
+
+        <div id="sidebarOverlay"
+            class="fixed inset-0 bg-black/50 z-20 hidden md:hidden transition-opacity duration-300"></div>
+
+        <aside id="sidebarPanel"
+            class="w-64 bg-gray-900 border-r border-gray-800 flex flex-col justify-between fixed md:static inset-y-0 left-0 -translate-x-full md:translate-x-0 z-30 md:z-0 transition-transform duration-300 ease-in-out md:flex">
+            <div>
+                <div class="h-16 flex items-center px-6 border-b border-gray-700 justify-between md:justify-center">
+                    <div class="flex items-center h-full">
+                        <img src="assets/image/matMaps_logo.png" alt="logo" class="h-8 md:h-10" />
+                        <span class="text-xl font-bold text-indigo-400 ml-4">MatMaps</span>
+                    </div>
+                    <button id="closeSidebar" class="text-gray-400 hover:text-white md:hidden text-xl p-1">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <nav class="p-4 space-y-2">
+                    <a href="dashboard.html"
+                        class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-700 hover:text-white transition">
+                        <i class="fa-solid fa-chart-pie w-5"></i> <span>Dashboard</span>
+                    </a>
+                    <a href="clubs.html"
+                        class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
+                        <i class="fa-solid fa-map-pin w-5"></i> <span>Clubs Manager</span>
+                    </a>
+                    <a href="events.html"
+                        class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
+                        <i class="fa-solid fa-calendar-days w-5"></i> <span>Events Manager</span>
+                    </a>
+                    <a href="posts-collections.html"
+                        class="flex items-center space-x-3 px-4 py-2.5 rounded-lg bg-indigo-600 text-white transition">
+                        <i class="fa-solid fa-images w-5"></i> <span>Post Collection</span>
+                    </a>
+                    <a href="comments-reviews.html"
+                        class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
+                        <i class="fa-solid fa-comments w-5"></i> <span>Comments & Reviews</span>
+                    </a>
+                    <a href="user-permissions.html"
+                        class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
+                        <i class="fa-solid fa-users-gear w-5"></i> <span>User Permissions</span>
+                    </a>
+                </nav>
+            </div>
+            <div class="p-4 border-t border-gray-700">
+                <div class="flex items-center space-x-3">
+                    <div
+                        class="w-9 h-9 bg-indigo-500 rounded-full flex items-center justify-center font-bold text-white">
+                        M</div>
+                    <div>
+                        <p class="text-sm font-semibold">MatMaps Test</p>
+                        <p class="text-xs text-gray-500">Admin User</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="flex-1 flex flex-col overflow-y-auto bg-gray-950">
+
+            <header
+                class="h-16 bg-gray-900 border-b border-gray-800 flex items-center justify-between px-6 sticky top-0 z-10 shrink-0">
+                <div class="flex items-center space-x-3">
+                    <button id="openSidebar"
+                        class="text-gray-400 hover:text-white md:hidden text-xl p-1 focus:outline-none">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <i class="fa-solid fa-images text-indigo-400 text-lg hidden md:inline-block"></i>
+                    <h1 class="text-lg font-semibold">Post Collections</h1>
+                </div>
+            </header>
+
+            <div class="py-6 px-4 md:px-8 space-y-8 w-full">
+
+                <div
+                    class="bg-gray-900 border border-gray-800 rounded-xl p-4 flex flex-col sm:flex-row gap-4 items-center justify-between shadow-sm">
+                    <div id="statusTabGroup"
+                        class="flex space-x-2 bg-gray-950 p-1 rounded-lg border border-gray-800 text-xs font-medium w-full sm:w-auto">
+                        <button data-status="pending"
+                            class="tab-btn bg-indigo-600 text-white px-5 py-2 rounded-md shadow-sm transition">
+                            Pending Review <span id="pendingBadgeCount"
+                                class="ml-1.5 px-1.5 py-0.5 text-[10px] bg-indigo-800 text-indigo-200 rounded-full">0</span>
+                        </button>
+                        <button data-status="approved"
+                            class="tab-btn text-gray-400 hover:text-white px-5 py-2 rounded-md transition">Approved
+                            Stream</button>
+                        <button data-status="trashed"
+                            class="tab-btn text-gray-400 hover:text-white px-5 py-2 rounded-md transition">Spam /
+                            Trashed</button>
+                    </div>
+
+                    <div class="relative w-full sm:w-64">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-2 text-gray-500 text-xs"></i>
+                        <input type="text" placeholder="Search by name or description..." id="searchPosts"
+                            class="w-full bg-gray-950 border border-gray-800 rounded-lg pl-9 pr-3 py-1.5 text-xs focus:outline-none focus:border-indigo-500 text-gray-200">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-2" id="postsContainer">
+                    <div class="col-span-full py-16 text-center flex flex-col items-center justify-center space-y-2">
+                        <div class="w-6 h-6 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin">
+                        </div>
+                        <p class="text-xs text-gray-500 tracking-wider">Syncing streaming media modules...</p>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, updateDoc, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        // 1. Firebase configuration setup (must come first)
+        const firebaseConfig = {
+            apiKey: "AIzaSyAVp1TmwmsaapC3rBtsWVBYbmo3-uFxOEs",
+            authDomain: "matmaps-1f5b2.firebaseapp.com",
+            projectId: "matmaps-1f5b2",
+            storageBucket: "matmaps-1f5b2.firebasestorage.app",
+            messagingSenderId: "735375898638",
+            appId: "1:735375898638:web:3aed1fde4aa7b0a95ae45f",
+            measurementId: "G-TEBMGDJZGF"
+        };
+
+        // 2. Firebase App Initialization (this will follow immediately)
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        // 3. Root guard mechanism (checks after the app initializes)
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = 'login.html';
+            } else {
+                console.log("Welcome Admin:", user.email);
+                const bodyEl = document.getElementById('mainBodyFramework');
+                if (bodyEl) {
+                    bodyEl.classList.remove('hidden');
+                }
+            }
+        });
+
+        //document.getElementById('mainBodyFramework').classList.remove('hidden');
+
+        // DOM UI Setup References Hooks
+        const postsContainer = document.getElementById('postsContainer');
+        const searchInput = document.getElementById('searchPosts');
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const pendingBadgeCount = document.getElementById('pendingBadgeCount');
+
+        let globalPostsMemoryCache = [];
+        let currentStatusFilter = 'pending';
+
+        // ========================================================
+        // 1. Real-time live Firestore data sync engine
+        // ========================================================
+        onSnapshot(collection(db, "postCollection"), (snapshot) => {
+            globalPostsMemoryCache = [];
+            let pendingCounter = 0;
+
+            snapshot.forEach((docSnap) => {
+                const item = docSnap.data();
+                const id = docSnap.id;
+
+                // Checking approval parameters and determining status 
+                let calculatedStatus = 'pending';
+                if (item.isApproved === true || item.isApproved === "true") calculatedStatus = 'approved';
+                if (item.isApproved === 'trashed' || item.status === 'trashed') calculatedStatus = 'trashed';
+
+                if (calculatedStatus === 'pending') pendingCounter++;
+
+                globalPostsMemoryCache.push({ id, calculatedStatus, ...item });
+            });
+
+            if (pendingBadgeCount) pendingBadgeCount.innerText = pendingCounter;
+
+            // Sorting by real database time_posted field
+            globalPostsMemoryCache.sort((a, b) => {
+                let timeA = a.time_posted ? (a.time_posted.toDate ? a.time_posted.toDate().getTime() : new Date(a.time_posted).getTime()) : 0;
+                let timeB = b.time_posted ? (b.time_posted.toDate ? b.time_posted.toDate().getTime() : new Date(b.time_posted).getTime()) : 0;
+                return timeB - timeA;
+            });
+
+            executeRenderingPipeline();
+        });
+
+        // ========================================================
+        // 2. Tab filtering and search term implementation pipeline
+        // ========================================================
+        function executeRenderingPipeline() {
+            const searchQuery = searchInput.value.toLowerCase().trim();
+            postsContainer.innerHTML = '';
+
+            // Step A: Status filter mapping
+            let filteredList = globalPostsMemoryCache.filter(item => item.calculatedStatus === currentStatusFilter);
+
+            // Step B: Search filter mapping
+            if (searchQuery !== "") {
+                filteredList = filteredList.filter(item => {
+                    const dispName = item.display_name ? item.display_name.toLowerCase() : '';
+                    const descText = item.post_description ? item.post_description.toLowerCase() : '';
+                    return dispName.includes(searchQuery) || descText.includes(searchQuery);
+                });
+            }
+
+            if (filteredList.length === 0) {
+                postsContainer.innerHTML = `
+                    <div class="col-span-full bg-gray-900 border border-gray-800 rounded-xl p-12 text-center text-gray-500 text-xs tracking-wide">
+                        <i class="fa-solid fa-images text-2xl mb-2 block text-gray-700"></i> No media nodes matching this status view segment found.
+                    </div>`;
+                return;
+            }
+
+            filteredList.forEach((item) => {
+                const docId = item.id;
+
+                // Formatting time_posted timestamp object accurately
+                let relativeDate = "Live Node";
+                if (item.time_posted) {
+                    const dateObj = item.time_posted.toDate ? item.time_posted.toDate() : new Date(item.time_posted);
+                    if (!isNaN(dateObj.getTime())) {
+                        relativeDate = dateObj.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+                    }
+                }
+
+                // Profile photo processing
+                const profileImgHTML = item.profile_photo
+                    ? `<img src="${item.profile_photo}" class="w-8 h-8 rounded-full object-cover border border-gray-800">`
+                    : `<div class="w-8 h-8 bg-indigo-600/10 text-indigo-400 rounded-full flex items-center justify-center font-bold text-xs border border-indigo-500/20 uppercase font-mono">${item.display_name ? item.display_name.substring(0, 2) : 'FI'}</div>`;
+
+                // 3. Dynamic Video Player vs Image Selector Implementation Matrix
+                let mediaDisplayShellHTML = '';
+                const isVideoType = item.post_Type === "video" || item.post_Type === "Video" || item.post_Video;
+
+                if (isVideoType && item.post_Video) {
+                    mediaDisplayShellHTML = `
+                        <div class="w-full h-48 bg-black rounded-xl overflow-hidden border border-gray-800/80 relative">
+                            <video src="${item.post_Video}" controls preload="metadata" class="w-full h-full object-contain" poster="${item.post_photo || ''}"></video>
+                        </div>`;
+                } else if (item.post_photo) {
+                    mediaDisplayShellHTML = `
+                        <div class="w-full h-48 bg-gray-950 rounded-xl overflow-hidden border border-gray-800/80 relative group select-none">
+                            <img src="${item.post_photo}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="MatMaps Matrix">
+                        </div>`;
+                } else {
+                    mediaDisplayShellHTML = `
+                        <div class="w-full h-48 bg-gray-950 rounded-xl border border-gray-800/80 flex flex-col items-center justify-center space-y-1.5 text-gray-600">
+                            <i class="fa-regular fa-file-image text-2xl"></i>
+                            <span class="text-[10px] tracking-wide">Text Only Post Stream</span>
+                        </div>`;
+                }
+
+                // Dynamic Context buttons rendering matrix block
+                let contextActionsHTML = '';
+                if (item.calculatedStatus === 'pending') {
+                    contextActionsHTML = `
+                        <button data-action="approve" data-id="${docId}" class="action-btn px-4 py-1.5 bg-emerald-600/10 hover:bg-emerald-600 text-emerald-400 hover:text-white text-xs font-bold rounded-lg border border-emerald-500/20 transition flex items-center space-x-1">
+                            <i class="fa-solid fa-circle-check"></i> <span>Approve</span>
+                        </button>
+                        <button data-action="trash" data-id="${docId}" class="action-btn px-4 py-1.5 bg-rose-600/10 hover:bg-rose-600 text-rose-400 hover:text-white text-xs font-bold rounded-lg border border-rose-500/20 transition flex items-center space-x-1">
+                            <i class="fa-solid fa-circle-xmark"></i> <span>Trash</span>
+                        </button>`;
+                } else if (item.calculatedStatus === 'approved') {
+                    contextActionsHTML = `
+                        <button data-action="trash" data-id="${docId}" class="action-btn px-4 py-1.5 bg-rose-600/10 hover:bg-rose-600 text-rose-400 hover:text-white text-xs font-bold rounded-lg border border-rose-500/20 transition flex items-center space-x-1">
+                            <i class="fa-solid fa-trash-can"></i> <span>Move to Trash</span>
+                        </button>`;
+                } else {
+                    contextActionsHTML = `
+                        <button data-action="approve" data-id="${docId}" class="action-btn px-4 py-1.5 bg-emerald-600/10 hover:bg-emerald-600 text-emerald-400 hover:text-white text-xs font-bold rounded-lg border border-emerald-500/20 transition flex items-center space-x-1">
+                            <i class="fa-solid fa-rotate-left"></i> <span>Restore Post</span>
+                        </button>`;
+                }
+
+                const card = document.createElement('div');
+                card.className = "post-card-matrix bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden p-4 flex flex-col justify-between space-y-3.5 shadow-lg relative";
+                card.innerHTML = `
+                    <div class="space-y-3">
+                        <div class="flex items-center space-x-3 text-left">
+                            ${profileImgHTML}
+                            <div>
+                                <h4 class="font-bold text-gray-200 text-xs tracking-wide">${item.display_name || 'Anonymous Fighter'}</h4>
+                                <p class="text-[10px] text-gray-500 font-mono mt-0.5">${relativeDate}</p>
+                            </div>
+                        </div>
+
+                        ${mediaDisplayShellHTML}
+
+                        <div class="space-y-1 text-left">
+                            <p class="text-xs text-gray-300 font-light leading-relaxed line-clamp-3" title="${item.post_description || ''}">${item.post_description || 'No caption provided with asset.'}</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between pt-2 border-t border-gray-800/80 text-[11px] text-gray-500 font-mono">
+                        <div class="flex items-center space-x-1">
+                            <i class="fa-solid fa-heart text-indigo-400 text-xs mr-1"></i>
+                            <span class="font-bold text-gray-400">${item.num_likes || 0}</span>
+                        </div>
+                        
+                        <div class="flex items-center space-x-2">
+                            ${contextActionsHTML}
+                            <button data-id="${docId}" class="bg-gray-950 border border-gray-800 hover:text-rose-400 px-2 py-1.5 rounded-lg text-gray-500 transition btn-purge-hard" title="Permanently Delete">
+                                <i class="fa-solid fa-trash-arrow-up"></i>
+                            </button>
+                        </div>
+                    </div>`;
+                postsContainer.appendChild(card);
+            });
+
+            bindActiveInteractiveTriggers();
+        }
+
+        // ========================================================
+        // 3. Tab Switches & Firebase Write Actions Listeners
+        // ========================================================
+        function bindActiveInteractiveTriggers() {
+            document.querySelectorAll('.action-btn').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const docId = btn.getAttribute('data-id');
+                    const action = btn.getAttribute('data-action');
+                    const docRef = doc(db, "postCollection", docId);
+
+                    try {
+                        if (action === "approve") {
+                            await updateDoc(docRef, { isApproved: true });
+                        } else if (action === "trash") {
+                            await updateDoc(docRef, { isApproved: "trashed" });
+                        }
+                    } catch (err) {
+                        console.error("Firebase update failed: ", err);
+                    }
+                });
+            });
+
+            // Permanent deletion trigger handler
+            document.querySelectorAll('.btn-purge-hard').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const docId = btn.getAttribute('data-id');
+                    if (confirm("Are you sure you want to permanently wipe out this node from Firestore registry?")) {
+                        try {
+                            await deleteDoc(doc(db, "postCollection", docId));
+                            alert("Post completely purged from cluster server.");
+                        } catch (err) {
+                            console.error("Hard delete crash: ", err);
+                        }
+                    }
+                });
+            });
+        }
+
+        // Tab selection change engine
+        tabButtons.forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                tabButtons.forEach(b => {
+                    b.classList.remove('bg-indigo-600', 'text-white', 'shadow-sm');
+                    b.classList.add('text-gray-400', 'hover:text-white');
+                });
+                e.currentTarget.classList.add('bg-indigo-600', 'text-white', 'shadow-sm');
+                e.currentTarget.classList.remove('text-gray-400', 'hover:text-white');
+
+                currentStatusFilter = e.currentTarget.getAttribute('data-status');
+                executeRenderingPipeline();
+            });
+        });
+
+        // Search trigger event
+        if (searchInput) {
+            searchInput.addEventListener('input', executeRenderingPipeline);
+        }
+
+        // Sidebar Actions Controls Channels
+        const openSidebarBtn = document.getElementById('openSidebar');
+        const closeSidebarBtn = document.getElementById('closeSidebar');
+        const sidebarPanel = document.getElementById('sidebarPanel');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+        openSidebarBtn.addEventListener('click', () => {
+            sidebarPanel.classList.remove('-translate-x-full');
+            sidebarOverlay.classList.remove('hidden');
+        });
+
+        function closeMenu() {
+            sidebarPanel.classList.add('-translate-x-full');
+            sidebarOverlay.classList.add('hidden');
+        }
+        closeSidebarBtn.addEventListener('click', closeMenu);
+        sidebarOverlay.addEventListener('click', closeMenu);
+    </script>
+</body>
+
+</html>

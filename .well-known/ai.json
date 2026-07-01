@@ -1,0 +1,43 @@
+{
+  "ai_agents_allowed": true,
+  "crawl_delay": 1,
+  "user_agent_allow": [
+    "CCBot",
+    "anthropic-ai",
+    "Claude-Web",
+    "GPTBot",
+    "ChatGPT-User",
+    "OpenAI-User",
+    "Perplexity-AI",
+    "PerplexityBot",
+    "YouBot",
+    "FacebookExternalHit",
+    "Twitterbot",
+    "LinkedInBot"
+  ],
+  "user_agent_disallow": [
+    "MojeekBot",
+    "AhrefsBot"
+  ],
+  "allow_paths": [
+    "/",
+    "/clubs/",
+    "/events/",
+    "/posts/"
+  ],
+  "disallow_paths": [
+    "/admin/",
+    "/user/account/",
+    "/private/"
+  ],
+  "rate_limit": {
+    "requests_per_minute": 60,
+    "requests_per_hour": 3600
+  },
+  "content_policy": {
+    "scraping_allowed": true,
+    "training_data_allowed": true,
+    "commercial_use_allowed": false,
+    "attribution_required": true
+  }
+}

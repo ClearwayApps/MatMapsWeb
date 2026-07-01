@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Permissions & Access Control</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        indigo: {
+                            400: '#E63935',
+                            500: '#B71C1C',
+                            600: '#931A16',
+                            700: '#7A1310',
+                            800: '#5F0E0B',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        #operatorsTableBody tr:hover {
+            background-color: #12131a !important;
+            transition: background-color 0.2s ease-in-out;
+        }
+    </style>
+</head>
+
+<body id="mainBodyFramework" class="bg-gray-950 text-gray-100 font-sans antialiased hidden">
+
+    <div class="flex h-screen overflow-hidden relative">
+
+        <div id="sidebarOverlay"
+            class="fixed inset-0 bg-black/50 z-20 hidden md:hidden transition-opacity duration-300"></div>
+
+        <aside id="sidebarPanel"
+            class="w-64 bg-gray-900 border-r border-gray-800 flex flex-col justify-between fixed md:static inset-y-0 left-0 -translate-x-full md:translate-x-0 z-30 md:z-0 transition-transform duration-300 ease-in-out md:flex">
+            <div>
+                <div class="h-16 flex items-center px-6 border-b border-gray-700 justify-between md:justify-center">
+                    <div class="flex items-center h-full">
+                        <img src="assets/image/matMaps_logo.png" alt="logo" class="h-8 md:h-10" />
+                        <span class="text-xl font-bold text-indigo-400 ml-4">MatMaps</span>
+                    </div>
+                    <button id="closeSidebar" class="text-gray-400 hover:text-white md:hidden text-xl p-1">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <nav class="p-4 space-y-2">
+                    <a href="dashboard.html"
+                        class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-700 hover:text-white transition">
+                        <i class="fa-solid fa-chart-pie w-5"></i> <span>Dashboard</span>
+                    </a>
+                    <a href="clubs.html"
+                        class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
+                        <i class="fa-solid fa-map-pin w-5"></i> <span>Clubs Manager</span>
+                    </a>
+                    <a href="events.html"
+                        class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
+                        <i class="fa-solid fa-calendar-days w-5"></i> <span>Events Manager</span>
+                    </a>
+                    <a href="posts-collections.html"
+                        class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
+                        <i class="fa-solid fa-images w-5"></i> <span>Post Collection</span>
+                    </a>
+                    <a href="comments-reviews.html"
+                        class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
+                        <i class="fa-solid fa-comments w-5"></i> <span>Comments & Reviews</span>
+                    </a>
+                    <a href="user-permissions.html"
+                        class="flex items-center space-x-3 px-4 py-2.5 rounded-lg bg-indigo-600 text-white transition">
+                        <i class="fa-solid fa-users-gear w-5"></i> <span>User Permissions</span>
+                    </a>
+                </nav>
+            </div>
+            <div class="p-4 border-t border-gray-700">
+                <div class="flex items-center space-x-3">
+                    <div
+                        class="w-9 h-9 bg-indigo-500 rounded-full flex items-center justify-center font-bold text-white">
+                        M</div>
+                    <div>
+                        <p class="text-sm font-semibold">MatMaps Test</p>
+                        <p class="text-xs text-gray-500">Admin User</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="flex-1 flex flex-col overflow-y-auto">
+
+            <header
+                class="h-16 bg-gray-900 border-b border-gray-800 flex items-center justify-between px-6 sticky top-0 z-10 shrink-0">
+                <div class="flex items-center space-x-3">
+                    <button id="openSidebar"
+                        class="text-gray-400 hover:text-white md:hidden text-xl p-1 focus:outline-none">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <i class="fa-solid fa-users-gear text-indigo-400 text-lg hidden md:inline-block"></i>
+                    <h1 class="text-lg font-semibold">User Permissions</h1>
+                </div>
+                <div
+                    class="text-xs text-gray-400 bg-indigo-950/40 border border-indigo-900/50 px-3 py-1.5 rounded-md max-sm:hidden">
+                    <i class="fa-solid fa-shield-halved text-indigo-400 mr-1.5"></i> Live Engine Verified
+                </div>
+            </header>
+
+            <div class="py-6 px-4 md:px-8 space-y-8 w-full">
+
+                <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden shadow-md">
+                    <div
+                        class="p-6 border-b border-gray-800 flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+                        <div>
+                            <h2 class="text-sm font-bold uppercase tracking-wider text-gray-400">Registered App Users</h2>
+                            <p class="text-xs text-gray-500 mt-0.5">Manage accounts, change membership type credentials, monitor expiry pipelines and track registration timestamps.</p>
+                        </div>
+
+                        <div class="relative w-full sm:w-64">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1 text-gray-500 text-sm"></i>
+                            <input type="text" placeholder="Search by name or email..." id="searchOperator"
+                                class="w-full bg-gray-950 border border-gray-800 rounded-lg pl-9 pr-3 py-1.5 text-xs focus:outline-none focus:border-indigo-500">
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto relative min-h-[200px]">
+                        <table class="w-full text-left text-sm whitespace-nowrap">
+                            <thead
+                                class="bg-gray-950 text-gray-400 text-xs uppercase font-semibold border-b border-gray-800">
+                                <tr>
+                                    <th class="px-6 py-3.5 text-center w-16">Profile</th>
+                                    <th class="px-6 py-3.5">User Specifications</th>
+                                    <th class="px-6 py-3.5">Contact Node</th>
+                                    <th class="px-6 py-3.5">Created Time</th>
+                                    <th class="px-6 py-3.5">Membership Type</th>
+                                    <th class="px-6 py-3.5 text-center">Subscription</th>
+                                    <th class="px-6 py-3.5 text-right w-32">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-800/60" id="operatorsTableBody">
+                                <tr id="tableLoaderRow">
+                                    <td colspan="7" class="px-6 py-16 text-center">
+                                        <div class="flex flex-col items-center justify-center space-y-3">
+                                            <div
+                                                class="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin">
+                                            </div>
+                                            <p class="text-xs text-gray-500 tracking-wider">Fetching Profiles from Firebase Platform...</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div id="paginationFooter"
+                        class="p-4 bg-gray-950/40 border-t border-gray-800 flex items-center justify-between text-xs hidden">
+                        <p class="text-gray-500" id="paginationStatusText">Showing 0-0 of 0 entries</p>
+                        <div class="flex space-x-2">
+                            <button id="prevPageBtn"
+                                class="bg-gray-900 border border-gray-800 text-gray-400 px-3 py-1.5 rounded-lg font-medium transition disabled:opacity-40 disabled:cursor-not-allowed hover:text-white">Previous</button>
+                            <button id="nextPageBtn"
+                                class="bg-gray-900 border border-gray-800 text-gray-400 px-3 py-1.5 rounded-lg font-medium transition disabled:opacity-40 disabled:cursor-not-allowed hover:text-white">Next</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, updateDoc, doc, query, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+         // 1. Firebase configuration setup (must come first)
+         const firebaseConfig = {
+            apiKey: "AIzaSyAVp1TmwmsaapC3rBtsWVBYbmo3-uFxOEs",
+            authDomain: "matmaps-1f5b2.firebaseapp.com",
+            projectId: "matmaps-1f5b2",
+            storageBucket: "matmaps-1f5b2.firebasestorage.app",
+            messagingSenderId: "735375898638",
+            appId: "1:735375898638:web:3aed1fde4aa7b0a95ae45f",
+            measurementId: "G-TEBMGDJZGF"
+        };
+
+        // 2. Firebase App Initialization (this will follow immediately)
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        // 3. Root guard mechanism (checks after the app initializes)
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = 'login.html';
+            } else {
+                console.log("Welcome Admin:", user.email);
+                const bodyEl = document.getElementById('mainBodyFramework');
+                if (bodyEl) {
+                    bodyEl.classList.remove('hidden');
+                }
+            }
+        });
+
+        //document.getElementById('mainBodyFramework').classList.remove('hidden');
+        
+        const tableBody = document.getElementById('operatorsTableBody');
+        const searchInput = document.getElementById('searchOperator');
+
+        const itemsPerPage = 10;
+        let currentPage = 1;
+        let allOperators = [];
+        let filteredOperators = [];
+
+        const paginationFooter = document.getElementById('paginationFooter');
+        const paginationStatusText = document.getElementById('paginationStatusText');
+        const prevPageBtn = document.getElementById('prevPageBtn');
+        const nextPageBtn = document.getElementById('nextPageBtn');
+
+        // Real-time listener (users collection sync)
+        const q = query(collection(db, "users"));
+
+        onSnapshot(q, (snapshot) => {
+            allOperators = [];
+            snapshot.forEach((docSnap) => {
+                allOperators.push({
+                    id: docSnap.id,
+                    ...docSnap.data()
+                });
+            });
+            filterAndRender();
+        });
+
+        function filterAndRender() {
+            const keyword = searchInput ? searchInput.value.toLowerCase().trim() : "";
+
+            filteredOperators = allOperators.filter(user => {
+                const nameMatch = user.display_name ? user.display_name.toLowerCase().includes(keyword) : false;
+                const emailMatch = user.email ? user.email.toLowerCase().includes(keyword) : false;
+                return nameMatch || emailMatch;
+            });
+
+            const totalItems = filteredOperators.length;
+            const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
+
+            if (currentPage > totalPages) currentPage = totalPages;
+            if (currentPage < 1) currentPage = 1;
+
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const paginatedItems = filteredOperators.slice(startIndex, endIndex);
+
+            renderTable(paginatedItems);
+
+            if (totalItems > 0) {
+                paginationFooter.classList.remove('hidden');
+                paginationStatusText.innerText = `Showing ${startIndex + 1}-${Math.min(endIndex, totalItems)} of ${totalItems} entries`;
+                prevPageBtn.disabled = (currentPage === 1);
+                nextPageBtn.disabled = (currentPage === totalPages);
+            } else {
+                paginationFooter.classList.add('hidden');
+            }
+        }
+
+        function renderTable(usersList) {
+            tableBody.innerHTML = '';
+
+            if (usersList.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="7" class="px-6 py-8 text-center text-gray-500">No application users found.</td></tr>`;
+                return;
+            }
+
+            usersList.forEach((user) => {
+                const docId = user.id;
+                const avatarInitials = user.display_name ? user.display_name.substring(0, 2).toUpperCase() : 'UR';
+
+                let profileAvatarHTML = '';
+                if (user.photo_url) {
+                    profileAvatarHTML = `<img src="${user.photo_url}" alt="avatar" class="w-8 h-8 rounded-full object-cover border border-gray-700 mx-auto" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'w-8 h-8 bg-indigo-500/10 text-indigo-400 rounded-full flex items-center justify-center font-bold text-xs border border-indigo-500/20 mx-auto\'>${avatarInitials}</div>';">`;
+                } else {
+                    profileAvatarHTML = `<div class="w-8 h-8 bg-indigo-500/10 text-indigo-400 rounded-full flex items-center justify-center font-bold text-xs border border-indigo-500/20 mx-auto">${avatarInitials}</div>`;
+                }
+
+                let formattedDateTime = "N/A";
+                if (user.created_time) {
+                    const dateObj = user.created_time.toDate ? user.created_time.toDate() : new Date(user.created_time);
+                    if (!isNaN(dateObj.getTime())) {
+                        formattedDateTime = dateObj.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+                    }
+                }
+
+                let expiryDateStr = "Never";
+                if (user.subscriptionExpiryDate) {
+                    const expObj = user.subscriptionExpiryDate.toDate ? user.subscriptionExpiryDate.toDate() : new Date(user.subscriptionExpiryDate);
+                    if (!isNaN(expObj.getTime())) {
+                        expiryDateStr = expObj.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+                    }
+                }
+
+                const isSubActive = user.subscriptionActive === true || user.subscriptionActive === "true";
+                const subBadgeHTML = isSubActive 
+                    ? `<span class="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-full font-bold">Active</span>`
+                    : `<span class="text-[10px] bg-gray-800 text-gray-500 border border-gray-700 px-2 py-0.5 rounded-full">Inactive</span>`;
+
+                // Fix value mapping based on case-sensitive values ​​for the Firestore database.
+                const mType = user.membershipType || "free_membership";
+
+                const row = document.createElement('tr');
+                row.className = "border-b border-gray-800/40 text-gray-300";
+                row.innerHTML = `
+                    <td class="px-6 py-4 text-center">
+                        ${profileAvatarHTML}
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="font-bold text-gray-200 text-sm tracking-wide">${user.display_name || 'Anonymous Fighter'}</div>
+                        <div class="text-[10px] text-gray-500 font-mono mt-0.5">UID: ${docId.substring(0, 10)}...</div>
+                    </td>
+                    <td class="px-6 py-4 text-xs space-y-0.5">
+                        <div class="text-gray-300 font-medium"><i class="fa-solid fa-envelope mr-1.5 text-gray-600"></i>${user.email || 'N/A'}</div>
+                        <div class="text-gray-400 font-mono"><i class="fa-solid fa-phone mr-1.5 text-gray-600"></i>${user.phone_number || 'N/A'}</div>
+                    </td>
+                    <td class="px-6 py-4 text-gray-400 text-xs">
+                        <i class="fa-regular fa-calendar text-[10px] mr-1.5 text-gray-600"></i>${formattedDateTime}
+                    </td>
+                    <td class="px-6 py-4">
+                        <select data-id="${docId}" data-current="${mType}" class="bg-gray-950 border border-gray-800 rounded-lg px-2.5 py-1 text-xs font-semibold focus:outline-none focus:border-indigo-500 text-indigo-400 change-membership-trigger">
+                            <option value="free_membership" ${mType === "free_membership" || mType === "Free Membership" ? "selected" : ""}>Free Membership</option>
+                            <option value="athletes" ${mType === "athletes" || mType === "Athletes" ? "selected" : ""}>Athletes</option>
+                            <option value="club_owner" ${mType === "club_owner" || mType === "Club Owner" ? "selected" : ""}>Club Owner</option>
+                        </select>
+                    </td>
+                    <td class="px-6 py-4 text-center space-y-1">
+                        <div>${subBadgeHTML}</div>
+                        <div class="text-[10px] text-gray-500 font-mono">Exp: ${expiryDateStr}</div>
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <div class="flex items-center justify-end space-x-2">
+                            <button id="saveBtn-${docId}" data-id="${docId}" class="bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-bold px-3 py-1 rounded-md transition shadow-md hidden btn-IndividualSave">
+                                <i class="fa-solid fa-floppy-disk mr-1"></i> Save
+                            </button>
+                            <button class="text-gray-500 hover:text-rose-400 p-1 transition text-xs btn-Remove" data-id="${docId}" data-name="${user.display_name || 'User'}">
+                                <i class="fa-solid fa-user-xmark"></i> Remove
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+            setupRemoveButtons();
+            setupMembershipDropdowns();
+        }
+
+        // Membership dropdown change tracking and save button control logic
+        function setupMembershipDropdowns() {
+            document.querySelectorAll('.change-membership-trigger').forEach(select => {
+                select.addEventListener('change', (e) => {
+                    const recordId = e.target.getAttribute('data-id');
+                    const initialValue = e.target.getAttribute('data-current');
+                    const newValue = e.target.value;
+                    const saveBtn = document.getElementById(`saveBtn-${recordId}`);
+
+                    // The Save button will become visible when the value changes.
+                    if (newValue !== initialValue) {
+                        saveBtn.classList.remove('hidden');
+                    } else {
+                        saveBtn.classList.add('hidden');
+                    }
+                });
+            });
+
+            // Individual Save Button Click Handler Pipeline
+            document.querySelectorAll('.btn-IndividualSave').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const recordId = e.currentTarget.getAttribute('data-id');
+                    const selectElement = document.querySelector(`select[data-id="${recordId}"]`);
+                    const updatedValue = selectElement.value;
+
+                    btn.disabled = true;
+                    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i>`;
+
+                    try {
+                        const docRef = doc(db, "users", recordId);
+                        await updateDoc(docRef, {
+                            membershipType: updatedValue
+                        });
+                        
+                        // Upon a successful save, the attribute will be updated and the button will be hidden.
+                        selectElement.setAttribute('data-current', updatedValue);
+                        btn.classList.add('hidden');
+                        alert("User membership status successfully updated in Firestore!");
+                    } catch (error) {
+                        console.error("Failed executing database update: ", error);
+                        alert("Database write error. Access denied.");
+                    } finally {
+                        btn.disabled = false;
+                        btn.innerHTML = `<i class="fa-solid fa-floppy-disk mr-1"></i> Save`;
+                    }
+                });
+            });
+        }
+
+        function setupRemoveButtons() {
+            const RemoveButtons = document.querySelectorAll('.btn-Remove');
+            RemoveButtons.forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const docId = e.currentTarget.getAttribute('data-id');
+                    const userName = e.currentTarget.getAttribute('data-name');
+
+                    if (confirm(`Are you sure you want to permanently delete user "${userName}" from the MatMaps dataset?`)) {
+                        try {
+                            await deleteDoc(doc(db, "users", docId));
+                            alert("User profile successfully purged from cluster.");
+                        } catch (error) {
+                            console.error("Error unlinking database profile node: ", error);
+                        }
+                    }
+                });
+            });
+        }
+
+        if (searchInput) {
+            searchInput.addEventListener('input', () => {
+                currentPage = 1;
+                filterAndRender();
+            });
+        }
+
+        prevPageBtn.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                filterAndRender();
+            }
+        });
+
+        nextPageBtn.addEventListener('click', () => {
+            const totalPages = Math.ceil(filteredOperators.length / itemsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                filterAndRender();
+            }
+        });
+
+        // Sidebar panel control mechanism
+        const openSidebarBtn = document.getElementById('openSidebar');
+        const closeSidebarBtn = document.getElementById('closeSidebar');
+        const sidebarPanel = document.getElementById('sidebarPanel');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+        openSidebarBtn.addEventListener('click', () => {
+            sidebarPanel.classList.remove('-translate-x-full');
+            sidebarOverlay.classList.remove('hidden');
+        });
+
+        function closeMenu() {
+            sidebarPanel.classList.add('-translate-x-full');
+            sidebarOverlay.classList.add('hidden');
+        }
+        closeSidebarBtn.addEventListener('click', closeMenu);
+        sidebarOverlay.addEventListener('click', closeMenu);
+    </script>
+</body>
+
+</html>
