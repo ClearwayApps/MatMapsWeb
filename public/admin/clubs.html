@@ -460,6 +460,10 @@
             }
         }
 
+        function isClubActiveValue(club) {
+            return club?.isActive === true || club?.isActive === 'true' || club?.status === 'active' || club?.status === true;
+        }
+
         function executeRenderingPipeline() {
             const statusClubsFilter = document.getElementById('statusClubsFilter');
             const verifyClubsFilter = document.getElementById('verifyClubsFilter');
@@ -491,7 +495,7 @@
                 }
                 const matchesKeyword = nameMatch || cityMatch || sportsStr.includes(keyword);
 
-                const isStatusActive = club.status === "active";
+                const isStatusActive = isClubActiveValue(club);
                 let matchesStatus = true;
                 if (statusFilterVal === "active") matchesStatus = isStatusActive;
                 if (statusFilterVal === "inactive") matchesStatus = !isStatusActive;
@@ -545,8 +549,7 @@
                         <option value="false" ${!isVerified ? 'selected' : ''}>Unverified</option>
                     </select>`;
 
-                const currentStatus = club.status || "active";
-                const isStatusActive = currentStatus === "active";
+                const isStatusActive = isClubActiveValue(club);
 
                 const row = document.createElement('tr');
                 row.className = "border-b border-gray-800/40 text-gray-300";
@@ -688,6 +691,7 @@
 
                     const isVerifiedValue = verifySelect.value === "true";
                     const statusValue = statusSelect.value;
+                    const isActiveValue = statusValue === "active";
 
                     btn.disabled = true;
                     btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i>`;
@@ -695,7 +699,8 @@
                     try {
                         await updateDoc(doc(db, "clubs", recordId), {
                             verified: isVerifiedValue,
-                            status: statusValue
+                            isActive: isActiveValue,
+                            status: isActiveValue ? "active" : "inactive"
                         });
 
                         verifySelect.setAttribute('data-current', verifySelect.value);
@@ -741,6 +746,7 @@
                     sports_types: currentSportsTags,
                     description: document.getElementById('addDesc').value.trim(),
                     verified: false,
+                    isActive: true,
                     status: "active",
                     isPromoted: false,
                     featuredFrom: "",
