@@ -45,6 +45,7 @@ yarn.lock
 # Testing
 .nyc_output/
 coverage/
+.firebase/
 
 # Logs
 logs/
@@ -59,3 +60,4 @@ temp/
 .AppleDouble
 .LSOverride
 public/admin/firebase-config.js
+.firebase/hosting.cHVibGlj.cache
