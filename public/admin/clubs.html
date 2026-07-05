@@ -84,6 +84,14 @@
                         class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
                         <i class="fa-solid fa-star w-5"></i> <span>Reviews</span>
                     </a>
+                    <a href="clubs-claims.html"
+                        class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
+                        <i class="fa-solid fa-passport w-5"></i> <span>Club Claims</span>
+                    </a>
+                    <a href="support-requests.html"
+                        class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
+                        <i class="fa-solid fa-headset w-5"></i> <span>Support Requests</span>
+                    </a>
                     <a href="user-permissions.html"
                         class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
                         <i class="fa-solid fa-users-gear w-5"></i> <span>User Permissions</span>
@@ -121,21 +129,16 @@
                 </button>
             </header>
 
-            <!-- PRIMARY WRAPPER FOR LIST VIEW (True Full Width Optimized) -->
             <div id="clubsMainListView" class="py-6 px-4 md:px-8 space-y-8 w-full">
 
-                <!-- Filters & Search Controls -->
                 <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden shadow-md">
                     <div
                         class="p-6 border-b border-gray-800 flex flex-col sm:flex-row justify-between sm:items-center gap-4">
                         <div>
-                            <h2 class="text-sm font-bold uppercase tracking-wider text-gray-400">Registered Clubs
-                                Pipeline</h2>
-                            <p class="text-xs text-gray-500 mt-0.5">Monitor and manage all onboarded sports centers,
-                                verifications and status.</p>
+                            <h2 class="text-sm font-bold uppercase tracking-wider text-gray-400">Registered Clubs Pipeline</h2>
+                            <p class="text-xs text-gray-500 mt-0.5">Monitor and manage all onboarded sports centers, verifications and status.</p>
                         </div>
 
-                        <!-- 1. Search Box Component Grid Area with Sort Filter Left Side -->
                         <div class="flex flex-wrap items-center space-x-3 gap-y-2 w-full sm:w-auto justify-end">
                             <div class="relative">
                                 <select id="verifyClubsFilter"
@@ -161,19 +164,16 @@
                                 </select>
                             </div>
                             <div class="relative w-full sm:w-64">
-                                <i
-                                    class="fa-solid fa-magnifying-glass absolute left-3 top-1.5 text-gray-500 text-xs"></i>
+                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1.5 text-gray-500 text-xs"></i>
                                 <input type="text" placeholder="Search by club name or city..." id="searchClub"
                                     class="w-full bg-gray-950 border border-gray-800 rounded-lg pl-9 pr-3 py-1.5 text-xs focus:outline-none focus:border-indigo-500">
                             </div>
                         </div>
                     </div>
 
-                    <!-- Clubs Responsive Table -->
                     <div class="overflow-x-auto relative min-h-[250px]">
                         <table class="w-full text-left text-sm whitespace-nowrap">
-                            <thead
-                                class="bg-gray-950 text-gray-400 text-xs uppercase font-semibold border-b border-gray-800">
+                            <thead class="bg-gray-950 text-gray-400 text-xs uppercase font-semibold border-b border-gray-800">
                                 <tr>
                                     <th class="px-6 py-3.5">Club Identity & Sports</th>
                                     <th class="px-6 py-3.5">Location / City</th>
@@ -186,11 +186,8 @@
                                 <tr id="tableLoaderRow">
                                     <td colspan="5" class="px-6 py-16 text-center">
                                         <div class="flex flex-col items-center justify-center space-y-3">
-                                            <div
-                                                class="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin">
-                                            </div>
-                                            <p class="text-xs text-gray-500 tracking-wider">Syncing Clubs Matrix with
-                                                Firestore...</p>
+                                            <div class="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+                                            <p class="text-xs text-gray-500 tracking-wider">Syncing Clubs Matrix with Firestore...</p>
                                         </div>
                                     </td>
                                 </tr>
@@ -198,155 +195,87 @@
                         </table>
                     </div>
 
-                    <!-- FIXED CRITICAL PAGINATION FOOTER WRAPPER -->
-                    <div id="paginationFooter"
-                        class="p-4 bg-gray-950/40 border-t border-gray-800 flex items-center justify-between text-xs">
+                    <div id="paginationFooter" class="p-4 bg-gray-950/40 border-t border-gray-800 flex items-center justify-between text-xs">
                         <p class="text-gray-500" id="paginationStatusText">Showing 0-0 of 0 entries</p>
                         <div class="flex space-x-2">
-                            <button id="prevPageBtn"
-                                class="bg-gray-900 border border-gray-800 text-gray-400 px-3 py-1.5 rounded-lg font-medium transition disabled:opacity-40 disabled:cursor-not-allowed hover:text-white">Previous</button>
-                            <button id="nextPageBtn"
-                                class="bg-gray-900 border border-gray-800 text-gray-400 px-3 py-1.5 rounded-lg font-medium transition disabled:opacity-40 disabled:cursor-not-allowed hover:text-white">Next</button>
+                            <button id="prevPageBtn" class="bg-gray-900 border border-gray-800 text-gray-400 px-3 py-1.5 rounded-lg font-medium transition disabled:opacity-40 disabled:cursor-not-allowed hover:text-white">Previous</button>
+                            <button id="nextPageBtn" class="bg-gray-900 border border-gray-800 text-gray-400 px-3 py-1.5 rounded-lg font-medium transition disabled:opacity-40 disabled:cursor-not-allowed hover:text-white">Next</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- DYNAMIC APP-SIDE SUB-PAGE FOR CLUB DETAILS VIEW -->
             <div id="clubDetailsSubPage" class="p-6 max-w-7xl w-full mx-auto space-y-6 hidden">
-                <div
-                    class="bg-red-900/10 border border-white/[0.04] rounded-xl p-4 flex items-center justify-between shadow-md">
+                <div class="bg-red-900/10 border border-white/[0.04] rounded-xl p-4 flex items-center justify-between shadow-md">
                     <button id="btnBackToListView"
                         class="flex items-center space-x-2 text-xs uppercase tracking-wider font-bold text-white bg-indigo-600 hover:bg-indigo-700 px-5 py-2.5 rounded-lg transition shadow-lg">
                         <i class="fa-solid fa-arrow-left"></i> <span>Return to Club Directory</span>
                     </button>
-                    <button class="text-gray-400 hover:text-white text-lg p-2"><i
-                            class="fa-solid fa-share-nodes"></i></button>
+                    <button class="text-gray-400 hover:text-white text-lg p-2"><i class="fa-solid fa-share-nodes"></i></button>
                 </div>
 
                 <div class="bg-gray-900 border border-gray-800 rounded-3xl overflow-hidden shadow-2xl">
-
-                    <div id="detailMediaWrapperFrame"
-                        class="h-80 bg-gray-955 relative flex items-center justify-center border-b border-gray-800 overflow-hidden">
+                    <div id="detailMediaWrapperFrame" class="h-80 bg-gray-955 relative flex items-center justify-center border-b border-gray-800 overflow-hidden">
                         <img id="detailTopImage" src="" alt="Club Banner" class="w-full h-full object-cover hidden">
-
-                        <div id="detailNoMediaBox"
-                            class="hidden w-full h-full flex flex-col items-center justify-center space-y-2 text-gray-500 bg-gray-950/50 p-6">
+                        <div id="detailNoMediaBox" class="hidden w-full h-full flex flex-col items-center justify-center space-y-2 text-gray-500 bg-gray-950/50 p-6">
                             <i class="fa-regular fa-image text-3xl text-gray-700"></i>
-                            <p class="text-xs font-medium tracking-wide">No media or gallery assets uploaded for this
-                                club.</p>
+                            <p class="text-xs font-medium tracking-wide">No media or gallery assets uploaded for this club.</p>
                         </div>
-
-                        <div
-                            class="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/20 to-transparent pointer-events-none">
-                        </div>
-                        <div
-                            class="absolute bottom-6 left-6 right-6 flex flex-wrap items-end justify-between gap-4 z-10">
+                        <div class="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/20 to-transparent pointer-events-none"></div>
+                        <div class="absolute bottom-6 left-6 right-6 flex flex-wrap items-end justify-between gap-4 z-10">
                             <div class="space-y-2">
-                                <h2 id="detailClubName"
-                                    class="text-2xl md:text-3xl font-black text-white bg-indigo-600 px-4 py-0.5 rounded-2xl shadow-xl border border-indigo-500/20 inline-block">
-                                    Club Name</h2>
-                                <div class="flex flex-wrap gap-1.5" id="detailSportsBadgesContainer">
-                                </div>
+                                <h2 id="detailClubName" class="text-2xl md:text-3xl font-black text-white bg-indigo-600 px-4 py-0.5 rounded-2xl shadow-xl border border-indigo-500/20 inline-block">Club Name</h2>
+                                <div class="flex flex-wrap gap-1.5" id="detailSportsBadgesContainer"></div>
                             </div>
-                            <div id="detailVerifiedBadge"
-                                class="bg-indigo-600 text-white border border-indigo-500/20 font-black text-xs px-4 py-2 rounded-full shadow-xl flex items-center space-x-2">
-                                <i class="fa-solid fa-circle-check text-white"></i> <span
-                                    class="font-mono uppercase tracking-wider">Matmaps Verified</span>
+                            <div id="detailVerifiedBadge" class="bg-indigo-600 text-white border border-indigo-500/20 font-black text-xs px-4 py-2 rounded-full shadow-xl flex items-center space-x-2">
+                                <i class="fa-solid fa-circle-check text-white"></i> <span class="font-mono uppercase tracking-wider">Matmaps Verified</span>
                             </div>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-gray-800/80">
                         <div class="lg:col-span-8 p-6 space-y-6">
-                            <div
-                                class="flex items-start space-x-4 bg-gray-950/40 p-4 border border-gray-800/60 rounded-2xl">
-                                <div
-                                    class="p-3.5 bg-indigo-600/10 border border-indigo-500/20 rounded-xl text-indigo-400 text-xl">
+                            <div class="flex items-start space-x-4 bg-gray-950/40 p-4 border border-gray-800/60 rounded-2xl">
+                                <div class="p-3.5 bg-indigo-600/10 border border-indigo-500/20 rounded-xl text-indigo-400 text-xl">
                                     <i class="fa-solid fa-map-location-dot"></i>
                                 </div>
                                 <div>
-                                    <h4 id="detailCity" class="font-black text-white text-base tracking-wide">[city]
-                                    </h4>
+                                    <h4 id="detailCity" class="font-black text-white text-base tracking-wide">[city]</h4>
                                     <p class="text-xs text-gray-500 font-mono mt-0.5">Location Hub Parameter Specs</p>
                                 </div>
                             </div>
 
                             <div class="space-y-2.5">
-                                <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400"><i
-                                        class="fa-solid fa-align-left mr-2 text-indigo-400"></i>About this club</h3>
-                                <p id="detailDescription"
-                                    class="text-sm text-gray-300 font-light leading-relaxed whitespace-pre-wrap bg-gray-950/20 border border-gray-800/40 rounded-2xl p-4">
-                                    [description]</p>
-                            </div>
-
-                            <div
-                                class="p-4 bg-indigo-950/10 border border-indigo-900/30 rounded-2xl flex items-center justify-between gap-4">
-                                <div class="space-y-0.5">
-                                    <h4 class="text-sm font-bold text-white tracking-tight">Want to revisit this club?
-                                    </h4>
-                                    <p class="text-xs text-gray-500 leading-relaxed max-w-md">Bookmark or sync this
-                                        center node within custom user profile favorites directories directly on user
-                                        application channels.</p>
-                                </div>
-                                <button
-                                    class="w-10 h-10 border border-gray-800 bg-gray-950 rounded-full flex items-center justify-center text-indigo-400 text-sm hover:text-white hover:bg-indigo-600 transition shrink-0"><i
-                                        class="fa-regular fa-heart"></i></button>
+                                <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400"><i class="fa-solid fa-align-left mr-2 text-indigo-400"></i>About this club</h3>
+                                <p id="detailDescription" class="text-sm text-gray-300 font-light leading-relaxed whitespace-pre-wrap bg-gray-950/20 border border-gray-800/40 rounded-2xl p-4">[description]</p>
                             </div>
                         </div>
 
                         <div class="lg:col-span-4 p-6 space-y-6 bg-gray-950/20">
                             <div class="space-y-4">
-                                <h3
-                                    class="text-xs font-bold text-gray-400 uppercase tracking-wider pb-2 border-b border-gray-800">
-                                    <i class="fa-solid fa-address-book mr-2 text-indigo-400"></i>Contact Information
-                                </h3>
-
+                                <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider pb-2 border-b border-gray-800"><i class="fa-solid fa-address-book mr-2 text-indigo-400"></i>Contact Information</h3>
                                 <div class="space-y-4 text-xs">
                                     <div class="flex items-start space-x-3.5">
-                                        <i
-                                            class="fa-solid fa-location-dot text-indigo-400 text-sm mt-0.5 w-5 text-center"></i>
+                                        <i class="fa-solid fa-location-dot text-indigo-400 text-sm mt-0.5 w-5 text-center"></i>
                                         <div>
                                             <p class="text-gray-400 font-bold mb-0.5">Address Specification</p>
-                                            <p id="detailAddress" class="text-gray-500 font-light leading-relaxed">
-                                                [address]</p>
+                                            <p id="detailAddress" class="text-gray-500 font-light leading-relaxed">[address]</p>
                                         </div>
                                     </div>
-
                                     <div class="flex items-start space-x-3.5">
                                         <i class="fa-solid fa-phone text-indigo-400 text-sm mt-0.5 w-5 text-center"></i>
                                         <div>
                                             <p class="text-gray-400 font-bold mb-0.5">Phone Line</p>
-                                            <p id="detailPhone" class="text-gray-500 font-mono font-medium">
-                                                [phone_number]</p>
+                                            <p id="detailPhone" class="text-gray-500 font-mono font-medium">[phone_number]</p>
                                         </div>
                                     </div>
-
                                     <div class="flex items-start space-x-3.5">
                                         <i class="fa-solid fa-globe text-indigo-400 text-sm mt-0.5 w-5 text-center"></i>
                                         <div>
                                             <p class="text-gray-400 font-bold mb-0.5">Website URL</p>
-                                            <p id="detailWebsite"
-                                                class="text-indigo-400 underline break-all font-medium">[website]</p>
+                                            <p id="detailWebsite" class="text-indigo-400 underline break-all font-medium">[website]</p>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-
-                            <div class="pt-5 border-t border-gray-800 space-y-2">
-                                <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider"><i
-                                        class="fa-solid fa-star-half-stroke mr-2 text-amber-500"></i>Aggregated Public
-                                    Rating</h3>
-                                <div
-                                    class="bg-gray-950/60 border border-gray-800/80 rounded-2xl p-4 flex items-center justify-between">
-                                    <div class="flex items-center space-x-2.5">
-                                        <i class="fa-solid fa-star text-amber-500 text-lg"></i>
-                                        <span id="detailRatingText"
-                                            class="text-base font-black text-gray-200 font-mono">[rating]</span>
-                                    </div>
-                                    <span id="detailReviewsCountText"
-                                        class="text-xs font-mono font-bold text-gray-500 bg-gray-900 px-3 py-1 border border-gray-800 rounded-lg">[reviews
-                                        Count]</span>
                                 </div>
                             </div>
                         </div>
@@ -357,81 +286,57 @@
     </div>
 
     <!-- ADD NEW CLUB MODAL -->
-    <div id="addClubModal"
-        class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 hidden backdrop-blur-sm">
-        <div
-            class="bg-gray-900 border border-gray-800 w-full max-w-lg rounded-2xl max-h-[90vh] overflow-y-auto p-6 space-y-5 shadow-2xl relative">
-            <button id="closeAddModalBtn"
-                class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl focus:outline-none"><i
-                    class="fa-solid fa-xmark"></i></button>
+    <div id="addClubModal" class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 hidden backdrop-blur-sm">
+        <div class="bg-gray-900 border border-gray-800 w-full max-w-lg rounded-2xl max-h-[90vh] overflow-y-auto p-6 space-y-5 shadow-2xl relative">
+            <button id="closeAddModalBtn" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl focus:outline-none"><i class="fa-solid fa-xmark"></i></button>
             <div class="border-b border-gray-800 pb-2">
-                <h3 class="text-base font-bold text-white"><i class="fa-solid fa-square-plus text-indigo-400 mr-2"></i>
-                    Add Club</h3>
+                <h3 class="text-base font-bold text-white"><i class="fa-solid fa-square-plus text-indigo-400 mr-2"></i> Add Club</h3>
             </div>
 
             <form id="addClubForm" class="space-y-4 text-xs">
                 <div>
                     <label class="block text-gray-400 mb-1 font-semibold">Club Image (URL)</label>
-                    <input type="text" id="addLogoUrl"
-                        class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500"
-                        placeholder="https://example.com/logo.png">
+                    <input type="text" id="addLogoUrl" class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500" placeholder="Enter image url">
                 </div>
                 <div>
                     <label class="block text-gray-400 mb-1 font-semibold">Club Name *</label>
-                    <input type="text" id="addName" required
-                        class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500"
-                        placeholder="Enter club name">
+                    <input type="text" id="addName" required class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500" placeholder="Enter club name">
                 </div>
                 <div>
                     <label class="block text-gray-400 mb-1 font-semibold">Website</label>
-                    <input type="text" id="addWebsite"
-                        class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500"
-                        value="https://">
+                    <input type="text" id="addWebsite" class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500" placeholder="Enter website link">
                 </div>
                 <div>
                     <label class="block text-gray-400 mb-1 font-semibold">Phone Number</label>
-                    <input type="text" id="addPhone"
-                        class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500"
-                        placeholder="[Phone Number]">
+                    <input type="text" id="addPhone" class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500" placeholder="Enter phone Number">
                 </div>
                 <div>
                     <label class="block text-gray-400 mb-1 font-semibold">Email</label>
-                    <input type="email" id="addEmail"
-                        class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500"
-                        placeholder="[Email]">
+                    <input type="email" id="addEmail" class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500" placeholder="Enter email addess">
                 </div>
                 <div>
                     <label class="block text-gray-400 mb-1 font-semibold">Address</label>
-                    <input type="text" id="addAddress"
-                        class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500"
-                        placeholder="Address">
+                    <input type="text" id="addAddress" class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500" placeholder="Enter address">
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-gray-400 mb-1 font-semibold">City</label>
-                        <input type="text" id="addCity"
-                            class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500"
-                            placeholder="City">
+                        <input type="text" id="addCity" class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500" placeholder="Enter city">
                     </div>
                     <div>
-                        <label class="block text-gray-400 mb-1 font-semibold">Sports Type (Comma Separated)</label>
-                        <input type="text" id="addSports"
-                            class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500"
-                            placeholder="e.g., MMA, Boxing, BJJ">
+                        <label class="block text-gray-400 mb-1 font-semibold">Sport Category Tags</label>
+                        <div id="tagContainer" class="w-full bg-gray-950 border border-gray-800 rounded-lg px-2.5 py-1.5 flex flex-wrap gap-2 items-center min-h-[38px] focus-within:border-indigo-500">
+                            <input type="text" id="tagInput" class="bg-transparent text-gray-200 text-xs focus:outline-none flex-1 min-w-[120px]" placeholder="Type and press comma...">
+                        </div>
                     </div>
                 </div>
                 <div>
                     <label class="block text-gray-400 mb-1 font-semibold">Description</label>
-                    <textarea id="addDesc" rows="4"
-                        class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500 resize-none font-light"
-                        placeholder="Club Details&#10;Opening Hours&#10;Class Times"></textarea>
+                    <textarea id="addDesc" rows="4" class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500 resize-none font-light" placeholder="Club Details&#10;Opening Hours&#10;Class Times"></textarea>
                 </div>
                 <div class="flex justify-end space-x-2 pt-2">
-                    <button type="button" id="cancelAddBtn"
-                        class="bg-gray-800 hover:bg-gray-700 text-white font-bold px-4 py-2 rounded-lg transition">Cancel</button>
-                    <button type="submit"
-                        class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-6 py-2 rounded-lg transition shadow-md">Save
-                        Details</button>
+                    <button type="button" id="cancelAddBtn" class="bg-gray-800 hover:bg-gray-700 text-white font-bold px-4 py-2 rounded-lg transition">Cancel</button>
+                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-6 py-2 rounded-lg transition shadow-md">Save Details</button>
                 </div>
             </form>
         </div>
@@ -439,10 +344,9 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, query, orderBy, limit, startAfter, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, query, orderBy, limit, startAfter, getDocs, doc, updateDoc, deleteDoc, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        // 1. Firebase configuration setup (must come first)
         const firebaseConfig = {
             apiKey: "AIzaSyAVp1TmwmsaapC3rBtsWVBYbmo3-uFxOEs",
             authDomain: "matmaps-1f5b2.firebaseapp.com",
@@ -453,12 +357,10 @@
             measurementId: "G-TEBMGDJZGF"
         };
 
-        // 2. Firebase App Initialization (this will follow immediately)
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const auth = getAuth(app);
 
-        // 3. Root guard mechanism (checks after the app initializes)
         onAuthStateChanged(auth, (user) => {
             if (!user) {
                 window.location.href = 'login.html';
@@ -471,9 +373,6 @@
             }
         });
 
-        //document.getElementById('mainBodyFramework').classList.remove('hidden');
-
-        // Core DOM Elements Mapping
         const tableBody = document.getElementById('clubsTableBody');
         const searchInput = document.getElementById('searchClub');
         const sortClubsFilter = document.getElementById('sortClubsFilter');
@@ -488,22 +387,49 @@
         const clubDetailsSubPage = document.getElementById('clubDetailsSubPage');
         const btnBackToListView = document.getElementById('btnBackToListView');
 
-        // Pagination Server State Engine Setup (50 items)
         const itemsPerPage = 20;
         let currentPage = 1;
         let displayedClubs = [];
         let pageHistoryDocs = [null];
+        
+        // Active Sport Tags Array
+        let currentSportsTags = [];
 
-        // ========================================================
-        // Safe Server-Side Pagination (No Index Crash, Full Data Retained)
-        // ========================================================
+        // Interactive Tag Input Engine
+        const tagContainer = document.getElementById('tagContainer');
+        const tagInput = document.getElementById('tagInput');
+
+        tagInput.addEventListener('input', (e) => {
+            if (e.target.value.includes(',')) {
+                const cleanTag = e.target.value.replace(',', '').trim();
+                if (cleanTag && !currentSportsTags.includes(cleanTag)) {
+                    addSportTag(cleanTag);
+                }
+                e.target.value = '';
+            }
+        });
+
+        function addSportTag(tagLabel) {
+            currentSportsTags.push(tagLabel);
+            const tagEl = document.createElement('span');
+            tagEl.className = "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-2 py-0.5 rounded font-mono uppercase text-[10px] whitespace-nowrap";
+            tagEl.innerHTML = `${tagLabel} <i class="fa-solid fa-xmark cursor-pointer text-[9px] hover:text-white text-indigo-500 remove-tag-trigger"></i>`;
+            
+            tagEl.querySelector('.remove-tag-trigger').addEventListener('click', () => {
+                currentSportsTags = currentSportsTags.filter(t => t !== tagLabel);
+                tagEl.remove();
+            });
+
+            tagContainer.insertBefore(tagEl, tagInput);
+        }
+
         async function fetchClubsFromServerPipeline() {
             tableBody.innerHTML = `
                 <tr id="tableLoaderRow">
                     <td colspan="5" class="px-6 py-16 text-center">
                         <div class="flex flex-col items-center justify-center space-y-3">
                             <div class="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-                            <p class="text-xs text-gray-500 tracking-wider">Querying next 50 clubs from Firestore server...</p>
+                            <p class="text-xs text-gray-500 tracking-wider">Querying next clubs from Firestore server...</p>
                         </div>
                     </td>
                 </tr>`;
@@ -513,7 +439,6 @@
                 let clubsQuery;
                 const startDoc = pageHistoryDocs[currentPage - 1];
 
-                // LIKE query: Querying the name field to ensure all your data is loaded.
                 if (startDoc) {
                     clubsQuery = query(clubsCollectionRef, orderBy("name", "asc"), startAfter(startDoc), limit(itemsPerPage));
                 } else {
@@ -542,9 +467,6 @@
             }
         }
 
-        // ========================================================
-        // Rendering, Safe Sorting and Filter Processing Pipeline
-        // ========================================================
         function executeRenderingPipeline() {
             const statusClubsFilter = document.getElementById('statusClubsFilter');
             const verifyClubsFilter = document.getElementById('verifyClubsFilter');
@@ -554,21 +476,18 @@
             const statusFilterVal = statusClubsFilter ? statusClubsFilter.value : "all";
             const verifyFilterVal = verifyClubsFilter ? verifyClubsFilter.value : "all";
 
-            // 1. Client-side safe sorting mechanism (sorting based on the 'created time' field rather than the ID or default block).
             let sortedClubs = [...displayedClubs].sort((a, b) => {
                 let tsA = a.createdTime || a.created_time || 0;
                 let tsB = b.createdTime || b.created_time || 0;
                 let timeA = tsA ? (tsA.toDate ? tsA.toDate().getTime() : new Date(tsA).getTime()) : 0;
                 let timeB = tsB ? (tsB.toDate ? tsB.toDate().getTime() : new Date(tsB).getTime()) : 0;
 
-                // If neither document has a timestamp, a safe sort will be performed using the ID or name.
                 if (timeA === 0 && timeB === 0) {
                     return orderDirection === "desc" ? b.id.localeCompare(a.id) : a.id.localeCompare(b.id);
                 }
                 return orderDirection === "desc" ? timeB - timeA : timeA - timeB;
             });
 
-            // 2. Search Filtering
             let filtered = sortedClubs.filter(club => {
                 const nameMatch = club.name ? club.name.toLowerCase().includes(keyword) : false;
                 const cityMatch = club.city ? club.city.toLowerCase().includes(keyword) : false;
@@ -579,7 +498,7 @@
                 }
                 const matchesKeyword = nameMatch || cityMatch || sportsStr.includes(keyword);
 
-                const isStatusActive = club.isActive === true || club.isActive === "true" || club.status === "active";
+                const isStatusActive = club.status === "active";
                 let matchesStatus = true;
                 if (statusFilterVal === "active") matchesStatus = isStatusActive;
                 if (statusFilterVal === "inactive") matchesStatus = !isStatusActive;
@@ -622,7 +541,7 @@
                 if (club.sports_types) {
                     let rawSportsStr = Array.isArray(club.sports_types) ? club.sports_types.join(', ') : club.sports_types.toString();
                     sportsBadges = rawSportsStr.split(',').map(type =>
-                        `<span class="text-[10px] bg-gray-800 text-gray-400 px-2 py-0.5 rounded border border-gray-700/60 font-medium">${type.trim()}</span>`
+                        `<span class="bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-2 py-0.5 rounded font-mono uppercase text-[10px] whitespace-nowrap">${type.trim()}</span>`
                     ).join(' ');
                 }
 
@@ -698,9 +617,6 @@
                         document.getElementById('detailWebsite').innerText = targetClubObj.website || "N/A";
                         document.getElementById('detailDescription').innerText = targetClubObj.description || "No description loaded inside cluster.";
 
-                        document.getElementById('detailRatingText').innerText = targetClubObj.rating !== undefined ? targetClubObj.rating : "0.0";
-                        document.getElementById('detailReviewsCountText').innerText = targetClubObj.reviewsCount !== undefined ? `${targetClubObj.reviewsCount} Reviews` : "0 Reviews";
-
                         const topImageEl = document.getElementById('detailTopImage');
                         const noMediaBox = document.getElementById('detailNoMediaBox');
 
@@ -748,11 +664,8 @@
         function setupLiveInteractionsPipeline() {
             const checkChanges = (e) => {
                 const recordId = e.target.getAttribute('data-id');
-                const initialValue = e.target.getAttribute('data-current');
-                const newValue = e.target.value;
                 const saveBtn = document.getElementById(`saveBtn-${recordId}`);
 
-                // Get the other select in the same row to check if either has changed
                 const verifySelect = document.querySelector(`.update-verify-trigger[data-id="${recordId}"]`);
                 const statusSelect = document.querySelector(`.update-status-trigger[data-id="${recordId}"]`);
 
@@ -822,8 +735,6 @@
 
         addClubForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const rawSports = document.getElementById('addSports').value;
-            const sportsArray = rawSports.split(',').map(s => s.trim()).filter(s => s !== '');
 
             try {
                 await addDoc(collection(db, "clubs"), {
@@ -834,7 +745,7 @@
                     email: document.getElementById('addEmail').value.trim(),
                     address: document.getElementById('addAddress').value.trim(),
                     city: document.getElementById('addCity').value.trim(),
-                    sports_types: sportsArray,
+                    sports_types: currentSportsTags,
                     description: document.getElementById('addDesc').value.trim(),
                     verified: false,
                     status: "active",
@@ -843,66 +754,46 @@
                     featuredTo: "",
                     createdTime: new Date()
                 });
+                
                 addClubModal.classList.add('hidden');
-                alert("New club successfully registered. Refreshing list view...");
+                alert("New club successfully registered!");
                 fetchClubsFromServerPipeline();
             } catch (err) {
                 console.error("Manual injection exception caught: ", err);
+                alert("Error adding club.");
             }
         });
 
-        // Modal triggers
         document.getElementById('openAddModalBtn').addEventListener('click', () => {
             addClubForm.reset();
+            currentSportsTags = [];
+            // Clear prior dynamic tag visual items
+            tagContainer.querySelectorAll('span').forEach(span => span.remove());
             addClubModal.classList.remove('hidden');
         });
+        
         document.getElementById('closeAddModalBtn').addEventListener('click', () => addClubModal.classList.add('hidden'));
         document.getElementById('cancelAddBtn').addEventListener('click', () => addClubModal.classList.add('hidden'));
 
-        if (searchInput) {
-            searchInput.addEventListener('input', () => {
-                executeRenderingPipeline();
-            });
-        }
+        if (searchInput) searchInput.addEventListener('input', () => executeRenderingPipeline());
+        if (sortClubsFilter) sortClubsFilter.addEventListener('change', () => executeRenderingPipeline());
 
-        // Changing the sort filter will immediately trigger the render pipeline (the database will not crash).
-        if (sortClubsFilter) {
-            sortClubsFilter.addEventListener('change', () => {
-                executeRenderingPipeline();
-            });
-        }
+        document.getElementById('statusClubsFilter')?.addEventListener('change', () => executeRenderingPipeline());
+        document.getElementById('verifyClubsFilter')?.addEventListener('change', () => executeRenderingPipeline());
 
-        const statusClubsFilterEl = document.getElementById('statusClubsFilter');
-        if (statusClubsFilterEl) {
-            statusClubsFilterEl.addEventListener('change', () => {
-                executeRenderingPipeline();
-            });
-        }
+        prevPageBtn?.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                fetchClubsFromServerPipeline();
+            }
+        });
 
-        const verifyClubsFilterEl = document.getElementById('verifyClubsFilter');
-        if (verifyClubsFilterEl) {
-            verifyClubsFilterEl.addEventListener('change', () => {
-                executeRenderingPipeline();
-            });
-        }
-
-        if (prevPageBtn) {
-            prevPageBtn.addEventListener('click', () => {
-                if (currentPage > 1) {
-                    currentPage--;
-                    fetchClubsFromServerPipeline();
-                }
-            });
-        }
-
-        if (nextPageBtn) {
-            nextPageBtn.addEventListener('click', () => {
-                if (displayedClubs.length === itemsPerPage) {
-                    currentPage++;
-                    fetchClubsFromServerPipeline();
-                }
-            });
-        }
+        nextPageBtn?.addEventListener('click', () => {
+            if (displayedClubs.length === itemsPerPage) {
+                currentPage++;
+                fetchClubsFromServerPipeline();
+            }
+        });
 
         function setupDeleteButtons() {
             document.querySelectorAll('.btn-delete-club').forEach(btn => {
@@ -923,7 +814,6 @@
             });
         }
 
-        // Trigger Initial Data Feed
         fetchClubsFromServerPipeline();
 
         const openSidebarBtn = document.getElementById('openSidebar');
