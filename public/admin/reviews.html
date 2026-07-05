@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/image/matMaps_logo.png">
-    <title>Comments & Reviews Moderation</title>
+    <title>Reviews</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -70,9 +70,13 @@
                         class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
                         <i class="fa-solid fa-images w-5"></i> <span>Post Collection</span>
                     </a>
-                    <a href="comments-reviews.html"
+                    <a href="comments.html"
+                        class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
+                        <i class="fa-solid fa-comments w-5"></i> <span>Comments</span>
+                    </a>
+                    <a href="reviews.html"
                         class="flex items-center space-x-3 px-4 py-2.5 rounded-lg bg-indigo-600 text-white transition">
-                        <i class="fa-solid fa-comments w-5"></i> <span>Comments & Reviews</span>
+                        <i class="fa-solid fa-star w-5"></i> <span>Reviews</span>
                     </a>
                     <a href="user-permissions.html"
                         class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
@@ -102,8 +106,8 @@
                         class="text-gray-400 hover:text-white md:hidden text-xl p-1 focus:outline-none">
                         <i class="fa-solid fa-bars"></i>
                     </button>
-                    <i class="fa-solid fa-comments text-indigo-400 text-lg"></i>
-                    <h1 class="text-lg font-semibold">Comments & Reviews</h1>
+                    <i class="fa-solid fa-star text-indigo-400 text-lg"></i>
+                    <h1 class="text-lg font-semibold">Reviews Collections</h1>
                 </div>
                 <div class="flex space-x-2">
                     <button id="btnApproveAll"
@@ -126,18 +130,18 @@
                                 class="ml-1.5 px-1.5 py-0.5 text-[10px] bg-indigo-800 text-indigo-200 rounded-full">0</span>
                         </button>
                         <button data-status="approved"
-                            class="tab-btn text-gray-400 hover:text-white px-4 py-2 rounded-md transition">Approved</button>
+                            class="tab-btn text-gray-400 hover:text-white px-4 py-2 rounded-md transition">
+                            Approved <span id="activeBadgeCount"
+                                class="ml-1.5 px-1.5 py-0.5 text-[10px] bg-indigo-800 text-indigo-200 rounded-full">0</span>
+                        </button>
                         <button data-status="trashed"
-                            class="tab-btn text-gray-400 hover:text-white px-4 py-2 rounded-md transition">Spam /
-                            Trashed</button>
+                            class="tab-btn text-gray-400 hover:text-white px-4 py-2 rounded-md transition">
+                            Trashed <span id="trashedBadgeCount"
+                                class="ml-1.5 px-1.5 py-0.5 text-[10px] bg-indigo-800 text-indigo-200 rounded-full">0</span>
+                        </button>
                     </div>
 
                     <div class="flex items-center space-x-3 w-full md:w-auto justify-end">
-                        <select id="typeFilter"
-                            class="bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-indigo-500 text-gray-400 w-full md:w-auto">
-                            <option value="all">All Types (Comments + Reviews)</option>
-                            <option value="reviews">Reviews Only (With Ratings)</option>
-                        </select>
                         <select id="sortOrder"
                             class="bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-indigo-500 text-gray-400 w-full md:w-auto">
                             <option value="desc">Sort by: Newest First</option>
@@ -157,8 +161,10 @@
                 <div class="flex items-center justify-between pt-4 border-t border-gray-800 text-xs">
                     <p class="text-gray-500" id="entryCountText">Showing 0-0 of 0 entries</p>
                     <div class="flex space-x-1.5">
-                        <button id="prevPageBtn" class="bg-gray-900 border border-gray-800 text-gray-400 px-3 py-1.5 rounded-lg opacity-50 cursor-not-allowed">Previous</button>
-                        <button id="nextPageBtn" class="bg-gray-900 border border-gray-800 text-gray-300 hover:text-white px-3 py-1.5 rounded-lg transition">Next</button>
+                        <button id="prevPageBtn"
+                            class="bg-gray-900 border border-gray-800 text-gray-400 px-3 py-1.5 rounded-lg opacity-50 cursor-not-allowed">Previous</button>
+                        <button id="nextPageBtn"
+                            class="bg-gray-900 border border-gray-800 text-gray-300 hover:text-white px-3 py-1.5 rounded-lg transition">Next</button>
                     </div>
                 </div>
 
@@ -168,7 +174,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, onSnapshot, updateDoc, doc, writeBatch } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, onSnapshot, updateDoc, doc, writeBatch, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
         // 1. Firebase configuration setup (must come first)
@@ -201,13 +207,12 @@
         });
 
         //document.getElementById('mainBodyFramework').classList.remove('hidden');
-        
+
         // Core DOM References (FIXED: references mapping aligned perfectly)
         const reviewsContainer = document.getElementById('reviewsContainer');
         const pendingBadgeCount = document.getElementById('pendingBadgeCount');
         const entryCountText = document.getElementById('entryCountText');
-        const tabButtons = document.querySelectorAll('.tab-btn'); 
-        const typeFilter = document.getElementById('typeFilter');
+        const tabButtons = document.querySelectorAll('.tab-btn');
         const sortOrder = document.getElementById('sortOrder');
         const btnApproveAll = document.getElementById('btnApproveAll');
         const prevPageBtn = document.getElementById('prevPageBtn');
@@ -215,9 +220,26 @@
 
         // State variables
         let rawItemsList = [];
+        let usersMemoryCache = {};
+        let clubsMemoryCache = {};
         let currentStatusFilter = 'pending';
         const itemsPerPage = 10;
         let currentPage = 1;
+
+        // Listeners for Caches
+        onSnapshot(collection(db, "users"), (snapshot) => {
+            snapshot.forEach((docSnap) => {
+                usersMemoryCache[docSnap.id] = docSnap.data();
+            });
+            processAndRenderUI();
+        });
+
+        onSnapshot(collection(db, "clubs"), (snapshot) => {
+            snapshot.forEach((docSnap) => {
+                clubsMemoryCache[docSnap.id] = docSnap.data();
+            });
+            processAndRenderUI();
+        });
 
         // ========================================================
         // 1. Real-time data listener from Firebase
@@ -225,6 +247,8 @@
         onSnapshot(collection(db, "reviews"), (snapshot) => {
             rawItemsList = [];
             let pendingCount = 0;
+            let activeCount = 0;
+            let trashedCount = 0;
 
             snapshot.forEach((docSnap) => {
                 const item = docSnap.data();
@@ -235,11 +259,17 @@
                 if (item.isAproved === 'trashed' || item.status === 'trashed') calculatedStatus = 'trashed';
 
                 if (calculatedStatus === 'pending') pendingCount++;
+                if (calculatedStatus === 'approved') activeCount++;
+                if (calculatedStatus === 'trashed') trashedCount++;
 
                 rawItemsList.push({ id, calculatedStatus, ...item });
             });
 
             if (pendingBadgeCount) pendingBadgeCount.innerText = pendingCount;
+            const activeBadgeCount = document.getElementById('activeBadgeCount');
+            if (activeBadgeCount) activeBadgeCount.innerText = activeCount;
+            const trashedBadgeCount = document.getElementById('trashedBadgeCount');
+            if (trashedBadgeCount) trashedBadgeCount.innerText = trashedCount;
             processAndRenderUI();
         });
 
@@ -248,10 +278,6 @@
         // ========================================================
         function processAndRenderUI() {
             let processedList = rawItemsList.filter(item => item.calculatedStatus === currentStatusFilter);
-
-            if (typeFilter && typeFilter.value === 'reviews') {
-                processedList = processedList.filter(item => item.rating !== undefined);
-            }
 
             const order = sortOrder ? sortOrder.value : 'desc';
             processedList.sort((a, b) => {
@@ -277,7 +303,7 @@
         // 3. Review Card Dynamic Generation Function (Fixed innerHTML crash target)
         // ========================================================
         function renderReviewsList(items, startIndex, totalItems, totalPages) {
-            reviewsContainer.innerHTML = ''; 
+            reviewsContainer.innerHTML = '';
 
             if (items.length === 0) {
                 reviewsContainer.innerHTML = `
@@ -296,7 +322,22 @@
             nextPageBtn.disabled = (currentPage === totalPages);
 
             items.forEach((item) => {
-                const avatarText = item.userName ? item.userName.substring(0, 2).toUpperCase() : 'UR';
+                let userRefStr = item.userRef ? (item.userRef.path || item.userRef.toString()) : "";
+                const displayUserId = userRefStr ? userRefStr.split('/').pop() : "";
+                const matchedUser = usersMemoryCache[displayUserId] || {};
+
+                const dispName = matchedUser.display_name || matchedUser.name || 'Anonymous User';
+                let profilePhoto = matchedUser.profile_photo || matchedUser.photoURL || matchedUser.image || "";
+
+                let avatarHTML = '';
+                if (profilePhoto) {
+                    avatarHTML = `<img src="${profilePhoto}" alt="User" class="w-10 h-10 rounded-full object-cover border border-gray-700 shadow-sm shrink-0">`;
+                } else {
+                    const avatarText = dispName.substring(0, 2).toUpperCase();
+                    avatarHTML = `<div class="w-10 h-10 bg-indigo-500/10 text-indigo-400 rounded-full flex items-center justify-center font-bold text-sm shrink-0 border border-indigo-500/20 font-mono">
+                                    ${avatarText}
+                                  </div>`;
+                }
 
                 let relativeTime = "Just now";
                 if (item.createdTime) {
@@ -312,17 +353,10 @@
                         </span>`;
                 }
 
-                let userRefStr = "";
-                if (item.userRef) {
-                    userRefStr = item.userRef.path ? item.userRef.path : item.userRef.toString();
-                }
-                const displayUserId = userRefStr ? userRefStr.split('/').pop().substring(0, 10) + '...' : 'Unknown ID';
-
-                let clubRefStr = "Global Channel";
-                if (item.clubRef) {
-                    clubRefStr = item.clubRef.path ? item.clubRef.path : item.clubRef.toString();
-                }
-                const displayClubName = clubRefStr.split('/').pop();
+                let clubRefStr = item.clubRef ? (item.clubRef.path || item.clubRef.toString()) : "";
+                const displayClubId = clubRefStr ? clubRefStr.split('/').pop() : "";
+                const matchedClub = clubsMemoryCache[displayClubId] || {};
+                const displayClubName = matchedClub.clubName || matchedClub.name || matchedClub.title || displayClubId || 'Global Channel';
 
                 let actionButtonsHTML = '';
                 if (item.calculatedStatus === 'pending') {
@@ -331,7 +365,7 @@
                             <i class="fa-solid fa-circle-check mr-1.5"></i> Approve
                         </button>
                         <button data-action="reject" data-id="${item.id}" class="action-btn bg-rose-600/10 hover:bg-rose-600 text-rose-400 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold border border-rose-500/20 transition flex items-center">
-                            <i class="fa-solid fa-circle-xmark mr-1.5"></i> Trash / Spam
+                            <i class="fa-solid fa-trash-can mr-1.5"></i> Move to Trash
                         </button>`;
                 } else if (item.calculatedStatus === 'approved') {
                     actionButtonsHTML = `
@@ -341,25 +375,25 @@
                 } else {
                     actionButtonsHTML = `
                         <button data-action="approve" data-id="${item.id}" class="action-btn bg-emerald-600/10 hover:bg-emerald-600 text-emerald-400 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold border border-emerald-500/20 transition flex items-center">
-                            <i class="fa-solid fa-rotate-left mr-1.5"></i> Restore Record
+                            <i class="fa-solid fa-rotate-left mr-1.5"></i> Restore Review
                         </button>`;
                 }
 
                 const blockNode = document.createElement('div');
                 blockNode.className = "review-card-item bg-gray-900 border border-gray-800 rounded-xl p-5 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4";
                 blockNode.innerHTML = `
-                    <div class="flex items-start space-x-4 text-left">
-                        <div class="w-10 h-10 bg-indigo-500/10 text-indigo-400 rounded-full flex items-center justify-center font-bold text-sm shrink-0 border border-indigo-500/20 font-mono">
-                            ${avatarText}
-                        </div>
-                        <div>
+                    <div class="flex items-start space-x-4 text-left w-full">
+                        ${avatarHTML}
+                        <div class="w-full">
                             <div class="flex flex-wrap items-center gap-2">
-                                <span class="font-bold text-sm text-gray-200 tracking-wide">${item.userName || 'Anonymous Fighter'}</span>
-                                <span class="text-xs text-gray-500 font-mono" title="${userRefStr}">${displayUserId}</span>
+                                <span class="font-bold text-sm text-gray-200 tracking-wide">${dispName}</span>
+                                <span class="text-xs text-gray-500 font-mono" title="${userRefStr}">${displayUserId.substring(0, 10)}...</span>
                                 ${badgeHTML}
                                 <span class="text-xs text-gray-500 font-mono">• ${relativeTime}</span>
                             </div>
-                            <p class="text-xs text-indigo-400 mt-1 font-medium">Club Target Context: <span class="underline font-mono">${displayClubName}</span></p>
+                            <p class="text-xs text-indigo-400 mt-1 font-medium flex items-center">
+                                Club Target Context: <span class="underline ml-1" id="club-name-${item.id}">${displayClubName}</span>
+                            </p>
                             <p class="text-sm text-gray-300 mt-2 leading-relaxed font-light">${item.reviewText || 'No text review parameter submitted.'}</p>
                         </div>
                     </div>
@@ -368,6 +402,19 @@
                         ${actionButtonsHTML}
                     </div>`;
                 reviewsContainer.appendChild(blockNode);
+
+                if (!matchedClub.name && !matchedClub.clubName && !matchedClub.title && displayClubId) {
+                    getDoc(doc(db, "clubs", displayClubId)).then(docSnap => {
+                        if (docSnap.exists()) {
+                            const data = docSnap.data();
+                            clubsMemoryCache[displayClubId] = data; // store for subsequent renders
+                            const nameSpan = document.getElementById(`club-name-${item.id}`);
+                            if (nameSpan) {
+                                nameSpan.innerText = data.name || data.clubName || data.title || displayClubId;
+                            }
+                        }
+                    }).catch(err => console.error("Error fetching club name:", err));
+                }
             });
 
             bindCardActionListeners();
@@ -404,12 +451,11 @@
                 e.currentTarget.classList.remove('text-gray-400', 'hover:text-white');
 
                 currentStatusFilter = e.currentTarget.getAttribute('data-status');
-                currentPage = 1; 
+                currentPage = 1;
                 processAndRenderUI();
             });
         });
 
-        if (typeFilter) typeFilter.addEventListener('change', () => { currentPage = 1; processAndRenderUI(); });
         if (sortOrder) sortOrder.addEventListener('change', processAndRenderUI);
 
         prevPageBtn.addEventListener('click', () => {

@@ -70,9 +70,13 @@
                         class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
                         <i class="fa-solid fa-images w-5"></i> <span>Post Collection</span>
                     </a>
-                    <a href="comments-reviews.html"
+                    <a href="comments.html"
                         class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
-                        <i class="fa-solid fa-comments w-5"></i> <span>Comments & Reviews</span>
+                        <i class="fa-solid fa-comments w-5"></i> <span>Comments</span>
+                    </a>
+                    <a href="reviews.html"
+                        class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
+                        <i class="fa-solid fa-star w-5"></i> <span>Reviews</span>
                     </a>
                     <a href="user-permissions.html"
                         class="flex items-center space-x-3 px-4 py-2.5 rounded-lg bg-indigo-600 text-white transition">
@@ -117,8 +121,10 @@
                     <div
                         class="p-6 border-b border-gray-800 flex flex-col sm:flex-row justify-between sm:items-center gap-4">
                         <div>
-                            <h2 class="text-sm font-bold uppercase tracking-wider text-gray-400">Registered App Users</h2>
-                            <p class="text-xs text-gray-500 mt-0.5">Manage accounts, change membership type credentials, monitor expiry pipelines and track registration timestamps.</p>
+                            <h2 class="text-sm font-bold uppercase tracking-wider text-gray-400">Registered App Users
+                            </h2>
+                            <p class="text-xs text-gray-500 mt-0.5">Manage accounts, change membership type credentials,
+                                monitor expiry pipelines and track registration timestamps.</p>
                         </div>
 
                         <div class="relative w-full sm:w-64">
@@ -149,7 +155,8 @@
                                             <div
                                                 class="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin">
                                             </div>
-                                            <p class="text-xs text-gray-500 tracking-wider">Fetching Profiles from Firebase Platform...</p>
+                                            <p class="text-xs text-gray-500 tracking-wider">Fetching Profiles from
+                                                Firebase Platform...</p>
                                         </div>
                                     </td>
                                 </tr>
@@ -178,8 +185,8 @@
         import { getFirestore, collection, onSnapshot, updateDoc, doc, query, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-         // 1. Firebase configuration setup (must come first)
-         const firebaseConfig = {
+        // 1. Firebase configuration setup (must come first)
+        const firebaseConfig = {
             apiKey: "AIzaSyAVp1TmwmsaapC3rBtsWVBYbmo3-uFxOEs",
             authDomain: "matmaps-1f5b2.firebaseapp.com",
             projectId: "matmaps-1f5b2",
@@ -208,7 +215,7 @@
         });
 
         //document.getElementById('mainBodyFramework').classList.remove('hidden');
-        
+
         const tableBody = document.getElementById('operatorsTableBody');
         const searchInput = document.getElementById('searchOperator');
 
@@ -303,7 +310,7 @@
                 }
 
                 const isSubActive = user.subscriptionActive === true || user.subscriptionActive === "true";
-                const subBadgeHTML = isSubActive 
+                const subBadgeHTML = isSubActive
                     ? `<span class="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-full font-bold">Active</span>`
                     : `<span class="text-[10px] bg-gray-800 text-gray-500 border border-gray-700 px-2 py-0.5 rounded-full">Inactive</span>`;
 
@@ -340,11 +347,11 @@
                     </td>
                     <td class="px-6 py-4 text-right">
                         <div class="flex items-center justify-end space-x-2">
+                            <button class="hidden text-gray-500 hover:text-rose-400 p-1 transition text-xs btn-Remove" data-id="${docId}" data-name="${user.display_name || 'User'}">
+                                <i class="fa-solid fa-user-xmark"></i> Remove
+                            </button>
                             <button id="saveBtn-${docId}" data-id="${docId}" class="bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-bold px-3 py-1 rounded-md transition shadow-md hidden btn-IndividualSave">
                                 <i class="fa-solid fa-floppy-disk mr-1"></i> Save
-                            </button>
-                            <button class="text-gray-500 hover:text-rose-400 p-1 transition text-xs btn-Remove" data-id="${docId}" data-name="${user.display_name || 'User'}">
-                                <i class="fa-solid fa-user-xmark"></i> Remove
                             </button>
                         </div>
                     </td>
@@ -389,7 +396,7 @@
                         await updateDoc(docRef, {
                             membershipType: updatedValue
                         });
-                        
+
                         // Upon a successful save, the attribute will be updated and the button will be hidden.
                         selectElement.setAttribute('data-current', updatedValue);
                         btn.classList.add('hidden');

@@ -71,9 +71,13 @@
                         class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
                         <i class="fa-solid fa-images w-5"></i> <span>Post Collection</span>
                     </a>
-                    <a href="comments-reviews.html"
+                    <a href="comments.html"
                         class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
-                        <i class="fa-solid fa-comments w-5"></i> <span>Comments & Reviews</span>
+                        <i class="fa-solid fa-comments w-5"></i> <span>Comments</span>
+                    </a>
+                    <a href="reviews.html"
+                        class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
+                        <i class="fa-solid fa-star w-5"></i> <span>Reviews</span>
                     </a>
                     <a href="user-permissions.html"
                         class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
@@ -117,8 +121,10 @@
                     <div
                         class="p-6 border-b border-gray-800 flex flex-col sm:flex-row justify-between sm:items-center gap-4">
                         <div>
-                            <h2 class="text-sm font-bold uppercase tracking-wider text-gray-400">Scheduled Events Pipeline</h2>
-                            <p class="text-xs text-gray-500 mt-0.5">Real-time management of stadium bookings, pricing tier indicators, and event lists.</p>
+                            <h2 class="text-sm font-bold uppercase tracking-wider text-gray-400">Scheduled Events
+                                Pipeline</h2>
+                            <p class="text-xs text-gray-500 mt-0.5">Real-time management of stadium bookings, pricing
+                                tier indicators, and event lists.</p>
                         </div>
 
                         <div class="relative w-full sm:w-64">
@@ -137,17 +143,21 @@
                                     <th class="px-6 py-3.5 w-20 text-center">Banner</th>
                                     <th class="px-6 py-3.5">Event Identity</th>
                                     <th class="px-6 py-3.5">Schedule Time (UTC)</th>
-                                    <th class="px-6 py-3.5">Organiser & Sport</th>
+                                    <th class="px-6 py-3.5">Pricing</th>
+                                    <th class="px-6 py-3.5">Sport</th>
                                     <th class="px-6 py-3.5 text-center">Total Views</th>
                                     <th class="px-6 py-3.5 text-right w-64">Actions</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-800/60" id="eventsTableBody">
                                 <tr id="tableLoaderRow">
-                                    <td colspan="6" class="px-6 py-16 text-center">
+                                    <td colspan="7" class="px-6 py-16 text-center">
                                         <div class="flex flex-col items-center justify-center space-y-3">
-                                            <div class="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-                                            <p class="text-xs text-gray-500 tracking-wider">Syncing Events Data with Cloud Firestore...</p>
+                                            <div
+                                                class="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin">
+                                            </div>
+                                            <p class="text-xs text-gray-500 tracking-wider">Syncing Events Data with
+                                                Cloud Firestore...</p>
                                         </div>
                                     </td>
                                 </tr>
@@ -171,28 +181,38 @@
 
             <!-- 3. DYNAMIC DETAILED VIEW SUB PAGE FOR EVENTS DIRECTORY (No edit option included) -->
             <div id="eventDetailsSubPage" class="p-6 max-w-7xl w-full mx-auto space-y-6 hidden">
-                <div class="bg-indigo-950/10 border border-white/[0.04] rounded-xl p-4 flex items-center justify-between shadow-md">
-                    <button id="btnBackToListView" class="flex items-center space-x-2 text-xs uppercase tracking-wider font-bold text-white bg-indigo-600 hover:bg-indigo-700 px-5 py-2.5 rounded-lg transition shadow-lg">
+                <div
+                    class="bg-indigo-950/10 border border-white/[0.04] rounded-xl p-4 flex items-center justify-between shadow-md">
+                    <button id="btnBackToListView"
+                        class="flex items-center space-x-2 text-xs uppercase tracking-wider font-bold text-white bg-indigo-600 hover:bg-indigo-700 px-5 py-2.5 rounded-lg transition shadow-lg">
                         <i class="fa-solid fa-arrow-left"></i> <span>Return to Events Queue</span>
                     </button>
-                    <span class="text-xs text-gray-500 font-mono"><i class="fa-solid fa-eye mr-1"></i> Read-only Mode Active</span>
+                    <span class="text-xs text-gray-500 font-mono"><i class="fa-solid fa-eye mr-1"></i> Read-only Mode
+                        Active</span>
                 </div>
 
                 <div class="bg-gray-900 border border-gray-800 rounded-3xl overflow-hidden shadow-2xl">
                     <!-- Top Cover Image Layer Banner -->
-                    <div id="detailMediaWrapperFrame" class="h-80 bg-gray-950 relative flex items-center justify-center border-b border-gray-800 overflow-hidden">
+                    <div id="detailMediaWrapperFrame"
+                        class="h-80 bg-gray-950 relative flex items-center justify-center border-b border-gray-800 overflow-hidden">
                         <img id="detailTopImage" src="" alt="Event Cover" class="w-full h-full object-cover">
-                        <div id="detailNoMediaBox" class="hidden w-full h-full flex flex-col items-center justify-center text-gray-500 p-6">
+                        <div id="detailNoMediaBox"
+                            class="hidden w-full h-full flex flex-col items-center justify-center text-gray-500 p-6">
                             <i class="fa-regular fa-calendar-minus text-3xl text-gray-700 mb-2"></i>
                             <p class="text-xs font-medium">No cover illustration asset uploaded.</p>
                         </div>
-                        
-                        <div class="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/20 to-transparent"></div>
-                        <div class="absolute bottom-6 left-6 right-6 flex flex-wrap items-end justify-between gap-4 z-10">
+
+                        <div class="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/20 to-transparent">
+                        </div>
+                        <div
+                            class="absolute bottom-6 left-6 right-6 flex flex-wrap items-end justify-between gap-4 z-10">
                             <div class="space-y-2">
-                                <h2 id="detailEventName" class="text-2xl md:text-3xl font-black text-white bg-indigo-600 px-4 py-1 rounded-2xl shadow-xl inline-block">Event Name</h2>
+                                <h2 id="detailEventName"
+                                    class="text-2xl md:text-3xl font-black text-white bg-indigo-600 px-4 py-1 rounded-2xl shadow-xl inline-block">
+                                    Event Name</h2>
                                 <div>
-                                    <span id="detailSportBadge" class="text-[10px] bg-gray-950 text-indigo-400 border border-indigo-500/20 px-3 py-1 rounded-full uppercase font-mono tracking-wider">Sport</span>
+                                    <div id="detailSportBadgeContainer" class="flex flex-wrap gap-2">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -202,32 +222,45 @@
                     <div class="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-gray-800">
                         <div class="lg:col-span-8 p-6 space-y-6">
                             <div class="space-y-2.5">
-                                <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400"><i class="fa-solid fa-align-left mr-2 text-indigo-400"></i>Event Description</h3>
-                                <p id="detailDescription" class="text-sm text-gray-300 font-light leading-relaxed bg-gray-950/20 border border-gray-800/40 rounded-2xl p-4 whitespace-pre-wrap">Description text</p>
+                                <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400"><i
+                                        class="fa-solid fa-align-left mr-2 text-indigo-400"></i>Event Description</h3>
+                                <p id="detailDescription"
+                                    class="text-sm text-gray-300 font-light leading-relaxed bg-gray-950/20 border border-gray-800/40 rounded-2xl p-4 whitespace-pre-wrap">
+                                    Description text</p>
                             </div>
 
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
                                 <div class="p-4 bg-gray-950/40 border border-gray-800/60 rounded-xl">
-                                    <span class="text-gray-500 text-[10px] uppercase font-bold block">Regular Price</span>
-                                    <span id="detailRegPrice" class="text-base font-mono font-bold text-gray-200 mt-1 block">£0.00</span>
+                                    <span class="text-gray-500 text-[10px] uppercase font-bold block">Regular
+                                        Price</span>
+                                    <span id="detailRegPrice"
+                                        class="text-base font-mono font-bold text-gray-200 mt-1 block">£0.00</span>
                                 </div>
                                 <div class="p-4 bg-gray-950/40 border border-gray-800/60 rounded-xl">
-                                    <span class="text-gray-500 text-[10px] uppercase font-bold block">Early Bird Price</span>
-                                    <span id="detailEarlyPrice" class="text-base font-mono font-bold text-amber-500 mt-1 block">£0.00</span>
+                                    <span class="text-gray-500 text-[10px] uppercase font-bold block">Early Bird
+                                        Price</span>
+                                    <span id="detailEarlyPrice"
+                                        class="text-base font-mono font-bold text-amber-500 mt-1 block">£0.00</span>
                                 </div>
                                 <div class="p-4 bg-gray-950/40 border border-gray-800/60 rounded-xl">
-                                    <span class="text-gray-500 text-[10px] uppercase font-bold block">Day Of Price</span>
-                                    <span id="detailDayPrice" class="text-base font-mono font-bold text-rose-400 mt-1 block">£0.00</span>
+                                    <span class="text-gray-500 text-[10px] uppercase font-bold block">Day Of
+                                        Price</span>
+                                    <span id="detailDayPrice"
+                                        class="text-base font-mono font-bold text-rose-400 mt-1 block">£0.00</span>
                                 </div>
                             </div>
                         </div>
 
                         <div class="lg:col-span-4 p-6 space-y-5 bg-gray-950/20 text-xs">
-                            <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider pb-2 border-b border-gray-800"><i class="fa-solid fa-circle-info mr-2 text-indigo-400"></i>Schedule Metadata</h3>
-                            
+                            <h3
+                                class="text-xs font-bold text-gray-400 uppercase tracking-wider pb-2 border-b border-gray-800">
+                                <i class="fa-solid fa-circle-info mr-2 text-indigo-400"></i>Schedule Metadata
+                            </h3>
+
                             <div class="space-y-3.5">
                                 <div class="flex items-start space-x-3">
-                                    <i class="fa-regular fa-calendar text-indigo-400 text-sm mt-0.5 w-4 text-center"></i>
+                                    <i
+                                        class="fa-regular fa-calendar text-indigo-400 text-sm mt-0.5 w-4 text-center"></i>
                                     <div>
                                         <p class="text-gray-500 font-medium">Target Schedule Date</p>
                                         <p id="detailDate" class="text-gray-300 font-semibold mt-0.5">--</p>
@@ -241,17 +274,19 @@
                                     </div>
                                 </div>
                                 <div class="flex items-start space-x-3">
-                                    <i class="fa-solid fa-building-shield text-indigo-400 text-sm mt-0.5 w-4 text-center"></i>
+                                    <i
+                                        class="fa-solid fa-location-dot text-indigo-400 text-sm mt-0.5 w-4 text-center"></i>
                                     <div>
-                                        <p class="text-gray-500 font-medium">Organiser Node Category</p>
-                                        <p id="detailOrganiser" class="text-gray-300 font-semibold mt-0.5">--</p>
+                                        <p class="text-gray-500 font-medium">City / Location</p>
+                                        <p id="detailCity" class="text-gray-300 font-semibold mt-0.5">--</p>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="pt-4 border-t border-gray-800 space-y-2">
                                 <p class="text-gray-500 font-medium">External Registration Access Link</p>
-                                <a id="detailRegLink" href="#" target="_blank" class="w-full bg-indigo-600/10 hover:bg-indigo-600 text-indigo-400 hover:text-white border border-indigo-500/20 px-4 py-2.5 rounded-xl font-bold transition flex items-center justify-center space-x-2">
+                                <a id="detailRegLink" href="#" target="_blank"
+                                    class="w-full bg-indigo-600/10 hover:bg-indigo-600 text-indigo-400 hover:text-white border border-indigo-500/20 px-4 py-2.5 rounded-xl font-bold transition flex items-center justify-center space-x-2">
                                     <i class="fa-solid fa-ticket"></i> <span>Redirect to Gate Link</span>
                                 </a>
                             </div>
@@ -264,10 +299,14 @@
     </div>
 
     <!-- 1. DYNAMIC MODAL MODIFIED TO EXECUTE FROM ACTION EDIT ICON CLICK ONLY -->
-    <div id="eventEditModal" class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 hidden backdrop-blur-sm">
-        <div class="bg-gray-900 border border-gray-800 w-full max-w-xl rounded-2xl max-h-[90vh] overflow-y-auto p-6 space-y-5 shadow-2xl relative">
-            <button id="closeModalBtn" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl focus:outline-none"><i class="fa-solid fa-xmark"></i></button>
-            
+    <div id="eventEditModal"
+        class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 hidden backdrop-blur-sm">
+        <div
+            class="bg-gray-900 border border-gray-800 w-full max-w-xl rounded-2xl max-h-[90vh] overflow-y-auto p-6 space-y-5 shadow-2xl relative">
+            <button id="closeModalBtn"
+                class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl focus:outline-none"><i
+                    class="fa-solid fa-xmark"></i></button>
+
             <div class="border-b border-gray-800 pb-3">
                 <h3 class="text-base font-bold text-white" id="modalHeaderTitle">Modify Arena Event Parameters</h3>
                 <p class="text-[11px] text-gray-500 mt-0.5 font-mono" id="modalEventIdField">Document Reference: --</p>
@@ -275,72 +314,93 @@
 
             <form id="editEventForm" class="space-y-4 text-xs">
                 <input type="hidden" id="editEventId">
-                
+
                 <div>
                     <label class="block text-gray-400 font-semibold mb-1">Event Title/Identity Name</label>
-                    <input type="text" id="editEventName" required class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500">
+                    <input type="text" id="editEventName" required
+                        class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500">
                 </div>
 
                 <div class="grid grid-cols-3 gap-4">
                     <div>
                         <label class="block text-gray-400 font-semibold mb-1">Regular Price (£)</label>
-                        <input type="number" step="0.01" id="editRegularPrice" required class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500">
+                        <input type="number" step="0.01" id="editRegularPrice" required
+                            class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500">
                     </div>
                     <div>
                         <label class="block text-gray-400 font-semibold mb-1">Early Bird Price (£)</label>
-                        <input type="number" step="0.01" id="editEarlyPrice" required class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500">
+                        <input type="number" step="0.01" id="editEarlyPrice" required
+                            class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500">
                     </div>
                     <div>
                         <label class="block text-gray-400 font-semibold mb-1">Day of Price (£)</label>
-                        <input type="number" step="0.01" id="editDayPrice" required class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500">
+                        <input type="number" step="0.01" id="editDayPrice" required
+                            class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-gray-400 font-semibold mb-1">Sport Category Tag</label>
-                        <input type="text" id="editSportType" required class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500">
+                        <label class="block text-gray-400 font-semibold mb-1">Sport Category Tags</label>
+                        <div id="sportTagsContainer"
+                            class="w-full bg-gray-950 border border-gray-800 rounded-lg px-2 py-1.5 flex flex-wrap gap-1.5 items-center focus-within:border-indigo-500 transition cursor-text">
+                            <input type="text" id="editSportTypeInput" placeholder="Type and press comma..."
+                                class="bg-transparent border-none focus:outline-none text-gray-200 text-xs flex-grow min-w-[100px] py-0.5">
+                        </div>
+                        <input type="hidden" id="editSportType" required>
                     </div>
                     <div>
-                        <label class="block text-gray-400 font-semibold mb-1">Event Organiser Type</label>
-                        <input type="text" id="editOrganiser" required class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500">
+                        <label class="block text-gray-400 font-semibold mb-1">City / Location</label>
+                        <input type="text" id="editCity" required
+                            class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-gray-400 font-semibold mb-1">Event Schedule Date</label>
-                        <input type="text" id="editEventDate" required class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500">
+                        <input type="date" id="editEventDate" required
+                            class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500 [color-scheme:dark]">
                     </div>
                     <div>
                         <label class="block text-gray-400 font-semibold mb-1">Event Opening Time</label>
-                        <input type="text" id="editEventTime" class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500">
+                        <input type="time" id="editEventTime" required
+                            class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500 [color-scheme:dark]">
                     </div>
                 </div>
 
                 <div>
                     <label class="block text-gray-400 font-semibold mb-1">External Registration Access Link</label>
-                    <input type="text" id="editRegLinkInput" class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500">
+                    <input type="text" id="editRegLinkInput"
+                        class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500">
                 </div>
 
                 <div>
                     <label class="block text-gray-400 font-semibold mb-1">Event Cover Photo Asset (Image URL)</label>
                     <div class="flex items-center space-x-3">
-                        <input type="text" id="editEventImageUrl" class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500">
-                        <div class="w-12 h-9 bg-gray-950 border border-gray-800 rounded-lg overflow-hidden flex items-center justify-center shrink-0">
-                            <img id="modalPreviewImg" src="" onerror="this.src='https://placehold.co/60x40/1f2937/a1a1aa?text=No+Img'" class="w-full h-full object-cover">
+                        <input type="text" id="editEventImageUrl"
+                            class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500">
+                        <div
+                            class="w-12 h-9 bg-gray-950 border border-gray-800 rounded-lg overflow-hidden flex items-center justify-center shrink-0">
+                            <img id="modalPreviewImg" src=""
+                                onerror="this.src='https://placehold.co/60x40/1f2937/a1a1aa?text=No+Img'"
+                                class="w-full h-full object-cover">
                         </div>
                     </div>
                 </div>
 
                 <div>
                     <label class="block text-gray-400 font-semibold mb-1">Description Context Matrix Details</label>
-                    <textarea id="editEventDesc" rows="3" class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500 resize-none"></textarea>
+                    <textarea id="editEventDesc" rows="3"
+                        class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-indigo-500 resize-none"></textarea>
                 </div>
 
                 <div class="flex justify-end space-x-2 pt-2 border-t border-gray-800">
-                    <button type="button" id="cancelModalBtn" class="bg-gray-800 hover:bg-gray-700 text-white font-bold px-4 py-2 rounded-lg transition">Cancel</button>
-                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-5 py-2 rounded-lg transition shadow-md">Save Changes</button>
+                    <button type="button" id="cancelModalBtn"
+                        class="bg-gray-800 hover:bg-gray-700 text-white font-bold px-4 py-2 rounded-lg transition">Cancel</button>
+                    <button type="submit"
+                        class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-5 py-2 rounded-lg transition shadow-md">Save
+                        Changes</button>
                 </div>
             </form>
         </div>
@@ -381,7 +441,7 @@
         });
 
         //document.getElementById('mainBodyFramework').classList.remove('hidden');
-        
+
         // Core UI DOM Nodes Selective Hook
         const tableBody = document.getElementById('eventsTableBody');
         const searchInput = document.getElementById('searchEvent');
@@ -406,6 +466,46 @@
         let currentPage = 1;
         let allEventsList = [];
         let filteredEventsList = [];
+
+        // Sport Tags State
+        let sportTagsList = [];
+        const sportTypeInput = document.getElementById('editSportTypeInput');
+        const sportTagsContainer = document.getElementById('sportTagsContainer');
+        const hiddenSportType = document.getElementById('editSportType');
+
+        window.removeEventSportTag = function (index) {
+            sportTagsList.splice(index, 1);
+            renderEventSportTags();
+        }
+
+        function renderEventSportTags() {
+            if (!sportTagsContainer) return;
+            sportTagsContainer.querySelectorAll('.sport-tag').forEach(el => el.remove());
+            sportTagsList.forEach((tag, index) => {
+                const tagEl = document.createElement('div');
+                tagEl.className = 'sport-tag bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 px-2 py-0.5 rounded flex items-center gap-1.5';
+                tagEl.innerHTML = `<span class="uppercase font-mono text-[10px]">${tag}</span> <button type="button" class="hover:text-rose-400 focus:outline-none remove-tag-btn" onclick="removeEventSportTag(${index})"><i class="fa-solid fa-xmark text-xs"></i></button>`;
+                sportTagsContainer.insertBefore(tagEl, sportTypeInput);
+            });
+            if (hiddenSportType) hiddenSportType.value = sportTagsList.join(', ');
+        }
+
+        if (sportTypeInput) {
+            sportTypeInput.addEventListener('keydown', (e) => {
+                if (e.key === ',' || e.key === 'Enter') {
+                    e.preventDefault();
+                    const val = sportTypeInput.value.trim().replace(/,/g, '');
+                    if (val && !sportTagsList.includes(val)) {
+                        sportTagsList.push(val);
+                        sportTypeInput.value = '';
+                        renderEventSportTags();
+                    }
+                }
+            });
+            if (sportTagsContainer) {
+                sportTagsContainer.addEventListener('click', () => sportTypeInput.focus());
+            }
+        }
 
         // ========================================================
         // Real-time data fetching from Firebase
@@ -460,14 +560,14 @@
             tableBody.innerHTML = '';
 
             if (events.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="6" class="px-6 py-8 text-center text-gray-500">No active events matching your query were found.</td></tr>`;
+                tableBody.innerHTML = `<tr><td colspan="7" class="px-6 py-8 text-center text-gray-500">No active events matching your query were found.</td></tr>`;
                 return;
             }
 
             events.forEach((event) => {
                 const docId = event.id;
 
-                let imageColumnHTML = event.image && event.image.trim() !== '' 
+                let imageColumnHTML = event.image && event.image.trim() !== ''
                     ? `<img src="${event.image}" alt="banner" class="w-10 h-7 rounded object-cover border border-gray-800 mx-auto">`
                     : `<div class="w-10 h-7 bg-indigo-500/10 border border-indigo-500/20 rounded flex items-center justify-center text-indigo-400 mx-auto text-xs"><i class="fa-regular fa-calendar font-bold"></i></div>`;
 
@@ -484,7 +584,7 @@
                 // 2. Active / Inactive Option Matrix Synchronization (Boolean based tracker)
                 const isEventActive = event.isActive === true || event.isActive === "true";
                 const statusDropdownHTML = `
-                    <select data-id="${docId}" class="bg-gray-950 border border-gray-800 rounded-lg px-2.5 py-1 text-xs font-semibold focus:outline-none update-active-status ${isEventActive ? 'text-emerald-400' : 'text-gray-500'}">
+                    <select data-id="${docId}" data-current="${isEventActive ? 'true' : 'false'}" class="bg-gray-950 border border-gray-800 rounded-lg px-2.5 py-1 text-xs font-semibold focus:outline-none update-active-status ${isEventActive ? 'text-emerald-400' : 'text-gray-500'}">
                         <option value="true" ${isEventActive ? 'selected' : ''}>Active</option>
                         <option value="false" ${!isEventActive ? 'selected' : ''}>Inactive</option>
                     </select>
@@ -500,16 +600,26 @@
                     </td>
                     <td class="px-6 py-4">
                         <!-- 3. Event name click launches full details view sub-page -->
-                        <div class="font-bold text-gray-200 text-sm tracking-wide hover:text-indigo-400 transition trigger-details-subpage" data-id="${docId}">${event.eventName || 'Unnamed Event'}</div>
+                        <div class="font-bold text-gray-200 text-sm tracking-wide hover:text-indigo-400 transition trigger-details-subpage cursor-pointer" data-id="${docId}">${event.eventName || 'Unnamed Event'}</div>
                         <div class="text-[11px] text-gray-500 truncate w-64 mt-0.5" title="${event.description || ''}">${event.description || 'No description available'}</div>
+                        <div class="mt-2 flex flex-col space-y-1 text-[11px]">
+                            <div class="text-gray-400"><i class="fa-solid fa-location-dot w-4 text-center text-gray-600 mr-1"></i>${event.city || 'N/A'}</div>
+                            ${event.registrationLink ? `<a href="${event.registrationLink}" target="_blank" class="text-indigo-400 hover:text-indigo-300 transition truncate w-48 block"><i class="fa-solid fa-link w-4 text-center text-indigo-500/50 mr-1"></i>${event.registrationLink}</a>` : '<div class="text-gray-600"><i class="fa-solid fa-link w-4 text-center text-gray-700 mr-1"></i>No Link</div>'}
+                        </div>
                     </td>
                     <td class="px-6 py-4 text-xs">
                         <div class="font-medium text-gray-300"><i class="fa-regular fa-calendar-check mr-1.5 text-gray-600"></i>${dateDisplayStr}</div>
                         <div class="text-[11px] text-gray-500 mt-0.5"><i class="fa-regular fa-clock mr-1.5 text-gray-600"></i>${timeDisplayStr}</div>
                     </td>
+                    <td class="px-6 py-4 text-[11px] space-y-1">
+                        <div class="flex justify-between w-32"><span class="text-gray-500">Early:</span><span class="text-emerald-400 font-mono">${event.earlyBirdPrice ? '$' + event.earlyBirdPrice : 'N/A'}</span></div>
+                        <div class="flex justify-between w-32"><span class="text-gray-500">Regular:</span><span class="text-gray-300 font-mono">${event.regularPrice ? '$' + event.regularPrice : 'N/A'}</span></div>
+                        <div class="flex justify-between w-32"><span class="text-gray-500">Day of:</span><span class="text-rose-400 font-mono">${event.dayOfPrice ? '$' + event.dayOfPrice : 'N/A'}</span></div>
+                    </td>
                     <td class="px-6 py-4">
-                        <div class="text-sm font-medium text-gray-300">${event.organiserType || 'Professional'}</div>
-                        <div class="text-[10px] mt-1"><span class="bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-2 py-0.5 rounded font-mono uppercase">${event.sportType || 'MMA'}</span></div>
+                        <div class="flex flex-wrap gap-1 mt-1 max-w-[200px]">
+                            ${(event.sportType || 'MMA').split(',').map(s => `<span class="bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-2 py-0.5 rounded font-mono uppercase text-[10px] whitespace-nowrap">${s.trim()}</span>`).join('')}
+                        </div>
                     </td>
                     <td class="px-6 py-4 text-center font-mono text-xs text-gray-400">
                         ${viewsCount} Views
@@ -521,8 +631,11 @@
                             <button data-id="${docId}" class="text-indigo-400 hover:text-white p-1.5 border border-gray-800 bg-gray-950 rounded-lg transition text-xs btn-trigger-edit-modal" title="Edit Properties">
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </button>
-                            <button data-id="${docId}" data-name="${event.eventName}" class="text-gray-500 hover:text-rose-400 p-1.5 border border-gray-800 bg-gray-950 rounded-lg transition text-xs btn-delete-event" title="Delete Event">
+                            <button data-id="${docId}" data-name="${event.eventName}" class="hidden text-gray-500 hover:text-rose-400 p-1.5 border border-gray-800 bg-gray-950 rounded-lg transition text-xs btn-delete-event" title="Delete Event">
                                 <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                            <button id="saveBtn-${docId}" data-id="${docId}" class="bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-bold px-3 py-1.5 rounded-lg transition shadow-md hidden btn-IndividualSave" title="Save Status">
+                                <i class="fa-solid fa-floppy-disk mr-1"></i> Save
                             </button>
                         </div>
                     </td>
@@ -551,14 +664,36 @@
                         document.getElementById('editRegularPrice').value = selectedEvent.regularPrice || '';
                         document.getElementById('editEarlyPrice').value = selectedEvent.earlyBirdPrice || '';
                         document.getElementById('editDayPrice').value = selectedEvent.dayOfPrice || '';
-                        document.getElementById('editSportType').value = selectedEvent.sportType || '';
-                        document.getElementById('editEventDate').value = selectedEvent.eventDate || '';
-                        document.getElementById('editEventTime').value = selectedEvent.eventTime || '';
-                        document.getElementById('editOrganiser').value = selectedEvent.organiserType || '';
+                        document.getElementById('editCity').value = selectedEvent.city || '';
+
+                        const hiddenSportTypeEl = document.getElementById('editSportType');
+                        if (hiddenSportTypeEl) {
+                            hiddenSportTypeEl.value = selectedEvent.sportType || '';
+                            sportTagsList = (selectedEvent.sportType || '').split(',').map(s => s.trim()).filter(s => s);
+                            renderEventSportTags();
+                        }
+
+                        let dateVal = '';
+                        if (selectedEvent.eventDate) {
+                            let d = selectedEvent.eventDate.toDate ? selectedEvent.eventDate.toDate() : new Date(selectedEvent.eventDate);
+                            if (!isNaN(d.getTime())) {
+                                dateVal = d.toISOString().split('T')[0];
+                            }
+                        }
+                        document.getElementById('editEventDate').value = dateVal;
+
+                        let timeVal = '';
+                        if (selectedEvent.eventTime) {
+                            let d = selectedEvent.eventTime.toDate ? selectedEvent.eventTime.toDate() : new Date(selectedEvent.eventTime);
+                            if (!isNaN(d.getTime())) {
+                                timeVal = d.toTimeString().substring(0, 5);
+                            }
+                        }
+                        document.getElementById('editEventTime').value = timeVal;
                         document.getElementById('editRegLinkInput').value = selectedEvent.registrationLink || '';
                         document.getElementById('editEventImageUrl').value = selectedEvent.image || '';
                         document.getElementById('editEventDesc').value = selectedEvent.description || '';
-                        
+
                         modalPreviewImg.src = selectedEvent.image || '';
                         eventEditModal.classList.remove('hidden');
                     }
@@ -567,19 +702,47 @@
 
             // 2. Active/Inactive Select Dropdown Live Event Sync
             document.querySelectorAll('.update-active-status').forEach(select => {
-                select.addEventListener('change', async (e) => {
+                select.addEventListener('change', (e) => {
                     const recordId = e.target.getAttribute('data-id');
-                    const updatedValue = e.target.value === "true";
+                    const initialValue = e.target.getAttribute('data-current');
+                    const newValue = e.target.value;
+                    const saveBtn = document.getElementById(`saveBtn-${recordId}`);
+
+                    if (newValue !== initialValue) {
+                        saveBtn.classList.remove('hidden');
+                    } else {
+                        saveBtn.classList.add('hidden');
+                    }
+                });
+            });
+
+            document.querySelectorAll('.btn-IndividualSave').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const recordId = e.currentTarget.getAttribute('data-id');
+                    const selectElement = document.querySelector(`.update-active-status[data-id="${recordId}"]`);
+                    const updatedValue = selectElement.value === "true";
+
+                    btn.disabled = true;
+                    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i>`;
 
                     try {
                         await updateDoc(doc(db, "events", recordId), { isActive: updatedValue });
+
+                        selectElement.setAttribute('data-current', selectElement.value);
                         if (updatedValue) {
-                            e.target.className = "bg-gray-950 border border-gray-800 rounded-lg px-2.5 py-1 text-xs font-semibold focus:outline-none update-active-status text-emerald-400";
+                            selectElement.className = "bg-gray-950 border border-gray-800 rounded-lg px-2.5 py-1 text-xs font-semibold focus:outline-none update-active-status text-emerald-400";
                         } else {
-                            e.target.className = "bg-gray-950 border border-gray-800 rounded-lg px-2.5 py-1 text-xs font-semibold focus:outline-none update-active-status text-gray-500";
+                            selectElement.className = "bg-gray-950 border border-gray-800 rounded-lg px-2.5 py-1 text-xs font-semibold focus:outline-none update-active-status text-gray-500";
                         }
+
+                        btn.classList.add('hidden');
+                        alert("Event status successfully updated!");
                     } catch (err) {
                         console.error("Failed executing visibility modification parameters: ", err);
+                        alert("Failed to update event status.");
+                    } finally {
+                        btn.disabled = false;
+                        btn.innerHTML = `<i class="fa-solid fa-floppy-disk mr-1"></i> Save`;
                     }
                 });
             });
@@ -592,20 +755,37 @@
 
                     if (targetEvent) {
                         document.getElementById('detailEventName').innerText = targetEvent.eventName || "N/A";
-                        document.getElementById('detailSportBadge').innerText = targetEvent.sportType || "MMA";
+
+                        const badgeContainer = document.getElementById('detailSportBadgeContainer');
+                        if (badgeContainer) {
+                            badgeContainer.innerHTML = (targetEvent.sportType || 'MMA').split(',')
+                                .map(s => `<span class="text-[10px] bg-gray-950 text-indigo-400 border border-indigo-500/20 px-3 py-1 rounded-full uppercase font-mono tracking-wider">${s.trim()}</span>`)
+                                .join('');
+                        }
+
                         document.getElementById('detailDescription').innerText = targetEvent.description || "No description text provided.";
-                        
+
                         document.getElementById('detailRegPrice').innerText = targetEvent.regularPrice ? `£${targetEvent.regularPrice}` : "£0.00";
                         document.getElementById('detailEarlyPrice').innerText = targetEvent.earlyBirdPrice ? `£${targetEvent.earlyBirdPrice}` : "£0.00";
                         document.getElementById('detailDayPrice').innerText = targetEvent.dayOfPrice ? `£${targetEvent.dayOfPrice}` : "£0.00";
-                        
-                        document.getElementById('detailDate').innerText = targetEvent.eventDate || "N/A";
-                        document.getElementById('detailTime').innerText = targetEvent.eventTime || "N/A";
-                        document.getElementById('detailOrganiser').innerText = targetEvent.organiserType || "N/A";
+
+                        let dateDisplayStr = "N/A";
+                        if (targetEvent.eventDate) {
+                            dateDisplayStr = targetEvent.eventDate.toDate ? targetEvent.eventDate.toDate().toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) : targetEvent.eventDate.toString();
+                        }
+
+                        let timeDisplayStr = "N/A";
+                        if (targetEvent.eventTime) {
+                            timeDisplayStr = targetEvent.eventTime.toDate ? targetEvent.eventTime.toDate().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : targetEvent.eventTime.toString();
+                        }
+
+                        document.getElementById('detailDate').innerText = dateDisplayStr;
+                        document.getElementById('detailTime').innerText = timeDisplayStr;
+                        document.getElementById('detailCity').innerText = targetEvent.city || "N/A";
 
                         const topImageEl = document.getElementById('detailTopImage');
                         const noMediaBox = document.getElementById('detailNoMediaBox');
-                        
+
                         if (targetEvent.image && targetEvent.image.trim() !== "") {
                             topImageEl.src = targetEvent.image;
                             topImageEl.classList.remove('hidden');
@@ -667,15 +847,24 @@
             const docRef = doc(db, "events", targetId);
 
             try {
+                let eventDateStr = document.getElementById('editEventDate').value.trim();
+                let eventDateObj = eventDateStr ? new Date(eventDateStr) : null;
+
+                let eventTimeStr = document.getElementById('editEventTime').value.trim();
+                let eventTimeObj = null;
+                if (eventDateStr && eventTimeStr) {
+                    eventTimeObj = new Date(`${eventDateStr}T${eventTimeStr}`);
+                }
+
                 await updateDoc(docRef, {
                     eventName: document.getElementById('editEventName').value.trim(),
                     regularPrice: parseFloat(document.getElementById('editRegularPrice').value) || 0,
                     earlyBirdPrice: parseFloat(document.getElementById('editEarlyPrice').value) || 0,
                     dayOfPrice: parseFloat(document.getElementById('editDayPrice').value) || 0,
                     sportType: document.getElementById('editSportType').value.trim(),
-                    eventDate: document.getElementById('editEventDate').value.trim(),
-                    eventTime: document.getElementById('editEventTime').value.trim(),
-                    organiserType: document.getElementById('editOrganiser').value.trim(),
+                    city: document.getElementById('editCity').value.trim(),
+                    eventDate: eventDateObj || eventDateStr,
+                    eventTime: eventTimeObj || eventTimeStr,
                     registrationLink: document.getElementById('editRegLinkInput').value.trim(),
                     image: document.getElementById('editEventImageUrl').value.trim(),
                     description: document.getElementById('editEventDesc').value.trim()

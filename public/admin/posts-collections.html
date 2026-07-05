@@ -70,9 +70,13 @@
                         class="flex items-center space-x-3 px-4 py-2.5 rounded-lg bg-indigo-600 text-white transition">
                         <i class="fa-solid fa-images w-5"></i> <span>Post Collection</span>
                     </a>
-                    <a href="comments-reviews.html"
+                    <a href="comments.html"
                         class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
-                        <i class="fa-solid fa-comments w-5"></i> <span>Comments & Reviews</span>
+                        <i class="fa-solid fa-comments w-5"></i> <span>Comments</span>
+                    </a>
+                    <a href="reviews.html"
+                        class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
+                        <i class="fa-solid fa-star w-5"></i> <span>Reviews</span>
                     </a>
                     <a href="user-permissions.html"
                         class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
@@ -115,15 +119,21 @@
                         class="flex space-x-2 bg-gray-950 p-1 rounded-lg border border-gray-800 text-xs font-medium w-full sm:w-auto">
                         <button data-status="pending"
                             class="tab-btn bg-indigo-600 text-white px-5 py-2 rounded-md shadow-sm transition">
-                            Pending Review <span id="pendingBadgeCount"
+                            Pending <span id="pendingBadgeCount"
                                 class="ml-1.5 px-1.5 py-0.5 text-[10px] bg-indigo-800 text-indigo-200 rounded-full">0</span>
                         </button>
                         <button data-status="approved"
-                            class="tab-btn text-gray-400 hover:text-white px-5 py-2 rounded-md transition">Approved
-                            Stream</button>
+                            class="tab-btn text-gray-400 hover:text-white px-5 py-2 rounded-md transition flex items-center">
+                            Approved
+                            <span id="activeBadgeCount"
+                                class="ml-1.5 px-1.5 py-0.5 text-[10px] bg-indigo-800 text-indigo-200 rounded-full">0</span>
+                        </button>
                         <button data-status="trashed"
-                            class="tab-btn text-gray-400 hover:text-white px-5 py-2 rounded-md transition">Spam /
-                            Trashed</button>
+                            class="tab-btn text-gray-400 hover:text-white px-5 py-2 rounded-md transition flex items-center">
+                            Trashed
+                            <span id="trashedBadgeCount"
+                                class="ml-1.5 px-1.5 py-0.5 text-[10px] bg-indigo-800 text-indigo-200 rounded-full">0</span>
+                        </button>
                     </div>
 
                     <div class="relative w-full sm:w-64">
@@ -188,7 +198,16 @@
         const pendingBadgeCount = document.getElementById('pendingBadgeCount');
 
         let globalPostsMemoryCache = [];
+        let usersMemoryCache = {}; // Cache to map uid to user object
         let currentStatusFilter = 'pending';
+
+        // Listen to users collection to fetch user details for posts
+        onSnapshot(collection(db, "users"), (snapshot) => {
+            snapshot.forEach((docSnap) => {
+                usersMemoryCache[docSnap.id] = docSnap.data();
+            });
+            executeRenderingPipeline();
+        });
 
         // ========================================================
         // 1. Real-time live Firestore data sync engine
@@ -196,6 +215,8 @@
         onSnapshot(collection(db, "postCollection"), (snapshot) => {
             globalPostsMemoryCache = [];
             let pendingCounter = 0;
+            let activeCounter = 0;
+            let trashedCounter = 0;
 
             snapshot.forEach((docSnap) => {
                 const item = docSnap.data();
@@ -203,15 +224,26 @@
 
                 // Checking approval parameters and determining status 
                 let calculatedStatus = 'pending';
-                if (item.isApproved === true || item.isApproved === "true") calculatedStatus = 'approved';
-                if (item.isApproved === 'trashed' || item.status === 'trashed') calculatedStatus = 'trashed';
+                if (item.isDelete === true || item.isDelete === "true") {
+                    calculatedStatus = 'trashed';
+                } else if (item.isActive === true || item.isActive === "true") {
+                    calculatedStatus = 'approved';
+                } else if (item.isActive === false || item.isActive === "false") {
+                    calculatedStatus = 'pending';
+                }
 
                 if (calculatedStatus === 'pending') pendingCounter++;
+                if (calculatedStatus === 'approved') activeCounter++;
+                if (calculatedStatus === 'trashed') trashedCounter++;
 
                 globalPostsMemoryCache.push({ id, calculatedStatus, ...item });
             });
 
             if (pendingBadgeCount) pendingBadgeCount.innerText = pendingCounter;
+            const activeBadgeCount = document.getElementById('activeBadgeCount');
+            if (activeBadgeCount) activeBadgeCount.innerText = activeCounter;
+            const trashedBadgeCount = document.getElementById('trashedBadgeCount');
+            if (trashedBadgeCount) trashedBadgeCount.innerText = trashedCounter;
 
             // Sorting by real database time_posted field
             globalPostsMemoryCache.sort((a, b) => {
@@ -262,19 +294,40 @@
                     }
                 }
 
+                // Match post to user by ID from post_user reference
+                let matchedUserId = "";
+                if (item.post_user) {
+                    if (typeof item.post_user === 'string') {
+                        matchedUserId = item.post_user.split('/').pop();
+                    } else if (item.post_user.id) {
+                        matchedUserId = item.post_user.id;
+                    } else if (item.post_user.path) {
+                        matchedUserId = item.post_user.path.split('/').pop();
+                    }
+                }
+                if (!matchedUserId) {
+                    matchedUserId = item.uid || item.userId || item.user_id || item.user || "";
+                }
+
+                const matchedUser = usersMemoryCache[matchedUserId] || {};
+
+                const dispName = matchedUser.display_name || matchedUser.name || item.display_name || 'Anonymous Fighter';
+                const profPhoto = matchedUser.profile_photo || matchedUser.photoURL || matchedUser.image || item.profile_photo || "";
+
                 // Profile photo processing
-                const profileImgHTML = item.profile_photo
-                    ? `<img src="${item.profile_photo}" class="w-8 h-8 rounded-full object-cover border border-gray-800">`
-                    : `<div class="w-8 h-8 bg-indigo-600/10 text-indigo-400 rounded-full flex items-center justify-center font-bold text-xs border border-indigo-500/20 uppercase font-mono">${item.display_name ? item.display_name.substring(0, 2) : 'FI'}</div>`;
+                const profileImgHTML = profPhoto
+                    ? `<img src="${profPhoto}" class="w-8 h-8 rounded-full object-cover border border-gray-800">`
+                    : `<div class="w-8 h-8 bg-indigo-600/10 text-indigo-400 rounded-full flex items-center justify-center font-bold text-xs border border-indigo-500/20 uppercase font-mono">${dispName.substring(0, 2)}</div>`;
 
                 // 3. Dynamic Video Player vs Image Selector Implementation Matrix
                 let mediaDisplayShellHTML = '';
                 const isVideoType = item.post_Type === "video" || item.post_Type === "Video" || item.post_Video;
 
                 if (isVideoType && item.post_Video) {
+                    const posterAttr = item.post_photo ? `poster="${item.post_photo}"` : '';
                     mediaDisplayShellHTML = `
                         <div class="w-full h-48 bg-black rounded-xl overflow-hidden border border-gray-800/80 relative">
-                            <video src="${item.post_Video}" controls preload="metadata" class="w-full h-full object-contain" poster="${item.post_photo || ''}"></video>
+                            <video src="${item.post_Video}" controls preload="metadata" class="w-full h-full object-contain" ${posterAttr}></video>
                         </div>`;
                 } else if (item.post_photo) {
                     mediaDisplayShellHTML = `
@@ -294,15 +347,15 @@
                 if (item.calculatedStatus === 'pending') {
                     contextActionsHTML = `
                         <button data-action="approve" data-id="${docId}" class="action-btn px-4 py-1.5 bg-emerald-600/10 hover:bg-emerald-600 text-emerald-400 hover:text-white text-xs font-bold rounded-lg border border-emerald-500/20 transition flex items-center space-x-1">
-                            <i class="fa-solid fa-circle-check"></i> <span>Approve</span>
+                            <i class="fa-solid fa-circle-check"></i> <span>Approve Post</span>
                         </button>
                         <button data-action="trash" data-id="${docId}" class="action-btn px-4 py-1.5 bg-rose-600/10 hover:bg-rose-600 text-rose-400 hover:text-white text-xs font-bold rounded-lg border border-rose-500/20 transition flex items-center space-x-1">
-                            <i class="fa-solid fa-circle-xmark"></i> <span>Trash</span>
+                            <i class="fa-solid fa-trash-can"></i> <span>Trash Post</span>
                         </button>`;
                 } else if (item.calculatedStatus === 'approved') {
                     contextActionsHTML = `
                         <button data-action="trash" data-id="${docId}" class="action-btn px-4 py-1.5 bg-rose-600/10 hover:bg-rose-600 text-rose-400 hover:text-white text-xs font-bold rounded-lg border border-rose-500/20 transition flex items-center space-x-1">
-                            <i class="fa-solid fa-trash-can"></i> <span>Move to Trash</span>
+                            <i class="fa-solid fa-trash-can"></i> <span>Trash Post</span>
                         </button>`;
                 } else {
                     contextActionsHTML = `
@@ -318,7 +371,7 @@
                         <div class="flex items-center space-x-3 text-left">
                             ${profileImgHTML}
                             <div>
-                                <h4 class="font-bold text-gray-200 text-xs tracking-wide">${item.display_name || 'Anonymous Fighter'}</h4>
+                                <h3 class="text-sm font-bold text-gray-200 tracking-wide">${dispName}</h3>
                                 <p class="text-[10px] text-gray-500 font-mono mt-0.5">${relativeDate}</p>
                             </div>
                         </div>
@@ -338,9 +391,6 @@
                         
                         <div class="flex items-center space-x-2">
                             ${contextActionsHTML}
-                            <button data-id="${docId}" class="bg-gray-950 border border-gray-800 hover:text-rose-400 px-2 py-1.5 rounded-lg text-gray-500 transition btn-purge-hard" title="Permanently Delete">
-                                <i class="fa-solid fa-trash-arrow-up"></i>
-                            </button>
                         </div>
                     </div>`;
                 postsContainer.appendChild(card);
@@ -356,14 +406,14 @@
             document.querySelectorAll('.action-btn').forEach(btn => {
                 btn.addEventListener('click', async (e) => {
                     const docId = btn.getAttribute('data-id');
-                    const action = btn.getAttribute('data-action');
+                    const actionType = btn.getAttribute('data-action');
                     const docRef = doc(db, "postCollection", docId);
 
                     try {
-                        if (action === "approve") {
-                            await updateDoc(docRef, { isApproved: true });
-                        } else if (action === "trash") {
-                            await updateDoc(docRef, { isApproved: "trashed" });
+                        if (actionType === 'approve') {
+                            await updateDoc(docRef, { isActive: true, isDelete: false });
+                        } else if (actionType === 'trash') {
+                            await updateDoc(docRef, { isActive: false, isDelete: true });
                         }
                     } catch (err) {
                         console.error("Firebase update failed: ", err);

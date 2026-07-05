@@ -36,7 +36,7 @@
             class="fixed inset-0 bg-black/50 z-20 hidden md:hidden transition-opacity duration-300"></div>
 
         <aside id="sidebarPanel"
-            class="w-64 bg-gray-800 border-r border-gray-700 flex flex-col justify-between fixed md:static inset-y-0 left-0 -translate-x-full md:translate-x-0 z-30 md:z-0 transition-transform duration-300 ease-in-out md:flex">
+            class="w-64 bg-gray-900 border-r border-gray-800 flex flex-col justify-between fixed md:static inset-y-0 left-0 -translate-x-full md:translate-x-0 z-30 md:z-0 transition-transform duration-300 ease-in-out md:flex">
             <div>
                 <div class="h-16 flex items-center px-6 border-b border-gray-700 justify-between md:justify-center">
                     <div class="flex items-center h-full">
@@ -64,9 +64,13 @@
                         class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
                         <i class="fa-solid fa-images w-5"></i> <span>Post Collection</span>
                     </a>
-                    <a href="comments-reviews.html"
+                    <a href="comments.html"
                         class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
-                        <i class="fa-solid fa-comments w-5"></i> <span>Comments & Reviews</span>
+                        <i class="fa-solid fa-comments w-5"></i> <span>Comments</span>
+                    </a>
+                    <a href="reviews.html"
+                        class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
+                        <i class="fa-solid fa-star w-5"></i> <span>Reviews</span>
                     </a>
                     <a href="user-permissions.html"
                         class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
@@ -89,7 +93,7 @@
 
         <main class="flex-1 flex flex-col overflow-y-auto bg-gray-950">
             <header
-                class="h-16 bg-gray-800 border-b border-gray-700 flex items-center justify-between px-6 sticky top-0 z-10 shrink-0">
+                class="h-16 bg-gray-900 border-b border-gray-800 flex items-center justify-between px-6 sticky top-0 z-10 shrink-0">
                 <div class="flex items-center space-x-3">
                     <button id="openSidebar"
                         class="text-gray-400 hover:text-white md:hidden text-xl p-1 focus:outline-none">
@@ -159,7 +163,7 @@
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <!-- Widget A: Premium Membership Matrix Info -->
                     <div
-                        class="bg-gray-800 border border-gray-700 rounded-xl p-6 shadow-sm flex flex-col justify-between">
+                        class="bg-gray-900 border border-gray-800 rounded-xl p-6 shadow-sm flex flex-col justify-between">
                         <div>
                             <h2 class="text-sm font-bold uppercase tracking-wider text-gray-400 mb-4 flex items-center">
                                 <i class="fa-solid fa-gem mr-2 text-indigo-400"></i> Premium Node Profiles
@@ -192,7 +196,7 @@
 
                     <!-- Widget B: Database System Infrastructure Summary -->
                     <div
-                        class="lg:col-span-2 bg-gray-800 border border-gray-700 rounded-xl p-6 shadow-sm flex flex-col justify-between">
+                        class="lg:col-span-2 bg-gray-900 border border-gray-800 rounded-xl p-6 shadow-sm flex flex-col justify-between">
                         <div>
                             <h2 class="text-sm font-bold uppercase tracking-wider text-gray-400 mb-2 flex items-center">
                                 <i class="fa-solid fa-server mr-2 text-indigo-400"></i> System Infrastructure Summary
@@ -234,7 +238,7 @@
                     </div>
                 </div>
 
-                <div class="bg-gray-800 border border-gray-700 rounded-xl p-6 shadow-sm">
+                <div class="bg-gray-900 border border-gray-800 rounded-xl p-6 shadow-sm">
                     <div class="flex flex-col sm:flex-row justify-between sm:items-center mb-6 gap-3">
                         <div>
                             <h2 class="text-sm font-bold uppercase tracking-wider text-gray-400 flex items-center">
@@ -243,7 +247,7 @@
                             <p class="text-xs text-gray-500 mt-0.5">Real-time evaluation queue for newly received app
                                 feedback nodes.</p>
                         </div>
-                        <button onclick="window.location.href='comments-reviews.html'"
+                        <button onclick="window.location.href='comments.html'"
                             class="bg-gray-900 hover:bg-gray-950 border border-gray-700 text-xs px-3 py-1.5 rounded-lg text-gray-300 transition">
                             View Full Queue &rarr;
                         </button>

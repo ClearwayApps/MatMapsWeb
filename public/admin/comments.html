@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="../assets/image/matMaps_logo.png">
+    <title>Comments</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        indigo: {
+                            400: '#E63935',
+                            500: '#B71C1C',
+                            600: '#931A16',
+                            700: '#7A1310',
+                            800: '#5F0E0B',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .review-card-item:hover {
+            background-color: #12131a !important;
+            transition: background-color 0.2s ease-in-out;
+        }
+    </style>
+</head>
+
+<body id="mainBodyFramework" class="bg-gray-950 text-gray-100 font-sans antialiased hidden">
+
+    <div class="flex h-screen overflow-hidden relative">
+
+        <div id="sidebarOverlay"
+            class="fixed inset-0 bg-black/50 z-20 hidden md:hidden transition-opacity duration-300"></div>
+
+        <aside id="sidebarPanel"
+            class="w-64 bg-gray-900 border-r border-gray-800 flex flex-col justify-between fixed md:static inset-y-0 left-0 -translate-x-full md:translate-x-0 z-30 md:z-0 transition-transform duration-300 ease-in-out md:flex">
+            <div>
+                <div class="h-16 flex items-center px-6 border-b border-gray-700 justify-between md:justify-center">
+                    <div class="flex items-center h-full">
+                        <img src="../assets/image/matMaps_logo.png" alt="logo" class="h-8 md:h-10" />
+                        <span class="text-xl font-bold text-indigo-400 ml-4">MatMaps</span>
+                    </div>
+                    <button id="closeSidebar" class="text-gray-400 hover:text-white md:hidden text-xl p-1">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <nav class="p-4 space-y-2">
+                    <a href="dashboard.html"
+                        class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-700 hover:text-white transition">
+                        <i class="fa-solid fa-chart-pie w-5"></i> <span>Dashboard</span>
+                    </a>
+                    <a href="clubs.html"
+                        class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
+                        <i class="fa-solid fa-map-pin w-5"></i> <span>Clubs Manager</span>
+                    </a>
+                    <a href="events.html"
+                        class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
+                        <i class="fa-solid fa-calendar-days w-5"></i> <span>Events Manager</span>
+                    </a>
+                    <a href="posts-collections.html"
+                        class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
+                        <i class="fa-solid fa-images w-5"></i> <span>Post Collection</span>
+                    </a>
+                    <a href="comments.html"
+                        class="flex items-center space-x-3 px-4 py-2.5 rounded-lg bg-indigo-600 text-white transition">
+                        <i class="fa-solid fa-comments w-5"></i> <span>Comments</span>
+                    </a>
+                    <a href="reviews.html"
+                        class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
+                        <i class="fa-solid fa-star w-5"></i> <span>Reviews</span>
+                    </a>
+                    <a href="user-permissions.html"
+                        class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
+                        <i class="fa-solid fa-users-gear w-5"></i> <span>User Permissions</span>
+                    </a>
+                </nav>
+            </div>
+            <div class="p-4 border-t border-gray-700">
+                <div class="flex items-center space-x-3">
+                    <div
+                        class="w-9 h-9 bg-indigo-500 rounded-full flex items-center justify-center font-bold text-white">
+                        M</div>
+                    <div>
+                        <p class="text-sm font-semibold">MatMaps Test</p>
+                        <p class="text-xs text-gray-500">Admin User</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="flex-1 flex flex-col overflow-y-auto">
+
+            <header
+                class="h-16 bg-gray-900 border-b border-gray-800 flex items-center justify-between px-6 sticky top-0 z-10 shrink-0">
+                <div class="flex items-center space-x-2">
+                    <button id="openSidebar"
+                        class="text-gray-400 hover:text-white md:hidden text-xl p-1 focus:outline-none">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <i class="fa-solid fa-comments text-indigo-400 text-lg"></i>
+                    <h1 class="text-lg font-semibold">Comments Collections</h1>
+                </div>
+                <div class="flex space-x-2">
+                    <button id="btnApproveAll"
+                        class="bg-gray-800 border border-gray-700 text-xs px-3 py-1.5 rounded-lg text-emerald-400 hover:bg-gray-700 transition max-sm:hidden">
+                        <i class="fa-solid fa-check-double mr-1.5"></i> Approve All Pending
+                    </button>
+                </div>
+            </header>
+
+            <div class="py-6 px-4 md:px-8 space-y-8 w-full">
+
+                <div
+                    class="bg-gray-900 border border-gray-800 rounded-xl p-4 flex flex-col md:flex-row gap-4 items-center justify-between shadow-sm">
+
+                    <div id="statusTabGroup"
+                        class="flex space-x-2 bg-gray-950 p-1 rounded-lg border border-gray-800 text-xs font-medium w-full md:w-auto">
+                        <button data-status="pending"
+                            class="tab-btn bg-indigo-600 text-white px-4 py-2 rounded-md shadow-sm transition">
+                            Pending <span id="pendingBadgeCount"
+                                class="ml-1.5 px-1.5 py-0.5 text-[10px] bg-indigo-800 text-indigo-200 rounded-full">0</span>
+                        </button>
+                        <button data-status="approved"
+                            class="tab-btn text-gray-400 hover:text-white px-4 py-2 rounded-md transition">
+                            Approved <span id="activeBadgeCount"
+                                class="ml-1.5 px-1.5 py-0.5 text-[10px] bg-indigo-800 text-indigo-200 rounded-full">0</span>
+                        </button>
+                        <button data-status="trashed"
+                            class="tab-btn text-gray-400 hover:text-white px-4 py-2 rounded-md transition">
+                            Trashed <span id="trashedBadgeCount"
+                                class="ml-1.5 px-1.5 py-0.5 text-[10px] bg-indigo-800 text-indigo-200 rounded-full">0</span>
+                        </button>
+                    </div>
+
+                    <div class="flex items-center space-x-3 w-full md:w-auto justify-end">
+                        <select id="sortOrder"
+                            class="bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-indigo-500 text-gray-400 w-full md:w-auto">
+                            <option value="desc">Sort by: Newest First</option>
+                            <option value="asc">Sort by: Oldest First</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="space-y-4" id="reviewsContainer">
+                    <div class="py-16 text-center flex flex-col items-center justify-center space-y-3">
+                        <div class="w-9 h-9 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin">
+                        </div>
+                        <p class="text-xs text-gray-500 tracking-wider">Syncing with Firestore Pipeline...</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between pt-4 border-t border-gray-800 text-xs">
+                    <p class="text-gray-500" id="entryCountText">Showing 0-0 of 0 entries</p>
+                    <div class="flex space-x-1.5">
+                        <button id="prevPageBtn"
+                            class="bg-gray-900 border border-gray-800 text-gray-400 px-3 py-1.5 rounded-lg opacity-50 cursor-not-allowed">Previous</button>
+                        <button id="nextPageBtn"
+                            class="bg-gray-900 border border-gray-800 text-gray-300 hover:text-white px-3 py-1.5 rounded-lg transition">Next</button>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, updateDoc, doc, writeBatch } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        // 1. Firebase configuration setup (must come first)
+        const firebaseConfig = {
+            apiKey: "AIzaSyAVp1TmwmsaapC3rBtsWVBYbmo3-uFxOEs",
+            authDomain: "matmaps-1f5b2.firebaseapp.com",
+            projectId: "matmaps-1f5b2",
+            storageBucket: "matmaps-1f5b2.firebasestorage.app",
+            messagingSenderId: "735375898638",
+            appId: "1:735375898638:web:3aed1fde4aa7b0a95ae45f",
+            measurementId: "G-TEBMGDJZGF"
+        };
+
+        // 2. Firebase App Initialization (this will follow immediately)
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        // 3. Root guard mechanism (checks after the app initializes)
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = 'login.html';
+            } else {
+                console.log("Welcome Admin:", user.email);
+                const bodyEl = document.getElementById('mainBodyFramework');
+                if (bodyEl) {
+                    bodyEl.classList.remove('hidden');
+                }
+            }
+        });
+
+        //document.getElementById('mainBodyFramework').classList.remove('hidden');
+
+        // Core DOM References (FIXED: references mapping aligned perfectly)
+        const reviewsContainer = document.getElementById('reviewsContainer');
+        const pendingBadgeCount = document.getElementById('pendingBadgeCount');
+        const entryCountText = document.getElementById('entryCountText');
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const sortOrder = document.getElementById('sortOrder');
+        const btnApproveAll = document.getElementById('btnApproveAll');
+        const prevPageBtn = document.getElementById('prevPageBtn');
+        const nextPageBtn = document.getElementById('nextPageBtn');
+
+        // State variables
+        let rawItemsList = [];
+        let usersMemoryCache = {}; // Cache to map uid to user object
+        let postsMemoryCache = {}; // Cache to map post id to post object
+        let currentStatusFilter = 'pending';
+        const itemsPerPage = 10;
+        let currentPage = 1;
+
+        // Listen to users collection to fetch user details for comments
+        onSnapshot(collection(db, "users"), (snapshot) => {
+            snapshot.forEach((docSnap) => {
+                usersMemoryCache[docSnap.id] = docSnap.data();
+            });
+            processAndRenderUI();
+        });
+
+        // Listen to posts collection to map Post ID to author
+        onSnapshot(collection(db, "postCollection"), (snapshot) => {
+            snapshot.forEach((docSnap) => {
+                postsMemoryCache[docSnap.id] = docSnap.data();
+            });
+            processAndRenderUI();
+        });
+
+        // ========================================================
+        // 1. Real-time data listener from Firebase
+        // ========================================================
+        onSnapshot(collection(db, "comment_Collection"), (snapshot) => {
+            rawItemsList = [];
+            let pendingCount = 0;
+            let activeCount = 0;
+            let trashedCount = 0;
+
+            snapshot.forEach((docSnap) => {
+                const item = docSnap.data();
+                const id = docSnap.id;
+
+                let calculatedStatus = 'pending';
+                if (item.isDelete === true || item.isDelete === "true") {
+                    calculatedStatus = 'trashed';
+                } else if (item.isActive === true || item.isActive === "true") {
+                    calculatedStatus = 'approved';
+                } else if (item.isActive === false || item.isActive === "false") {
+                    calculatedStatus = 'pending';
+                }
+
+                if (calculatedStatus === 'pending') pendingCount++;
+                if (calculatedStatus === 'approved') activeCount++;
+                if (calculatedStatus === 'trashed') trashedCount++;
+
+                rawItemsList.push({ id, calculatedStatus, ...item });
+            });
+
+            if (pendingBadgeCount) pendingBadgeCount.innerText = pendingCount;
+            const activeBadgeCount = document.getElementById('activeBadgeCount');
+            if (activeBadgeCount) activeBadgeCount.innerText = activeCount;
+            const trashedBadgeCount = document.getElementById('trashedBadgeCount');
+            if (trashedBadgeCount) trashedBadgeCount.innerText = trashedCount;
+
+            processAndRenderUI();
+        });
+
+        // ========================================================
+        // 2. Data filtering, sorting and rendering processes
+        // ========================================================
+        function processAndRenderUI() {
+            let processedList = rawItemsList.filter(item => item.calculatedStatus === currentStatusFilter);
+
+            const order = sortOrder ? sortOrder.value : 'desc';
+            processedList.sort((a, b) => {
+                let timeA = a.time_posted ? (a.time_posted.toDate ? a.time_posted.toDate().getTime() : new Date(a.time_posted).getTime()) : 0;
+                let timeB = b.time_posted ? (b.time_posted.toDate ? b.time_posted.toDate().getTime() : new Date(b.time_posted).getTime()) : 0;
+                return order === 'desc' ? timeB - timeA : timeA - timeB;
+            });
+
+            const totalItems = processedList.length;
+            const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
+
+            if (currentPage > totalPages) currentPage = totalPages;
+            if (currentPage < 1) currentPage = 1;
+
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const paginatedItems = processedList.slice(startIndex, endIndex);
+
+            renderReviewsList(paginatedItems, startIndex, totalItems, totalPages);
+        }
+
+        // ========================================================
+        // 3. Review Card Dynamic Generation Function (Fixed innerHTML crash target)
+        // ========================================================
+        function renderReviewsList(items, startIndex, totalItems, totalPages) {
+            reviewsContainer.innerHTML = '';
+
+            if (items.length === 0) {
+                reviewsContainer.innerHTML = `
+                    <div class="bg-gray-900 border border-gray-800 rounded-xl p-8 text-center text-gray-500 text-sm col-span-full">
+                        <i class="fa-solid fa-folder-open text-2xl text-gray-700 mb-2 block"></i>
+                        No data available in this monitoring tab stream.
+                    </div>`;
+                entryCountText.innerText = "Showing 0-0 of 0 entries";
+                prevPageBtn.disabled = true;
+                nextPageBtn.disabled = true;
+                return;
+            }
+
+            entryCountText.innerText = `Showing ${startIndex + 1}-${Math.min(startIndex + itemsPerPage, totalItems)} of ${totalItems} entries`;
+            prevPageBtn.disabled = (currentPage === 1);
+            nextPageBtn.disabled = (currentPage === totalPages);
+
+            items.forEach((item) => {
+                // Fetch user data
+                let matchedUserId = "";
+                if (item.userRef) {
+                    matchedUserId = typeof item.userRef === 'string' ? item.userRef.split('/').pop() : (item.userRef.id || item.userRef.path?.split('/').pop() || "");
+                }
+                const matchedUser = usersMemoryCache[matchedUserId] || {};
+
+                const dispName = matchedUser.display_name || matchedUser.name || 'Anonymous User';
+                let profilePhoto = matchedUser.profile_photo || matchedUser.photoURL || matchedUser.image || "";
+
+                let avatarHTML = '';
+                if (profilePhoto) {
+                    avatarHTML = `<img src="${profilePhoto}" alt="User" class="w-10 h-10 rounded-full object-cover border border-gray-700 shadow-sm shrink-0">`;
+                } else {
+                    const avatarText = dispName.substring(0, 2).toUpperCase();
+                    avatarHTML = `<div class="w-10 h-10 bg-indigo-500/10 text-indigo-400 rounded-full flex items-center justify-center font-bold text-sm shrink-0 border border-indigo-500/20 font-mono">${avatarText}</div>`;
+                }
+
+                let relativeTime = "Just now";
+                if (item.time_posted) {
+                    const dateObj = item.time_posted.toDate ? item.time_posted.toDate() : new Date(item.time_posted);
+                    relativeTime = dateObj.toLocaleDateString('en-US', { day: 'numeric', month: 'short' }) + ' • ' + dateObj.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                }
+
+                let postRefStr = item.postRef ? (item.postRef.path || item.postRef.toString()) : "Unknown Post";
+                const displayPostId = postRefStr.split('/').pop();
+
+                // Fetch Post details
+                const matchedPost = postsMemoryCache[displayPostId] || {};
+                let postAuthorId = "";
+                if (matchedPost.post_user) {
+                    postAuthorId = typeof matchedPost.post_user === 'string' ? matchedPost.post_user.split('/').pop() : (matchedPost.post_user.id || matchedPost.post_user.path?.split('/').pop() || "");
+                }
+                const postAuthor = usersMemoryCache[postAuthorId] || {};
+
+                const postUserName = postAuthor.display_name || postAuthor.name || 'Anonymous Fighter';
+                let postAuthorPhoto = postAuthor.profile_photo || postAuthor.photoURL || postAuthor.image || "";
+
+                let postAvatarHTML = '';
+                if (postAuthorPhoto) {
+                    postAvatarHTML = `<img src="${postAuthorPhoto}" alt="User" class="w-5 h-5 rounded-full object-cover inline-block mx-1 border border-gray-700">`;
+                } else {
+                    const avatarTextPost = postUserName.substring(0, 2).toUpperCase();
+                    postAvatarHTML = `<span class="w-5 h-5 bg-indigo-500/10 text-indigo-400 rounded-full inline-flex items-center justify-center font-bold text-[9px] mx-1 border border-indigo-500/20 font-mono">${avatarTextPost}</span>`;
+                }
+
+                let actionButtonsHTML = '';
+                if (item.calculatedStatus === 'pending') {
+                    actionButtonsHTML = `
+                        <button data-action="approve" data-id="${item.id}" class="action-btn bg-emerald-600/10 hover:bg-emerald-600 text-emerald-400 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold border border-emerald-500/20 transition flex items-center">
+                            <i class="fa-solid fa-circle-check mr-1.5"></i> Approve
+                        </button>
+                        <button data-action="trash" data-id="${item.id}" class="action-btn bg-rose-600/10 hover:bg-rose-600 text-rose-400 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold border border-rose-500/20 transition flex items-center">
+                            <i class="fa-solid fa-trash-can mr-1.5"></i> Move to Trash
+                        </button>`;
+                } else if (item.calculatedStatus === 'approved') {
+                    actionButtonsHTML = `
+                        <button data-action="trash" data-id="${item.id}" class="action-btn bg-rose-600/10 hover:bg-rose-600 text-rose-400 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold border border-rose-500/20 transition flex items-center">
+                            <i class="fa-solid fa-trash-can mr-1.5"></i> Move to Trash
+                        </button>`;
+                } else {
+                    actionButtonsHTML = `
+                        <button data-action="approve" data-id="${item.id}" class="action-btn bg-emerald-600/10 hover:bg-emerald-600 text-emerald-400 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold border border-emerald-500/20 transition flex items-center">
+                            <i class="fa-solid fa-rotate-left mr-1.5"></i> Restore Comment
+                        </button>`;
+                }
+
+                const blockNode = document.createElement('div');
+                blockNode.className = "review-card-item bg-gray-900 border border-gray-800 rounded-xl p-5 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4";
+                blockNode.innerHTML = `
+                    <div class="flex items-start space-x-4 text-left w-full">
+                        ${avatarHTML}
+                        <div class="w-full">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <span class="font-bold text-sm text-gray-200 tracking-wide">${dispName}</span>
+                                <span class="text-xs text-gray-500 font-mono">• ${relativeTime}</span>
+                            </div>
+                            <p class="text-xs text-indigo-400 mt-1 font-medium flex items-center">
+                                Post by: ${postAvatarHTML} <span class="underline ml-1">${postUserName}</span>
+                            </p>
+                            <p class="text-sm text-gray-300 mt-2 leading-relaxed font-light break-words">${item.comment_Text || 'No comment text provided.'}</p>
+                            
+                            <div class="flex items-center space-x-4 mt-3">
+                                <div class="flex items-center space-x-1 text-[11px] text-gray-500 font-mono">
+                                    <i class="fa-solid fa-heart text-rose-400 text-xs"></i>
+                                    <span class="font-bold text-gray-400">${item.num_likes || 0} Likes</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-row md:flex-col items-center gap-2 w-full md:w-auto justify-end border-t border-gray-800/60 md:border-none pt-3 md:pt-0 shrink-0">
+                        ${actionButtonsHTML}
+                    </div>`;
+                reviewsContainer.appendChild(blockNode);
+            });
+
+            bindCardActionListeners();
+        }
+
+        function bindCardActionListeners() {
+            document.querySelectorAll('.action-btn').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const docId = e.currentTarget.getAttribute('data-id');
+                    const action = e.currentTarget.getAttribute('data-action');
+                    const reviewDocRef = doc(db, "comment_Collection", docId);
+
+                    try {
+                        if (action === 'approve') {
+                            await updateDoc(reviewDocRef, { isActive: true, isDelete: false });
+                        } else if (action === 'trash') {
+                            await updateDoc(reviewDocRef, { isActive: false, isDelete: true });
+                        }
+                    } catch (err) {
+                        console.error("Failed executing state modification: ", err);
+                    }
+                });
+            });
+        }
+
+        // Tab Event Target Trigger Binding Matrix
+        tabButtons.forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                tabButtons.forEach(b => {
+                    b.classList.remove('bg-indigo-600', 'text-white', 'shadow-sm');
+                    b.classList.add('text-gray-400', 'hover:text-white');
+                });
+                e.currentTarget.classList.add('bg-indigo-600', 'text-white', 'shadow-sm');
+                e.currentTarget.classList.remove('text-gray-400', 'hover:text-white');
+
+                currentStatusFilter = e.currentTarget.getAttribute('data-status');
+                currentPage = 1;
+                processAndRenderUI();
+            });
+        });
+
+        if (sortOrder) sortOrder.addEventListener('change', processAndRenderUI);
+
+        prevPageBtn.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                processAndRenderUI();
+            }
+        });
+
+        nextPageBtn.addEventListener('click', () => {
+            const totalPages = Math.ceil(rawItemsList.filter(item => item.calculatedStatus === currentStatusFilter).length / itemsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                processAndRenderUI();
+            }
+        });
+
+        if (btnApproveAll) {
+            btnApproveAll.addEventListener('click', async () => {
+                const pendings = rawItemsList.filter(item => item.calculatedStatus === 'pending');
+                if (pendings.length === 0) return alert("No pending records to execute.");
+
+                if (confirm(`Are you sure to approve all ${pendings.length} pending items in batch?`)) {
+                    try {
+                        const batch = writeBatch(db);
+                        pendings.forEach(item => {
+                            const ref = doc(db, "reviews", item.id);
+                            batch.update(ref, { isAproved: true });
+                        });
+                        await batch.commit();
+                        alert("All pending records optimized and approved!");
+                    } catch (error) {
+                        console.error("Batch update crashed: ", error);
+                    }
+                }
+            });
+        }
+
+        const openSidebarBtn = document.getElementById('openSidebar');
+        const closeSidebarBtn = document.getElementById('closeSidebar');
+        const sidebarPanel = document.getElementById('sidebarPanel');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+        openSidebarBtn.addEventListener('click', () => {
+            sidebarPanel.classList.remove('-translate-x-full');
+            sidebarOverlay.classList.remove('hidden');
+        });
+
+        function closeMenu() {
+            sidebarPanel.classList.add('-translate-x-full');
+            sidebarOverlay.classList.add('hidden');
+        }
+        closeSidebarBtn.addEventListener('click', closeMenu);
+        sidebarOverlay.addEventListener('click', closeMenu);
+    </script>
+</body>
+
+</html>

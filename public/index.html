@@ -10,20 +10,24 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        cyberBlack: '#06070a',
-                        cyberCard: '#0d0e15',
-                        brandRed: '#931A16', /* MatMaps Exact Brand Crimson Core */
-                        brandAccent: '#E63935', /* Glowing Light Red Accent */
-                    },
-                    fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+        if (typeof tailwind !== 'undefined') {
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            cyberBlack: '#06070a',
+                            cyberCard: '#0d0e15',
+                            brandRed: '#931A16', /* MatMaps Exact Brand Crimson Core */
+                            brandAccent: '#E63935', /* Glowing Light Red Accent */
+                        },
+                        fontFamily: {
+                            sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+                        }
                     }
                 }
             }
+        } else {
+            console.error("Tailwind CSS failed to load from CDN. The site will appear unstyled. Please disable your AdBlocker or check your connection to cdn.tailwindcss.com.");
         }
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
