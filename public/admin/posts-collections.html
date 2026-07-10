@@ -92,7 +92,7 @@
                     </a>
                 </nav>
             </div>
-            <div class="p-4 border-t border-gray-700">
+            <div class="p-4 border-t border-gray-700 flex items-center justify-between">
                 <div class="flex items-center space-x-3">
                     <div
                         class="w-9 h-9 bg-indigo-500 rounded-full flex items-center justify-center font-bold text-white">
@@ -102,6 +102,9 @@
                         <p class="text-xs text-gray-500">Admin User</p>
                     </div>
                 </div>
+                <button id="logoutBtn" class="text-gray-400 hover:text-rose-500 transition-colors p-2" title="Logout">
+                    <i class="fa-solid fa-right-from-bracket text-lg"></i>
+                </button>
             </div>
         </aside>
 
@@ -164,10 +167,11 @@
     </div>
 
     <script src="./firebase-config.js"></script>
+    <script type="module" src="./notifications-manager.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, onSnapshot, updateDoc, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
         // 1. Firebase configuration setup (must come first)
         const firebaseConfig = window.FIREBASE_CONFIG || {};
@@ -188,6 +192,10 @@
                     bodyEl.classList.remove('hidden');
                 }
             }
+        });
+
+        document.getElementById('logoutBtn')?.addEventListener('click', () => {
+            signOut(auth).catch((error) => console.error("Sign out error:", error));
         });
 
         //document.getElementById('mainBodyFramework').classList.remove('hidden');

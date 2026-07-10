@@ -30,53 +30,83 @@
             console.error("Tailwind CSS failed to load from CDN. The site will appear unstyled. Please disable your AdBlocker or check your connection to cdn.tailwindcss.com.");
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
     <style>
-        html { scroll-behavior: smooth !important; }
+        html {
+            scroll-behavior: smooth !important;
+        }
+
         /* Glowing Finorix style dark red background meshes */
         .radial-red-gradient {
             background: radial-gradient(circle at center, #350b09 0%, #06070a 100%);
         }
-        .slide-hidden { display: none; opacity: 0; transform: scale(0.96); }
-        .slide-active { display: block; opacity: 1; transform: scale(1); transition: all 0.5s ease-in-out; }
-        
+
+        .slide-hidden {
+            display: none;
+            opacity: 0;
+            transform: scale(0.96);
+        }
+
+        .slide-active {
+            display: block;
+            opacity: 1;
+            transform: scale(1);
+            transition: all 0.5s ease-in-out;
+        }
+
         /* Zoom In-Out Keyframe Animation for the Logo */
         @keyframes zoomInOut {
-            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(147, 26, 22, 0.4)); }
-            50% { transform: scale(1.08); filter: drop-shadow(0 0 40px rgba(230, 57, 53, 0.7)); }
+
+            0%,
+            100% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 20px rgba(147, 26, 22, 0.4));
+            }
+
+            50% {
+                transform: scale(1.08);
+                filter: drop-shadow(0 0 40px rgba(230, 57, 53, 0.7));
+            }
         }
+
         .animate-zoom-logo {
             animation: zoomInOut 4s ease-in-out infinite;
         }
     </style>
 </head>
 
-<body class="bg-cyberBlack text-gray-200 font-sans antialiased min-h-screen flex flex-col justify-between overflow-x-hidden">
+<body
+    class="bg-cyberBlack text-gray-200 font-sans antialiased min-h-screen flex flex-col justify-between overflow-x-hidden">
 
     <!-- HEADER NAVIGATION & BANNER WRAPPER (Container Width with Radial Red Gradient) -->
     <div class="w-full radial-red-gradient border-b border-white/[0.02]">
         <div class="max-w-7xl mx-auto">
-            
+
             <!-- HEADER NAVIGATION -->
             <header class="bg-transparent px-6 md:px-16 h-20 flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                    <img src="assets/image/matMaps_logo.png" alt="logo" class="h-16" onerror="this.style.display='none'; document.getElementById('logoIcon').classList.remove('hidden')" />
+                <a href="https://matmaps.co.uk" class="flex items-center space-x-3">
+                    <img src="assets/image/matMaps_logo.png" alt="logo" class="h-16"
+                        onerror="this.style.display='none'; document.getElementById('logoIcon').classList.remove('hidden')" />
                     <i id="logoIcon" class="fa-solid fa-square-poll-vertical text-xl text-brandRed hidden"></i>
-                    <span class="text-lg font-bold tracking-tight text-white uppercase font-mono">Mat<span class="text-brandRed">Maps</span></span>
-                </div>
-                
+                    <span class="text-lg font-bold tracking-tight text-white uppercase font-mono">Mat<span
+                            class="text-brandRed">Maps</span></span>
+                </a>
+
                 <!-- Smooth Anchor Navigation Links Menu -->
-                <nav class="hidden md:flex items-center space-x-8 text-xs font-semibold uppercase tracking-wider text-gray-400">
+                <nav
+                    class="hidden md:flex items-center space-x-8 text-xs font-semibold uppercase tracking-wider text-gray-400">
                     <a href="#features" class="hover:text-white transition duration-300">Features</a>
                     <a href="#about-us" class="hover:text-white transition duration-300">About Us</a>
                     <a href="#product" class="hover:text-white transition duration-300">Product</a>
                     <a href="#pricing" class="hover:text-white transition duration-300">Pricing</a>
                     <a href="#download" class="hover:text-white transition duration-300">Download</a>
                 </nav>
-                
+
                 <div class="flex items-center space-x-4">
-                    <a href="admin/login.html" class="bg-brandRed hover:bg-brandAccent text-white text-xs font-bold px-6 py-2.5 rounded-full transition duration-300 flex items-center space-x-1.5 shadow-[0_0_20px_rgba(147,26,22,0.3)] border border-brandAccent/20">
+                    <a href="admin/login.html"
+                        class="bg-brandRed hover:bg-brandAccent text-white text-xs font-bold px-6 py-2.5 rounded-full transition duration-300 flex items-center space-x-1.5 shadow-[0_0_20px_rgba(147,26,22,0.3)] border border-brandAccent/20">
                         <i class="fa-solid fa-user-shield text-[10px]"></i>
                         <span>Admin Login</span>
                         <i class="fa-solid fa-arrow-right text-[10px]"></i>
@@ -87,30 +117,38 @@
             <!-- 1. BANNER SECTION (Inside Container) -->
             <section id="banner" class="pt-12 md:pt-20 pb-0 text-center relative overflow-hidden">
                 <div class="max-w-4xl mx-auto px-6 space-y-6">
-                    <div class="inline-flex items-center space-x-2 bg-brandRed/10 border border-brandRed/30 px-4 py-1.5 rounded-full backdrop-blur-md">
-                        <span class="text-[10px] tracking-widest uppercase font-bold text-brandAccent"><i class="fa-solid fa-sparkles mr-1"></i> Unlock your combat potential</span>
+                    <div
+                        class="inline-flex items-center space-x-2 bg-brandRed/10 border border-brandRed/30 px-4 py-1.5 rounded-full backdrop-blur-md">
+                        <span class="text-[10px] tracking-widest uppercase font-bold text-brandAccent"><i
+                                class="fa-solid fa-sparkles mr-1"></i> Unlock your combat potential</span>
                     </div>
-                    <h1 class="text-4xl md:text-7xl font-extrabold text-white tracking-tight leading-[1.1] max-w-3xl mx-auto">
+                    <h1
+                        class="text-4xl md:text-7xl font-extrabold text-white tracking-tight leading-[1.1] max-w-3xl mx-auto">
                         Get Your Combat Clubs Under <br><span class="text-brandAccent">Control in Minutes</span>
                     </h1>
                     <p class="text-gray-400 text-xs md:text-sm max-w-xl mx-auto leading-relaxed font-light">
-                        Take control of your directories, grow your tournament check-ins, and secure your structural future by empowering your fight system journey seamlessly.
+                        Take control of your directories, grow your tournament check-ins, and secure your structural
+                        future by empowering your fight system journey seamlessly.
                     </p>
                     <div class="flex flex-wrap justify-center gap-4 pt-2">
-                        <a href="#download" class="bg-brandRed hover:bg-brandAccent text-white text-xs font-bold px-6 py-3.5 rounded-full transition duration-300 flex items-center space-x-2 shadow-lg border border-brandAccent/20">
+                        <a href="#download"
+                            class="bg-brandRed hover:bg-brandAccent text-white text-xs font-bold px-6 py-3.5 rounded-full transition duration-300 flex items-center space-x-2 shadow-lg border border-brandAccent/20">
                             <i class="fa-solid fa-download text-[10px]"></i> <span>Get the App</span>
                         </a>
-                        <a href="#about-us" class="bg-white/5 border border-white/10 hover:bg-white/10 text-white text-xs font-bold px-6 py-3.5 rounded-full transition duration-300 flex items-center space-x-2">
+                        <a href="#about-us"
+                            class="bg-white/5 border border-white/10 hover:bg-white/10 text-white text-xs font-bold px-6 py-3.5 rounded-full transition duration-300 flex items-center space-x-2">
                             <span>About MatMaps</span> <i class="fa-solid fa-angles-down text-[10px]"></i>
                         </a>
                     </div>
                 </div>
 
                 <!-- Overlapping Smart Devices Display Pipeline -->
-                <div class="max-w-5xl mx-auto px-6 flex justify-center items-center -space-x-20 md:-space-x-32 translate-y-20">
+                <div
+                    class="max-w-5xl mx-auto px-6 flex justify-center items-center -space-x-20 md:-space-x-32 translate-y-20">
                     <div class="w-[240px] md:w-[300px] h-[300px] md:h-[420px] rotate-[-6deg] shrink-0">
                         <div class="w-full h-full overflow-hidden">
-                            <img src="assets/image/onboarding.png" alt="Onboarding Panel" class="w-full h-full object-contain">
+                            <img src="assets/image/onboarding.png" alt="Onboarding Panel"
+                                class="w-full h-full object-contain">
                         </div>
                     </div>
                     <div class="w-[280px] md:w-[380px] h-[400px] md:h-[520px] z-10 rotate-[0deg] shrink-0">
@@ -120,7 +158,8 @@
                     </div>
                     <div class="w-[240px] md:w-[300px] h-[300px] md:h-[420px] rotate-[6deg] shrink-0">
                         <div class="w-full h-full overflow-hidden">
-                            <img src="assets/image/login.png" alt="Onboarding Panel" class="w-full h-full object-contain">
+                            <img src="assets/image/login.png" alt="Onboarding Panel"
+                                class="w-full h-full object-contain">
                         </div>
                     </div>
                 </div>
@@ -135,39 +174,64 @@
         <!-- 2. FEATURES SECTION (6 Features) -->
         <section id="features" class="max-w-7xl mx-auto px-6 md:px-16 py-28 border-b border-white/[0.03]">
             <div class="text-left mb-16 space-y-2">
-                <h2 class="text-4xl md:text-5xl font-extrabold text-white tracking-tight">With all the <span class="text-brandAccent">features</span> <br>you need</h2>
+                <h2 class="text-4xl md:text-5xl font-extrabold text-white tracking-tight">With all the <span
+                        class="text-brandAccent">features</span> <br>you need</h2>
             </div>
-            
+
             <div class="grid grid-cols-1 md:grid-cols-3 gap-y-12 gap-x-8">
                 <div class="space-y-3 text-left">
-                    <div class="w-24 h-24 bg-white/[0.02] border border-white/10 rounded-xl flex items-center justify-center text-brandAccent shadow-xl"><i class="fa-solid fa-map-pin text-4xl"></i></div>
+                    <div
+                        class="w-24 h-24 bg-white/[0.02] border border-white/10 rounded-xl flex items-center justify-center text-brandAccent shadow-xl">
+                        <i class="fa-solid fa-map-pin text-4xl"></i>
+                    </div>
                     <h4 class="text-base font-bold text-white tracking-wide">Clubs Registries</h4>
-                    <p class="text-xs text-gray-500 leading-relaxed font-light">Onboard premium martial academies, manage geo-locations data points, and configure verification badges.</p>
+                    <p class="text-xs text-gray-500 leading-relaxed font-light">Onboard premium martial academies,
+                        manage geo-locations data points, and configure verification badges.</p>
                 </div>
                 <div class="space-y-3 text-left">
-                    <div class="w-24 h-24 bg-white/[0.02] border border-white/10 rounded-xl flex items-center justify-center text-brandAccent shadow-xl"><i class="fa-solid fa-calendar-days text-4xl"></i></div>
+                    <div
+                        class="w-24 h-24 bg-white/[0.02] border border-white/10 rounded-xl flex items-center justify-center text-brandAccent shadow-xl">
+                        <i class="fa-solid fa-calendar-days text-4xl"></i>
+                    </div>
                     <h4 class="text-base font-bold text-white tracking-wide">Events Pipeline</h4>
-                    <p class="text-xs text-gray-500 leading-relaxed font-light">Audit stadium bookings, ticket structures, upcoming tournament lists, and promo categories natively.</p>
+                    <p class="text-xs text-gray-500 leading-relaxed font-light">Audit stadium bookings, ticket
+                        structures, upcoming tournament lists, and promo categories natively.</p>
                 </div>
                 <div class="space-y-3 text-left">
-                    <div class="w-24 h-24 bg-white/[0.02] border border-white/10 rounded-xl flex items-center justify-center text-brandAccent shadow-xl"><i class="fa-solid fa-stopwatch text-4xl"></i></div>
+                    <div
+                        class="w-24 h-24 bg-white/[0.02] border border-white/10 rounded-xl flex items-center justify-center text-brandAccent shadow-xl">
+                        <i class="fa-solid fa-stopwatch text-4xl"></i>
+                    </div>
                     <h4 class="text-base font-bold text-white tracking-wide">Training Round Timers</h4>
-                    <p class="text-xs text-gray-500 leading-relaxed font-light">High-intensity round and rest sequence controllers engineered perfectly to compute ring workout metrics.</p>
+                    <p class="text-xs text-gray-500 leading-relaxed font-light">High-intensity round and rest sequence
+                        controllers engineered perfectly to compute ring workout metrics.</p>
                 </div>
                 <div class="space-y-3 text-left">
-                    <div class="w-24 h-24 bg-white/[0.02] border border-white/10 rounded-xl flex items-center justify-center text-brandAccent shadow-xl"><i class="fa-solid fa-shield-halved text-4xl"></i></div>
+                    <div
+                        class="w-24 h-24 bg-white/[0.02] border border-white/10 rounded-xl flex items-center justify-center text-brandAccent shadow-xl">
+                        <i class="fa-solid fa-shield-halved text-4xl"></i>
+                    </div>
                     <h4 class="text-base font-bold text-white tracking-wide">Access Permissions</h4>
-                    <p class="text-xs text-gray-500 leading-relaxed font-light">Advanced role-based console access control metrics (RBAC) to securely authorize or revoke staff profiles.</p>
+                    <p class="text-xs text-gray-500 leading-relaxed font-light">Advanced role-based console access
+                        control metrics (RBAC) to securely authorize or revoke staff profiles.</p>
                 </div>
                 <div class="space-y-3 text-left">
-                    <div class="w-24 h-24 bg-white/[0.02] border border-white/10 rounded-xl flex items-center justify-center text-brandAccent shadow-xl"><i class="fa-solid fa-comments text-4xl"></i></div>
+                    <div
+                        class="w-24 h-24 bg-white/[0.02] border border-white/10 rounded-xl flex items-center justify-center text-brandAccent shadow-xl">
+                        <i class="fa-solid fa-comments text-4xl"></i>
+                    </div>
                     <h4 class="text-base font-bold text-white tracking-wide">Review Moderation</h4>
-                    <p class="text-xs text-gray-500 leading-relaxed font-light">Real-time evaluation streaming networks to securely filter user-generated feedback and trash spam channels.</p>
+                    <p class="text-xs text-gray-500 leading-relaxed font-light">Real-time evaluation streaming networks
+                        to securely filter user-generated feedback and trash spam channels.</p>
                 </div>
                 <div class="space-y-3 text-left">
-                    <div class="w-24 h-24 bg-white/[0.02] border border-white/10 rounded-xl flex items-center justify-center text-brandAccent shadow-xl"><i class="fa-solid fa-cloud-arrow-up text-4xl"></i></div>
+                    <div
+                        class="w-24 h-24 bg-white/[0.02] border border-white/10 rounded-xl flex items-center justify-center text-brandAccent shadow-xl">
+                        <i class="fa-solid fa-cloud-arrow-up text-4xl"></i>
+                    </div>
                     <h4 class="text-base font-bold text-white tracking-wide">Cloud Gateway</h4>
-                    <p class="text-xs text-gray-500 leading-relaxed font-light">Direct storage integrations to stream fighter media posts, upload banners, and broadcast tournament clips.</p>
+                    <p class="text-xs text-gray-500 leading-relaxed font-light">Direct storage integrations to stream
+                        fighter media posts, upload banners, and broadcast tournament clips.</p>
                 </div>
             </div>
         </section>
@@ -176,22 +240,29 @@
         <section id="about-us" class="max-w-7xl mx-auto px-6 md:px-16 py-20 text-left border-b border-white/[0.03]">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                 <div class="lg:col-span-7 space-y-4">
-                    <span class="text-xs font-bold text-brandAccent uppercase tracking-widest">About MatMaps Framework</span>
-                    <h3 class="text-2xl md:text-5xl font-extrabold text-white tracking-tighter">The Global Intelligence Core <br>For Combat Sports</h3>
-                    <p class="text-xs md:text-sm text-gray-500 leading-relaxed font-light">We specialize in engineering data architecture for the martial arts ecosystem. From separate fighter profile sync operations to high-volume gym promotion carousels, our console enables operators to manage cloud collections via secure and blazing-fast Firebase engines.</p>
+                    <span class="text-xs font-bold text-brandAccent uppercase tracking-widest">About MatMaps
+                        Framework</span>
+                    <h3 class="text-2xl md:text-5xl font-extrabold text-white tracking-tighter">The Global Intelligence
+                        Core <br>For Combat Sports</h3>
+                    <p class="text-xs md:text-sm text-gray-500 leading-relaxed font-light">We specialize in engineering
+                        data architecture for the martial arts ecosystem. From separate fighter profile sync operations
+                        to high-volume gym promotion carousels, our console enables operators to manage cloud
+                        collections via secure and blazing-fast Firebase engines.</p>
                 </div>
-                
+
                 <div class="lg:col-span-5 flex justify-center relative">
                     <!-- Overlapping Smart Devices Display Pipeline -->
                     <div class="max-w-5xl mx-auto px-6 flex justify-center items-center -space-x-20 md:-space-x-32">
                         <div class="w-[260px] md:w-[340px] h-[380px] md:h-[480px] z-10 rotate-[0deg] shrink-0">
                             <div class="w-full h-full overflow-hidden">
-                                <img src="assets/image/Club-details.png" alt="Home Screen App" class="w-full h-full object-contain">
+                                <img src="assets/image/Club-details.png" alt="Home Screen App"
+                                    class="w-full h-full object-contain">
                             </div>
                         </div>
                         <div class="w-[200px] md:w-[280px] h-[280px] md:h-[380px] rotate-[6deg] shrink-0">
                             <div class="w-full h-full overflow-hidden">
-                                <img src="assets/image/Create Account.png" alt="Onboarding Panel" class="w-full h-full object-contain">
+                                <img src="assets/image/Create Account.png" alt="Onboarding Panel"
+                                    class="w-full h-full object-contain">
                             </div>
                         </div>
                     </div>
@@ -202,148 +273,226 @@
         <!-- 4. PRODUCT SECTION (3-Screen Active Center Slider) -->
         <section id="product" class="max-w-7xl mx-auto px-6 md:px-16 py-28 border-b border-white/[0.03] text-center">
             <div class="space-y-3 mb-16 text-center">
-                <span class="text-xs font-bold uppercase tracking-widest text-brandAccent">Product Live Visualizer</span>
-                <h3 class="text-2xl md:text-5xl font-extrabold text-white tracking-tight">Real-Time Core Panel Screens</h3>
+                <span class="text-xs font-bold uppercase tracking-widest text-brandAccent">Product Live
+                    Visualizer</span>
+                <h3 class="text-2xl md:text-5xl font-extrabold text-white tracking-tight">Real-Time Core Panel Screens
+                </h3>
             </div>
 
             <!-- 3-Screen Carousel Container Matrix -->
             <div class="max-w-5xl mx-auto relative px-4 flex items-center justify-center h-[500px] md:h-[660px]">
-                
+
                 <div class="w-full h-full relative flex items-center justify-center overflow-hidden">
-                    
+
                     <!-- Screen 1: Login -->
-                    <div class="product-slide absolute transition-all duration-500 ease-in-out transform w-[220px] md:w-[300px] h-[440px] md:h-[580px]">
+                    <div
+                        class="product-slide absolute transition-all duration-500 ease-in-out transform w-[220px] md:w-[300px] h-[440px] md:h-[580px]">
                         <div class="w-full h-full overflow-hidden">
                             <img class="w-full h-full object-contain" src="assets/image/login.png" alt="Login Gate">
                         </div>
                     </div>
 
                     <!-- Screen 2: Events -->
-                    <div class="product-slide absolute transition-all duration-500 ease-in-out transform w-[220px] md:w-[300px] h-[440px] md:h-[580px]">
+                    <div
+                        class="product-slide absolute transition-all duration-500 ease-in-out transform w-[220px] md:w-[300px] h-[440px] md:h-[580px]">
                         <div class="w-full h-full overflow-hidden">
-                            <img class="w-full h-full object-contain" src="assets/image/Club-details.png" alt="Events Platform">
+                            <img class="w-full h-full object-contain" src="assets/image/Club-details.png"
+                                alt="Events Platform">
                         </div>
                     </div>
 
                     <!-- Screen 3: Timer -->
-                    <div class="product-slide absolute transition-all duration-500 ease-in-out transform w-[220px] md:w-[300px] h-[440px] md:h-[580px]">
+                    <div
+                        class="product-slide absolute transition-all duration-500 ease-in-out transform w-[220px] md:w-[300px] h-[440px] md:h-[580px]">
                         <div class="w-full h-full overflow-hidden">
-                            <img class="w-full h-full object-contain" src="assets/image/Training-timer.png" alt="Training Matrix Loop">
+                            <img class="w-full h-full object-contain" src="assets/image/Training-timer.png"
+                                alt="Training Matrix Loop">
                         </div>
                     </div>
 
                     <!-- Screen 4: Details -->
-                    <div class="product-slide absolute transition-all duration-500 ease-in-out transform w-[220px] md:w-[300px] h-[440px] md:h-[580px]">
+                    <div
+                        class="product-slide absolute transition-all duration-500 ease-in-out transform w-[220px] md:w-[300px] h-[440px] md:h-[580px]">
                         <div class="w-full h-full overflow-hidden">
-                            <img class="w-full h-full object-contain" src="assets/image/Events.png" alt="Club Parameters Spec">
+                            <img class="w-full h-full object-contain" src="assets/image/Events.png"
+                                alt="Club Parameters Spec">
                         </div>
                     </div>
 
                     <!-- Screen 5: Promotion -->
-                    <div class="product-slide absolute transition-all duration-500 ease-in-out transform w-[220px] md:w-[300px] h-[440px] md:h-[580px]">
+                    <div
+                        class="product-slide absolute transition-all duration-500 ease-in-out transform w-[220px] md:w-[300px] h-[440px] md:h-[580px]">
                         <div class="w-full h-full overflow-hidden">
-                            <img class="w-full h-full object-contain" src="assets/image/Events-form.png" alt="Promotion Core Boost">
+                            <img class="w-full h-full object-contain" src="assets/image/Events-form.png"
+                                alt="Promotion Core Boost">
                         </div>
                     </div>
 
                 </div>
 
                 <!-- Navigation Controls Buttons -->
-                <button onclick="moveProductSlide(-1)" class="absolute left-0 md:left-4 top-1/2 -translate-y-1/2 bg-brandRed/60 hover:bg-brandRed text-white w-12 h-12 rounded-full flex items-center justify-center border border-white/10 transition duration-300 z-30 shadow-2xl focus:outline-none">
+                <button onclick="moveProductSlide(-1)"
+                    class="absolute left-0 md:left-4 top-1/2 -translate-y-1/2 bg-brandRed/60 hover:bg-brandRed text-white w-12 h-12 rounded-full flex items-center justify-center border border-white/10 transition duration-300 z-30 shadow-2xl focus:outline-none">
                     <i class="fa-solid fa-chevron-left text-sm text-white"></i>
                 </button>
-                <button onclick="moveProductSlide(1)" class="absolute right-0 md:right-4 top-1/2 -translate-y-1/2 bg-brandRed/40 hover:bg-brandRed text-white w-12 h-12 rounded-full flex items-center justify-center border border-white/10 transition duration-300 z-30 shadow-2xl focus:outline-none">
+                <button onclick="moveProductSlide(1)"
+                    class="absolute right-0 md:right-4 top-1/2 -translate-y-1/2 bg-brandRed/40 hover:bg-brandRed text-white w-12 h-12 rounded-full flex items-center justify-center border border-white/10 transition duration-300 z-30 shadow-2xl focus:outline-none">
                     <i class="fa-solid fa-chevron-right text-sm text-white"></i>
                 </button>
             </div>
         </section>
 
         <!-- 5. PRICING SECTION -->
-        <section id="pricing" class="max-w-7xl mx-auto px-6 md:px-16 py-28 border-b border-white/[0.03] text-center space-y-12">
+        <section id="pricing"
+            class="max-w-7xl mx-auto px-6 md:px-16 py-28 border-b border-white/[0.03] text-center space-y-12">
             <div class="space-y-3 max-w-xl mx-auto">
-                <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight">Prices That Are Simple <br>And Transparent</h2>
-                <p class="text-xs text-gray-500 leading-relaxed font-light">Our simple and transparent pricing ensures you know exactly what you're paying for—no hidden fees, no surprises.</p>
+                <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight">Prices That Are Simple <br>And
+                    Transparent</h2>
+                <p class="text-xs text-gray-500 leading-relaxed font-light">Our simple and transparent pricing ensures
+                    you know exactly what you're paying for—no hidden fees, no surprises.</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch max-w-5xl mx-auto">
                 <!-- Plan 1: Free Membership -->
-                <div class="bg-[#0e1017] text-gray-200 rounded-3xl p-8 border border-gray-800 text-left flex flex-col justify-between shadow-xl transition hover:border-gray-700">
+                <div
+                    class="bg-[#0e1017] text-gray-200 rounded-3xl p-8 border border-gray-800 text-left flex flex-col justify-between shadow-xl transition hover:border-gray-700">
                     <div class="space-y-4">
                         <div>
-                            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Your Subscription</span>
+                            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Your
+                                Subscription</span>
                             <h3 class="text-xl font-bold text-white mt-0.5">Free Membership</h3>
-                            <p class="text-2xl font-black text-brandAccent font-mono mt-2">£0.00 <span class="text-xs text-gray-500 font-normal">/ month</span></p>
+                            <p class="text-2xl font-black text-brandAccent font-mono mt-2">£0.00 <span
+                                    class="text-xs text-gray-500 font-normal">/ month</span></p>
                         </div>
                         <p class="text-xs text-gray-400 font-light">Get started with no commitment.</p>
                         <ul class="space-y-3 text-xs text-gray-400 font-medium pt-4 border-t border-white/[0.05]">
-                            <li class="flex items-start"><i class="fa-solid fa-minus text-brandAccent mr-2 mt-1 shrink-0"></i> Search and discover combat sports gyms across the UK</li>
-                            <li class="flex items-start"><i class="fa-solid fa-minus text-brandAccent mr-2 mt-1 shrink-0"></i> View Top Rated clubs near you</li>
-                            <li class="flex items-start"><i class="fa-solid fa-minus text-brandAccent mr-2 mt-1 shrink-0"></i> Browse the Arena (view only — no posting or interacting)</li>
-                            <li class="flex items-start"><i class="fa-solid fa-minus text-brandAccent mr-2 mt-1 shrink-0"></i> Add clubs to your Favourites</li>
-                            <li class="flex items-start"><i class="fa-solid fa-minus text-brandAccent mr-2 mt-1 shrink-0"></i> Basic access to events and listings</li>
+                            <li class="flex items-start"><i
+                                    class="fa-solid fa-minus text-brandAccent mr-2 mt-1 shrink-0"></i> Search and
+                                discover combat sports gyms across the UK</li>
+                            <li class="flex items-start"><i
+                                    class="fa-solid fa-minus text-brandAccent mr-2 mt-1 shrink-0"></i> View Top Rated
+                                clubs near you</li>
+                            <li class="flex items-start"><i
+                                    class="fa-solid fa-minus text-brandAccent mr-2 mt-1 shrink-0"></i> Browse the Arena
+                                (view only — no posting or interacting)</li>
+                            <li class="flex items-start"><i
+                                    class="fa-solid fa-minus text-brandAccent mr-2 mt-1 shrink-0"></i> Add clubs to your
+                                Favourites</li>
+                            <li class="flex items-start"><i
+                                    class="fa-solid fa-minus text-brandAccent mr-2 mt-1 shrink-0"></i> Basic access to
+                                events and listings</li>
                         </ul>
                     </div>
                     <div class="pt-6">
-                        <p class="text-[11px] text-gray-500 italic mb-4">Has ads • Perfect for trying MatMaps before upgrading</p>
-                        <a href="admin/login.html" class="w-full bg-white/5 border border-white/10 hover:bg-white/10 text-white text-xs font-bold py-3 px-4 rounded-full flex items-center justify-center space-x-2 transition">
-                            <span>Get started</span> <i class="fa-solid fa-circle-arrow-right text-xs text-brandAccent"></i>
+                        <p class="text-[11px] text-gray-500 italic mb-4">Has ads • Perfect for trying MatMaps before
+                            upgrading</p>
+                        <a href="admin/login.html"
+                            class="w-full bg-white/5 border border-white/10 hover:bg-white/10 text-white text-xs font-bold py-3 px-4 rounded-full flex items-center justify-center space-x-2 transition">
+                            <span>Get started</span> <i
+                                class="fa-solid fa-circle-arrow-right text-xs text-brandAccent"></i>
                         </a>
                     </div>
                 </div>
 
                 <!-- Plan 2: Athletes (Featured) -->
-                <div class="bg-[#190a09] text-white rounded-3xl p-8 border-2 border-brandRed text-left flex flex-col justify-between shadow-2xl relative scale-105">
-                    <span class="absolute top-[-12px] right-5 bg-brandRed text-white font-bold text-[9px] px-3 py-1 rounded-full tracking-widest uppercase">Monthly Plan</span>
+                <div
+                    class="bg-[#190a09] text-white rounded-3xl p-8 border-2 border-brandRed text-left flex flex-col justify-between shadow-2xl relative scale-105">
+                    <span
+                        class="absolute top-[-12px] right-5 bg-brandRed text-white font-bold text-[9px] px-3 py-1 rounded-full tracking-widest uppercase">Monthly
+                        Plan</span>
                     <div class="space-y-4">
                         <div>
-                            <span class="text-xs font-bold text-brandAccent uppercase tracking-wider">Most Popular</span>
+                            <span class="text-xs font-bold text-brandAccent uppercase tracking-wider">Most
+                                Popular</span>
                             <h3 class="text-xl font-bold text-white mt-0.5">Athletes</h3>
-                            <p class="text-3xl font-black text-brandAccent font-mono mt-2">£2.99 <span class="text-xs text-gray-400 font-normal">/ month</span></p>
+                            <p class="text-3xl font-black text-brandAccent font-mono mt-2">£2.99 <span
+                                    class="text-xs text-gray-400 font-normal">/ month</span></p>
                         </div>
-                        <p class="text-xs text-gray-300 font-light">Train like a serious athlete — track everything, remove distractions, and never miss an opportunity.</p>
+                        <p class="text-xs text-gray-300 font-light">Train like a serious athlete — track everything,
+                            remove distractions, and never miss an opportunity.</p>
                         <ul class="space-y-3 text-xs text-gray-300 font-medium pt-4 border-t border-brandRed/30">
-                            <li class="flex items-start"><i class="fa-solid fa-check text-brandAccent mr-2 mt-0.5 shrink-0"></i> Ad-free experience</li>
-                            <li class="flex items-start"><i class="fa-solid fa-check text-brandAccent mr-2 mt-0.5 shrink-0"></i> Unlimited Training Timer + Advanced Logs</li>
-                            <li class="flex items-start"><i class="fa-solid fa-check text-brandAccent mr-2 mt-0.5 shrink-0"></i> Save your training sessions directly to your personal Notebook</li>
-                            <li class="flex items-start"><i class="fa-solid fa-check text-brandAccent mr-2 mt-0.5 shrink-0"></i> Built-in Scorekeeper for partner sparring</li>
-                            <li class="flex items-start"><i class="fa-solid fa-check text-brandAccent mr-2 mt-0.5 shrink-0"></i> Post and interact in the Live Arena</li>
-                            <li class="flex items-start"><i class="fa-solid fa-check text-brandAccent mr-2 mt-0.5 shrink-0"></i> Write verified reviews of gyms and coaches</li>
-                            <li class="flex items-start"><i class="fa-solid fa-check text-brandAccent mr-2 mt-0.5 shrink-0"></i> Save Unlimited Favourite Clubs with notifications</li>
-                            <li class="flex items-start"><i class="fa-solid fa-check text-brandAccent mr-2 mt-0.5 shrink-0"></i> Priority access to new clubs and premium community features</li>
+                            <li class="flex items-start"><i
+                                    class="fa-solid fa-check text-brandAccent mr-2 mt-0.5 shrink-0"></i> Ad-free
+                                experience</li>
+                            <li class="flex items-start"><i
+                                    class="fa-solid fa-check text-brandAccent mr-2 mt-0.5 shrink-0"></i> Unlimited
+                                Training Timer + Advanced Logs</li>
+                            <li class="flex items-start"><i
+                                    class="fa-solid fa-check text-brandAccent mr-2 mt-0.5 shrink-0"></i> Save your
+                                training sessions directly to your personal Notebook</li>
+                            <li class="flex items-start"><i
+                                    class="fa-solid fa-check text-brandAccent mr-2 mt-0.5 shrink-0"></i> Built-in
+                                Scorekeeper for partner sparring</li>
+                            <li class="flex items-start"><i
+                                    class="fa-solid fa-check text-brandAccent mr-2 mt-0.5 shrink-0"></i> Post and
+                                interact in the Live Arena</li>
+                            <li class="flex items-start"><i
+                                    class="fa-solid fa-check text-brandAccent mr-2 mt-0.5 shrink-0"></i> Write verified
+                                reviews of gyms and coaches</li>
+                            <li class="flex items-start"><i
+                                    class="fa-solid fa-check text-brandAccent mr-2 mt-0.5 shrink-0"></i> Save Unlimited
+                                Favourite Clubs with notifications</li>
+                            <li class="flex items-start"><i
+                                    class="fa-solid fa-check text-brandAccent mr-2 mt-0.5 shrink-0"></i> Priority access
+                                to new clubs and premium community features</li>
                         </ul>
                     </div>
                     <div class="pt-6">
-                        <p class="text-[11px] text-gray-400 italic mb-4">Turn your phone into your serious training partner.</p>
-                        <a href="admin/login.html" class="w-full bg-brandRed hover:bg-brandAccent text-white text-xs font-bold py-3 px-4 rounded-full flex items-center justify-center space-x-2 transition shadow-md border border-brandAccent/20">
+                        <p class="text-[11px] text-gray-400 italic mb-4">Turn your phone into your serious training
+                            partner.</p>
+                        <a href="admin/login.html"
+                            class="w-full bg-brandRed hover:bg-brandAccent text-white text-xs font-bold py-3 px-4 rounded-full flex items-center justify-center space-x-2 transition shadow-md border border-brandAccent/20">
                             <span>Upgrade Now</span> <i class="fa-solid fa-circle-arrow-right text-xs text-white"></i>
                         </a>
                     </div>
                 </div>
 
                 <!-- Plan 3: Club Owner -->
-                <div class="bg-[#0e1017] text-gray-200 rounded-3xl p-8 border border-gray-800 text-left flex flex-col justify-between shadow-xl transition hover:border-gray-700">
+                <div
+                    class="bg-[#0e1017] text-gray-200 rounded-3xl p-8 border border-gray-800 text-left flex flex-col justify-between shadow-xl transition hover:border-gray-700">
                     <div class="space-y-4">
                         <div>
-                            <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Business Framework</span>
+                            <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Business
+                                Framework</span>
                             <h3 class="text-xl font-bold text-white mt-0.5">Club Owner</h3>
-                            <p class="text-2xl font-black text-brandAccent font-mono mt-2">£11.99 <span class="text-xs text-gray-500 font-normal">/ month</span></p>
+                            <p class="text-2xl font-black text-brandAccent font-mono mt-2">£11.99 <span
+                                    class="text-xs text-gray-500 font-normal">/ month</span></p>
                         </div>
                         <p class="text-xs text-gray-400 font-light">Everything in Athlete, plus:</p>
                         <ul class="space-y-3 text-xs text-gray-400 font-medium pt-4 border-t border-white/[0.05]">
-                            <li class="flex items-start"><i class="fa-solid fa-plus text-brandAccent mr-2 mt-1 shrink-0"></i> Full control of your club profile (photos, videos, description)</li>
-                            <li class="flex items-start"><i class="fa-solid fa-plus text-brandAccent mr-2 mt-1 shrink-0"></i> Powerful Club Dashboard with full analytics matrix</li>
-                            <li class="flex items-start"><i class="fa-solid fa-plus text-brandAccent mr-2 mt-1 shrink-0"></i> Create and manage unlimited events</li>
-                            <li class="flex items-start"><i class="fa-solid fa-plus text-brandAccent mr-2 mt-1 shrink-0"></i> Post updates, offers, and announcements on Club Page & Live Arena</li>
-                            <li class="flex items-start"><i class="fa-solid fa-plus text-brandAccent mr-2 mt-1 shrink-0"></i> Add club managers / staff with own logins</li>
-                            <li class="flex items-start"><i class="fa-solid fa-plus text-brandAccent mr-2 mt-1 shrink-0"></i> Message and assign tasks to your club managers/staff</li>
-                            <li class="flex items-start"><i class="fa-solid fa-plus text-brandAccent mr-2 mt-1 shrink-0"></i> Promotional Boosts — get your club featured across MatMaps</li>
-                            <li class="flex items-start"><i class="fa-solid fa-plus text-brandAccent mr-2 mt-1 shrink-0"></i> Detailed analytics on how many people view your club</li>
+                            <li class="flex items-start"><i
+                                    class="fa-solid fa-plus text-brandAccent mr-2 mt-1 shrink-0"></i> Full control of
+                                your club profile (photos, videos, description)</li>
+                            <li class="flex items-start"><i
+                                    class="fa-solid fa-plus text-brandAccent mr-2 mt-1 shrink-0"></i> Powerful Club
+                                Dashboard with full analytics matrix</li>
+                            <li class="flex items-start"><i
+                                    class="fa-solid fa-plus text-brandAccent mr-2 mt-1 shrink-0"></i> Create and manage
+                                unlimited events</li>
+                            <li class="flex items-start"><i
+                                    class="fa-solid fa-plus text-brandAccent mr-2 mt-1 shrink-0"></i> Post updates,
+                                offers, and announcements on Club Page & Live Arena</li>
+                            <li class="flex items-start"><i
+                                    class="fa-solid fa-plus text-brandAccent mr-2 mt-1 shrink-0"></i> Add club managers
+                                / staff with own logins</li>
+                            <li class="flex items-start"><i
+                                    class="fa-solid fa-plus text-brandAccent mr-2 mt-1 shrink-0"></i> Message and assign
+                                tasks to your club managers/staff</li>
+                            <li class="flex items-start"><i
+                                    class="fa-solid fa-plus text-brandAccent mr-2 mt-1 shrink-0"></i> Promotional Boosts
+                                — get your club featured across MatMaps</li>
+                            <li class="flex items-start"><i
+                                    class="fa-solid fa-plus text-brandAccent mr-2 mt-1 shrink-0"></i> Detailed analytics
+                                on how many people view your club</li>
                         </ul>
                     </div>
                     <div class="pt-6">
-                        <p class="text-[11px] text-gray-500 italic mb-4">Stop using 5 different apps. Manage your entire club. Run and grow like a pro.</p>
-                        <a href="admin/login.html" class="w-full bg-white/5 border border-white/10 hover:bg-white/10 text-white text-xs font-bold py-3 px-4 rounded-full flex items-center justify-center space-x-2 transition">
-                            <span>Get started</span> <i class="fa-solid fa-circle-arrow-right text-xs text-brandRed"></i>
+                        <p class="text-[11px] text-gray-500 italic mb-4">Stop using 5 different apps. Manage your entire
+                            club. Run and grow like a pro.</p>
+                        <a href="admin/login.html"
+                            class="w-full bg-white/5 border border-white/10 hover:bg-white/10 text-white text-xs font-bold py-3 px-4 rounded-full flex items-center justify-center space-x-2 transition">
+                            <span>Get started</span> <i
+                                class="fa-solid fa-circle-arrow-right text-xs text-brandRed"></i>
                         </a>
                     </div>
                 </div>
@@ -351,13 +500,17 @@
         </section>
 
         <!-- 6. DOWNLOAD SECTION -->
-        <section id="download" class="max-w-5xl mx-auto px-6 py-20 flex flex-col md:flex-row justify-between items-center gap-12 relative">
+        <section id="download"
+            class="max-w-5xl mx-auto px-6 py-20 flex flex-col md:flex-row justify-between items-center gap-12 relative">
             <div class="space-y-6 text-left max-w-xl">
-                <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight">The MatMaps mobile app <br>is now available</h2>
+                <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight">The MatMaps mobile app <br>is now
+                    available</h2>
                 <div class="flex flex-wrap gap-4 pt-2">
                     <div class="space-y-1">
-                        <span class="text-[10px] text-gray-500 font-medium uppercase tracking-wider block pl-1">for iOS</span>
-                        <button class="bg-[#121319] hover:bg-gray-900 border border-white/10 text-white rounded-xl px-4 py-2.5 flex items-center space-x-3 transition text-left focus:outline-none">
+                        <span class="text-[10px] text-gray-500 font-medium uppercase tracking-wider block pl-1">for
+                            iOS</span>
+                        <button
+                            class="bg-[#121319] hover:bg-gray-900 border border-white/10 text-white rounded-xl px-4 py-2.5 flex items-center space-x-3 transition text-left focus:outline-none">
                             <i class="fa-brands fa-apple text-xl"></i>
                             <div>
                                 <p class="text-[9px] text-gray-400 uppercase font-light">Download on the</p>
@@ -366,8 +519,10 @@
                         </button>
                     </div>
                     <div class="space-y-1">
-                        <span class="text-[10px] text-gray-500 font-medium uppercase tracking-wider block pl-1">for Android</span>
-                        <button class="bg-[#121319] hover:bg-gray-900 border border-white/10 text-white rounded-xl px-4 py-2.5 flex items-center space-x-3 transition text-left focus:outline-none">
+                        <span class="text-[10px] text-gray-500 font-medium uppercase tracking-wider block pl-1">for
+                            Android</span>
+                        <button
+                            class="bg-[#121319] hover:bg-gray-900 border border-white/10 text-white rounded-xl px-4 py-2.5 flex items-center space-x-3 transition text-left focus:outline-none">
                             <i class="fa-brands fa-google-play text-lg"></i>
                             <div>
                                 <p class="text-[9px] text-gray-400 uppercase font-light">Get it on</p>
@@ -380,24 +535,34 @@
 
             <!-- Right Zoom Animated Brand Logo -->
             <div class="w-64 h-64 md:w-80 md:h-80 flex items-center justify-center shrink-0">
-                <img src="assets/image/matMaps_logo.png" alt="MatMaps Official Logo" class="w-full h-full object-contain rounded-3xl border border-white/10 animate-zoom-logo">
+                <img src="assets/image/matMaps_logo.png" alt="MatMaps Official Logo"
+                    class="w-full h-full object-contain rounded-3xl border border-white/10 animate-zoom-logo">
             </div>
         </section>
 
     </div>
 
     <!-- 7. FOOTER SECTION -->
-    <footer class="border-t border-white/[0.04] bg-[#030304] px-6 md:px-16 py-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500 font-mono tracking-wide relative z-10">
+    <footer
+        class="border-t border-white/[0.04] bg-[#030304] px-6 md:px-16 py-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500 font-mono tracking-wide relative z-10">
         <div class="flex items-center space-x-4 flex-wrap justify-center gap-y-2">
             <img src="assets/image/matMaps_logo.png" alt="logo" class="h-8" />
             <div>
-                <span>Powered by</span> 
-                <span class="font-bold tracking-tight uppercase">MatMaps</span>
+                <span>Powered by</span>
+                <span class="font-bold tracking-tight uppercase">MatMaps.</span>
+                <span>Copyright © 2026 MatMaps. All rights reserved.</span>
             </div>
         </div>
         <div class="flex items-center space-x-6">
-            <a href="privacy-policy.html" class="hover:text-white transition flex items-center space-x-1.5"><i class="fa-solid fa-user-lock text-[10px]"></i> <span>Privacy Policy</span></a>
-            <a href="terms-of-use.html" class="hover:text-white transition flex items-center space-x-1.5"><i class="fa-solid fa-file-shield text-[10px]"></i> <span>Terms of Use</span></a>
+            <a href="privacy-policy.html" class="hover:text-white transition flex items-center space-x-1.5"><i
+                    class="fa-solid fa-user-lock text-[10px]"></i> <span>Privacy Policy</span></a>
+            <a href="terms-of-use.html" class="hover:text-white transition flex items-center space-x-1.5"><i
+                    class="fa-solid fa-file-shield text-[10px]"></i> <span>Terms of Use</span></a>
+        </div>
+        <div class="flex items-center space-x-6">
+            <div>
+                <span>Developed by <a href="#" class="hover:text-white transition">TechFiyer</a></span>
+            </div>
         </div>
     </footer>
 
@@ -409,37 +574,37 @@
 
         function updateProductSliderPipeline() {
             activeSlidesNodes.forEach((slide, index) => {
-                // স্লাইড পজিশন ক্যালকুলেশন
+                // Slide position calculation
                 let offset = index - slideIndexMatrix;
-                
-                // সার্কুলার লুপ ঠিক রাখার কন্ডিশন
+
+                // Condition for maintaining the circular loop
                 if (offset < -1) offset += totalSlidesCount;
                 if (offset > totalSlidesCount - 2) offset -= totalSlidesCount;
 
-                // মাঝখানের একটি বড়, ডানে ও বামে দুটি ছোট স্ক্রিন সেট করার আর্কিটেকচার
+                // An architecture featuring a large central screen and two smaller screens—one on the right and one on the left.
                 if (offset === 0) {
-                    // সেন্টার স্ক্রিন (সবচেয়ে বড় এবং ফোকাসড)
+                    // Center screen (largest and focused)
                     slide.style.opacity = "1";
                     slide.style.transform = "translateX(0px) scale(1.08)";
                     slide.style.zIndex = "20";
                     slide.style.pointerEvents = "auto";
                     slide.style.filter = "blur(0px)";
                 } else if (offset === 1) {
-                    // ডান পাশের স্ক্রিন (ছোট এবং হালকা ঝাপসা)
+                    // Right-hand screen (small and slightly blurry)
                     slide.style.opacity = "0.45";
                     slide.style.transform = "translateX(170px) scale(0.88)";
                     slide.style.zIndex = "10";
                     slide.style.pointerEvents = "none";
                     slide.style.filter = "blur(1px)";
                 } else if (offset === -1) {
-                    // বাম পাশের স্ক্রিন (ছোট এবং হালকা ঝাপসা)
+                    // Left-hand screen (small and slightly blurry)
                     slide.style.opacity = "0.45";
                     slide.style.transform = "translateX(-170px) scale(0.88)";
                     slide.style.zIndex = "10";
                     slide.style.pointerEvents = "none";
                     slide.style.filter = "blur(1px)";
                 } else {
-                    // বাকি অন্যান্য ব্যাক-এন্ড স্ক্রিনগুলো হাইড থাকবে
+                    // The remaining back-end screens will remain hidden.
                     slide.style.opacity = "0";
                     slide.style.transform = "translateX(0px) scale(0.7)";
                     slide.style.zIndex = "0";
@@ -453,10 +618,10 @@
             updateProductSliderPipeline();
         }
 
-        // ইনিশিয়াল লোড এক্সিকিউশন
+        // Initial load execution
         updateProductSliderPipeline();
 
-        // অটো স্লাইড ট্রিগার (প্রতি ৫ সেকেন্ড পর পর অটোমেটিক ঘুরবে)
+        // Auto-slide trigger (rotates automatically every 5 seconds)
         setInterval(() => {
             moveProductSlide(1);
         }, 5000);

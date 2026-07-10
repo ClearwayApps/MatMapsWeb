@@ -86,7 +86,7 @@
                     </a>
                 </nav>
             </div>
-            <div class="p-4 border-t border-gray-700">
+            <div class="p-4 border-t border-gray-700 flex items-center justify-between">
                 <div class="flex items-center space-x-3">
                     <div
                         class="w-9 h-9 bg-indigo-500 rounded-full flex items-center justify-center font-bold text-white">
@@ -96,6 +96,9 @@
                         <p class="text-xs text-gray-500">Admin User</p>
                     </div>
                 </div>
+                <button id="logoutBtn" class="text-gray-400 hover:text-rose-500 transition-colors p-2" title="Logout">
+                    <i class="fa-solid fa-right-from-bracket text-lg"></i>
+                </button>
             </div>
         </aside>
 
@@ -121,47 +124,70 @@
 
             <div class="p-6 space-y-8 max-w-7xl w-full mx-auto">
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                    <div
-                        class="bg-gray-900 border border-gray-800 p-5 rounded-xl flex items-center justify-between shadow-sm">
+                    <!-- Total Clubs Card -->
+                    <div onclick="window.location.href='clubs.html'"
+                        class="bg-gray-900 border border-gray-800 p-5 rounded-xl flex items-center justify-between shadow-sm cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:border-indigo-500/40 hover:shadow-lg hover:shadow-indigo-500/5">
                         <div>
                             <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Total Clubs</p>
                             <h3 id="statClubsCount" class="text-2xl font-bold mt-1 font-mono text-gray-100">...</h3>
+                            <p class="text-[11px] text-emerald-400 font-medium mt-1.5 flex items-center">
+                                <i class="fa-solid fa-circle-plus text-[9px] mr-1"></i>
+                                <span id="statClubsWeekly">0 added last week</span>
+                            </p>
                         </div>
                         <div
-                            class="w-10 h-10 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 rounded-lg flex items-center justify-center text-lg">
+                            class="w-10 h-10 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 rounded-lg flex items-center justify-center text-lg shrink-0">
                             <i class="fa-solid fa-map-pin"></i>
                         </div>
                     </div>
-                    <div
-                        class="bg-gray-900 border border-gray-800 p-5 rounded-xl flex items-center justify-between shadow-sm">
+
+                    <!-- Active Events Card -->
+                    <div onclick="window.location.href='events.html'"
+                        class="bg-gray-900 border border-gray-800 p-5 rounded-xl flex items-center justify-between shadow-sm cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:border-amber-500/40 hover:shadow-lg hover:shadow-amber-500/5">
                         <div>
                             <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Active Events</p>
                             <h3 id="statEventsCount" class="text-2xl font-bold mt-1 font-mono text-gray-100">...</h3>
+                            <p class="text-[11px] text-emerald-400 font-medium mt-1.5 flex items-center">
+                                <i class="fa-solid fa-circle-plus text-[9px] mr-1"></i>
+                                <span id="statEventsWeekly">0 added last week</span>
+                            </p>
                         </div>
                         <div
-                            class="w-10 h-10 bg-amber-500/10 border border-amber-500/20 text-amber-500 rounded-lg flex items-center justify-center text-lg">
+                            class="w-10 h-10 bg-amber-500/10 border border-amber-500/20 text-amber-500 rounded-lg flex items-center justify-center text-lg shrink-0">
                             <i class="fa-solid fa-calendar-days"></i>
                         </div>
                     </div>
-                    <div
-                        class="bg-gray-900 border border-gray-800 p-5 rounded-xl flex items-center justify-between shadow-sm">
+
+                    <!-- Total Posts Card -->
+                    <div onclick="window.location.href='posts-collections.html'"
+                        class="bg-gray-900 border border-gray-800 p-5 rounded-xl flex items-center justify-between shadow-sm cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:border-blue-500/40 hover:shadow-lg hover:shadow-blue-500/5">
                         <div>
                             <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Total Posts</p>
                             <h3 id="statPostsCount" class="text-2xl font-bold mt-1 font-mono text-gray-100">...</h3>
+                            <p class="text-[11px] text-emerald-400 font-medium mt-1.5 flex items-center">
+                                <i class="fa-solid fa-circle-plus text-[9px] mr-1"></i>
+                                <span id="statPostsWeekly">0 added last week</span>
+                            </p>
                         </div>
                         <div
-                            class="w-10 h-10 bg-blue-500/10 border border-blue-500/20 text-blue-400 rounded-lg flex items-center justify-center text-lg">
+                            class="w-10 h-10 bg-blue-500/10 border border-blue-500/20 text-blue-400 rounded-lg flex items-center justify-center text-lg shrink-0">
                             <i class="fa-solid fa-images"></i>
                         </div>
                     </div>
-                    <div
-                        class="bg-gray-900 border border-gray-800 p-5 rounded-xl flex items-center justify-between shadow-sm">
+
+                    <!-- Pending Reviews Card -->
+                    <div onclick="window.location.href='reviews.html'"
+                        class="bg-gray-900 border border-gray-800 p-5 rounded-xl flex items-center justify-between shadow-sm cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:border-rose-500/40 hover:shadow-lg hover:shadow-rose-500/5">
                         <div>
                             <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Pending Reviews</p>
                             <h3 id="statPendingCount" class="text-2xl font-bold mt-1 font-mono text-rose-500">...</h3>
+                            <p class="text-[11px] text-emerald-400 font-medium mt-1.5 flex items-center">
+                                <i class="fa-solid fa-circle-plus text-[9px] mr-1"></i>
+                                <span id="statPendingWeekly">0 added last week</span>
+                            </p>
                         </div>
                         <div
-                            class="w-10 h-10 bg-rose-500/10 border border-rose-500/20 text-rose-400 rounded-lg flex items-center justify-center text-lg">
+                            class="w-10 h-10 bg-rose-500/10 border border-rose-500/20 text-rose-400 rounded-lg flex items-center justify-center text-lg shrink-0">
                             <i class="fa-solid fa-comments"></i>
                         </div>
                     </div>
@@ -202,36 +228,77 @@
                         </div>
                     </div>
 
-                    <!-- Widget B: Database System Infrastructure Summary -->
+                    <!-- Widget B: Operational Verification Desk -->
                     <div
                         class="lg:col-span-2 bg-gray-900 border border-gray-800 rounded-xl p-6 shadow-sm flex flex-col justify-between">
                         <div>
-                            <h2 class="text-sm font-bold uppercase tracking-wider text-gray-400 mb-2 flex items-center">
-                                <i class="fa-solid fa-server mr-2 text-indigo-400"></i> System Infrastructure Summary
+                            <h2 class="text-sm font-bold uppercase tracking-wider text-gray-400 mb-3 flex items-center">
+                                <i class="fa-solid fa-server mr-2 text-indigo-400"></i> Operational Verification Desk
                             </h2>
-                            <p class="text-xs text-gray-500 leading-relaxed">Operational health telemetry mapped across
-                                active distributed content pipelines and cluster node managers.</p>
+                            <p class="text-xs text-gray-500 leading-relaxed mb-5">Live telemetry and request queues for
+                                incoming club credentials and user issues.</p>
 
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-5">
-                                <div
-                                    class="bg-gray-900/60 p-4 rounded-lg border border-gray-700/60 flex items-start space-x-3">
-                                    <div class="text-indigo-400 text-sm mt-0.5"><i class="fa-solid fa-database"></i>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                <!-- Club Claims Column -->
+                                <div onclick="window.location.href='clubs-claims.html'"
+                                    class="bg-gray-950/40 p-4 rounded-xl border border-gray-800/80 hover:border-indigo-500/30 hover:scale-[1.02] transition-all duration-300 cursor-pointer flex flex-col justify-between h-28">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-bold text-gray-300">Club Claims</span>
+                                        <div class="text-indigo-400 text-sm"><i class="fa-solid fa-passport"></i></div>
                                     </div>
-                                    <div>
-                                        <h4 class="text-xs font-bold text-gray-200">Storage Engine Status</h4>
-                                        <p class="text-[11px] text-emerald-400 font-mono mt-0.5"><i
-                                                class="fa-solid fa-circle-check text-[9px] mr-1"></i> HEALTHY /
-                                            OPTIMIZED</p>
+                                    <div class="mt-2">
+                                        <div class="flex justify-between items-baseline text-xs text-gray-500">
+                                            <span>Total:</span>
+                                            <span id="detailTotalClaims"
+                                                class="font-mono text-gray-300 font-bold">...</span>
+                                        </div>
+                                        <div class="flex justify-between items-baseline text-xs text-gray-500 mt-1">
+                                            <span>Pending:</span>
+                                            <span id="detailPendingClaims"
+                                                class="font-mono text-amber-500 font-bold">...</span>
+                                        </div>
                                     </div>
                                 </div>
-                                <div
-                                    class="bg-gray-900/60 p-4 rounded-lg border border-gray-700/60 flex items-start space-x-3">
-                                    <div class="text-amber-500 text-sm mt-0.5"><i
-                                            class="fa-solid fa-users-viewfinder"></i></div>
-                                    <div>
-                                        <h4 class="text-xs font-bold text-gray-200">Staff Control Node</h4>
-                                        <p class="text-[11px] text-gray-500 mt-0.5" id="statStaffSummaryText">Loading
-                                            operator metrics...</p>
+
+                                <!-- Support Tickets Column -->
+                                <div onclick="window.location.href='support-requests.html'"
+                                    class="bg-gray-950/40 p-4 rounded-xl border border-gray-800/80 hover:border-amber-500/30 hover:scale-[1.02] transition-all duration-300 cursor-pointer flex flex-col justify-between h-28">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-bold text-gray-300">Support Center</span>
+                                        <div class="text-amber-500 text-sm"><i class="fa-solid fa-headset"></i></div>
+                                    </div>
+                                    <div class="mt-2">
+                                        <div class="flex justify-between items-baseline text-xs text-gray-500">
+                                            <span>Tickets:</span>
+                                            <span id="detailTotalTickets"
+                                                class="font-mono text-gray-300 font-bold">...</span>
+                                        </div>
+                                        <div class="flex justify-between items-baseline text-xs text-gray-500 mt-1">
+                                            <span>Pending:</span>
+                                            <span id="detailPendingTickets"
+                                                class="font-mono text-rose-500 font-bold">...</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Staff Roles Column -->
+                                <div onclick="window.location.href='user-permissions.html'"
+                                    class="bg-gray-950/40 p-4 rounded-xl border border-gray-800/80 hover:border-blue-500/30 hover:scale-[1.02] transition-all duration-300 cursor-pointer flex flex-col justify-between h-28">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-bold text-gray-300">Roles Distribution</span>
+                                        <div class="text-blue-400 text-sm"><i class="fa-solid fa-users-gear"></i></div>
+                                    </div>
+                                    <div class="mt-2">
+                                        <div class="flex justify-between items-baseline text-xs text-gray-500">
+                                            <span>Owners:</span>
+                                            <span id="detailClubOwnersCount"
+                                                class="font-mono text-gray-300 font-bold">...</span>
+                                        </div>
+                                        <div class="flex justify-between items-baseline text-xs text-gray-500 mt-1">
+                                            <span>Athletes:</span>
+                                            <span id="detailAthletesCount"
+                                                class="font-mono text-blue-400 font-bold">...</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -239,9 +306,10 @@
                         <div
                             class="bg-gray-950/40 border border-gray-700/50 p-3 rounded-xl mt-4 flex items-center justify-between text-xs">
                             <span class="text-gray-400 font-medium"><i
-                                    class="fa-solid fa-shield-halved text-indigo-400 mr-1.5"></i> security protocol
-                                layer</span>
-                            <span class="text-gray-500 font-mono text-[10px]">RBAC Security Filter Active</span>
+                                    class="fa-solid fa-shield-halved text-indigo-400 mr-1.5"></i> administrative
+                                operations</span>
+                            <span class="text-gray-500 font-mono text-[10px]" id="statOperatorSummaryText">RBAC Security
+                                Filter Active</span>
                         </div>
                     </div>
                 </div>
@@ -274,10 +342,11 @@
     </div>
 
     <script src="./firebase-config.js"></script>
+    <script type="module" src="./notifications-manager.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, onSnapshot, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
         // 1. Firebase configuration setup (must come first)
         const firebaseConfig = window.FIREBASE_CONFIG || {};
@@ -300,6 +369,10 @@
             }
         });
 
+        document.getElementById('logoutBtn')?.addEventListener('click', () => {
+            signOut(auth).catch((error) => console.error("Sign out error:", error));
+        });
+
         //document.getElementById('mainBodyFramework').classList.remove('hidden');
 
         const statClubsCount = document.getElementById('statClubsCount');
@@ -309,43 +382,157 @@
         const statStaffSummaryText = document.getElementById('statStaffSummaryText');
         const dashboardReviewsContainer = document.getElementById('dashboardReviewsContainer');
 
+        // Weekly additions element hooks
+        const statClubsWeekly = document.getElementById('statClubsWeekly');
+        const statEventsWeekly = document.getElementById('statEventsWeekly');
+        const statPostsWeekly = document.getElementById('statPostsWeekly');
+        const statPendingWeekly = document.getElementById('statPendingWeekly');
+
+
+
+        // Helper to extract timestamp from Firestore document
+        function getDocTimestamp(docData) {
+            let ts = docData.createdTime || docData.created_time || docData.createdAt || docData.time_posted || docData.submittedAt || docData.timestamp;
+
+            // Fallback to eventDate for events
+            if (!ts && docData.eventDate) {
+                ts = docData.eventDate;
+            }
+
+            if (!ts) return 0;
+            if (ts.toDate) return ts.toDate().getTime();
+            if (ts.seconds) return ts.seconds * 1000;
+
+            const parsed = new Date(ts).getTime();
+            return isNaN(parsed) ? 0 : parsed;
+        }
+
+        // Helper to count recent weekly additions
+        function countWeeklyAdditions(snap) {
+            const oneWeekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+            let count = 0;
+            snap.forEach((docSnap) => {
+                const timestamp = getDocTimestamp(docSnap.data());
+                if (timestamp >= oneWeekAgo) {
+                    count++;
+                }
+            });
+            return count;
+        }
+
         // New mapped state fields reference elements hooks
         const detailActiveSubsCount = document.getElementById('detailActiveSubsCount');
         const detailTotalUsersCount = document.getElementById('detailTotalUsersCount');
 
-        onSnapshot(collection(db, "clubs"), (snap) => { statClubsCount.innerText = snap.size; });
-        onSnapshot(collection(db, "events"), (snap) => { statEventsCount.innerText = snap.size; });
-        onSnapshot(collection(db, "postCollection"), (snap) => { statPostsCount.innerText = snap.size; });
+        // Operational desk element hooks
+        const detailTotalClaims = document.getElementById('detailTotalClaims');
+        const detailPendingClaims = document.getElementById('detailPendingClaims');
+        const detailTotalTickets = document.getElementById('detailTotalTickets');
+        const detailPendingTickets = document.getElementById('detailPendingTickets');
+
+        onSnapshot(collection(db, "clubs"), (snap) => {
+            statClubsCount.innerText = snap.size;
+            statClubsWeekly.innerText = `${countWeeklyAdditions(snap)} added last week`;
+        });
+        onSnapshot(collection(db, "events"), (snap) => {
+            statEventsCount.innerText = snap.size;
+            statEventsWeekly.innerText = `${countWeeklyAdditions(snap)} added last week`;
+        });
+        onSnapshot(collection(db, "postCollection"), (snap) => {
+            statPostsCount.innerText = snap.size;
+            statPostsWeekly.innerText = `${countWeeklyAdditions(snap)} added last week`;
+        });
 
         // Mapped to "users" collection from database schema blueprints
         onSnapshot(collection(db, "users"), (snap) => {
             detailTotalUsersCount.innerText = snap.size;
-            statStaffSummaryText.innerText = `Currently tracking ${snap.size} database user profiles inside infrastructure clusters.`;
 
-            // Loop through snapshot records to calculate real premium subscriptionActive users count
+            // Loop through snapshot records to calculate active premium subscriptions and roles counts
             let activeSubsCounter = 0;
+            let clubOwnersCount = 0;
+            let athletesCount = 0;
+
             snap.forEach((userDoc) => {
                 const userData = userDoc.data();
                 if (userData.subscriptionActive === true || userData.subscriptionActive === "true") {
                     activeSubsCounter++;
                 }
+
+                const role = userData.membershipType || "";
+                if (role.toLowerCase() === "club_owner") {
+                    clubOwnersCount++;
+                } else if (role.toLowerCase() === "athlete") {
+                    athletesCount++;
+                }
             });
             detailActiveSubsCount.innerText = activeSubsCounter;
+
+            const detailClubOwnersCount = document.getElementById('detailClubOwnersCount');
+            const detailAthletesCount = document.getElementById('detailAthletesCount');
+            if (detailClubOwnersCount) detailClubOwnersCount.innerText = clubOwnersCount;
+            if (detailAthletesCount) detailAthletesCount.innerText = athletesCount;
+
+            const operatorSummaryText = document.getElementById('statOperatorSummaryText');
+            if (operatorSummaryText) {
+                operatorSummaryText.innerText = `Currently tracking ${snap.size} total user profiles across infrastructure clusters.`;
+            }
+        });
+
+        // Club claims real-time listener
+        onSnapshot(collection(db, "club_claims"), (snap) => {
+            let totalClaims = snap.size;
+            let pendingClaims = 0;
+            snap.forEach((docSnap) => {
+                const item = docSnap.data();
+                const status = item.status || 'pending';
+                if (status === 'pending') {
+                    pendingClaims++;
+                }
+            });
+            if (detailTotalClaims) detailTotalClaims.innerText = totalClaims;
+            if (detailPendingClaims) detailPendingClaims.innerText = pendingClaims;
+        });
+
+        // Support requests real-time listener
+        onSnapshot(collection(db, "support_requests"), (snap) => {
+            let totalTickets = snap.size;
+            let pendingTickets = 0;
+            snap.forEach((docSnap) => {
+                const item = docSnap.data();
+                const status = item.status || 'pending';
+                if (status === 'pending') {
+                    pendingTickets++;
+                }
+            });
+            if (detailTotalTickets) detailTotalTickets.innerText = totalTickets;
+            if (detailPendingTickets) detailPendingTickets.innerText = pendingTickets;
         });
 
         onSnapshot(collection(db, "reviews"), (snapshot) => {
             let pendingItemsList = [];
+            let weeklyCount = 0;
+            const oneWeekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+
             snapshot.forEach((docSnap) => {
                 const item = docSnap.data();
+
                 let calculatedStatus = 'pending';
                 if (item.isAproved === true) calculatedStatus = 'approved';
                 if (item.isAproved === 'trashed' || item.status === 'trashed') calculatedStatus = 'trashed';
                 if (calculatedStatus === 'pending') {
                     pendingItemsList.push({ id: docSnap.id, ...item });
                 }
+
+                // Count reviews added in the last week
+                const timestamp = getDocTimestamp(item);
+                if (timestamp >= oneWeekAgo) {
+                    weeklyCount++;
+                }
             });
 
             statPendingCount.innerText = pendingItemsList.length;
+            statPendingWeekly.innerText = `${weeklyCount} added last week`;
+
             pendingItemsList.sort((a, b) => {
                 let timeA = a.createdTime ? (a.createdTime.toDate ? a.createdTime.toDate().getTime() : new Date(a.createdTime).getTime()) : 0;
                 let timeB = b.createdTime ? (b.createdTime.toDate ? b.createdTime.toDate().getTime() : new Date(b.createdTime).getTime()) : 0;
@@ -425,6 +612,8 @@
                 });
             });
         }
+
+
 
         const openSidebarBtn = document.getElementById('openSidebar');
         const closeSidebarBtn = document.getElementById('closeSidebar');
