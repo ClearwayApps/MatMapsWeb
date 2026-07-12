@@ -138,10 +138,21 @@
                                 monitor expiry pipelines and track registration timestamps.</p>
                         </div>
 
-                        <div class="relative w-full sm:w-64">
-                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1 text-gray-500 text-sm"></i>
-                            <input type="text" placeholder="Search by name or email..." id="searchOperator"
-                                class="w-full bg-gray-950 border border-gray-800 rounded-lg pl-9 pr-3 py-1.5 text-xs focus:outline-none focus:border-indigo-500">
+                        <div class="flex flex-wrap items-center space-x-3 gap-y-2 w-full sm:w-auto justify-end">
+                            <div class="relative">
+                                <select id="membershipFilter"
+                                    class="bg-gray-950 border border-gray-800 rounded-lg px-3 py-1.5 text-xs font-semibold focus:outline-none focus:border-indigo-500 text-gray-300 cursor-pointer">
+                                    <option value="all" selected>All Memberships</option>
+                                    <option value="free_membership">Free Membership</option>
+                                    <option value="athlete">Athletes</option>
+                                    <option value="club_owner">Club Owner</option>
+                                </select>
+                            </div>
+                            <div class="relative w-full sm:w-64">
+                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1.5 text-gray-500 text-xs"></i>
+                                <input type="text" placeholder="Search by name or email..." id="searchOperator"
+                                    class="w-full bg-gray-950 border border-gray-800 rounded-lg pl-9 pr-3 py-1.5 text-xs focus:outline-none focus:border-indigo-500">
+                            </div>
                         </div>
                     </div>
 
@@ -226,6 +237,7 @@
 
         const tableBody = document.getElementById('operatorsTableBody');
         const searchInput = document.getElementById('searchOperator');
+        const membershipFilter = document.getElementById('membershipFilter');
 
         const itemsPerPage = 10;
         let currentPage = 1;
@@ -236,6 +248,15 @@
         const paginationStatusText = document.getElementById('paginationStatusText');
         const prevPageBtn = document.getElementById('prevPageBtn');
         const nextPageBtn = document.getElementById('nextPageBtn');
+
+        function getUserTimestamp(user) {
+            let ts = user.created_time || user.createdTime || user.createdAt || user.timestamp;
+            if (!ts) return 0;
+            if (ts.toDate) return ts.toDate().getTime();
+            if (ts.seconds) return ts.seconds * 1000;
+            const parsed = new Date(ts).getTime();
+            return isNaN(parsed) ? 0 : parsed;
+        }
 
         // Real-time listener (users collection sync)
         const q = query(collection(db, "users"));
@@ -248,16 +269,40 @@
                     ...docSnap.data()
                 });
             });
+
+            // Sort users by created time descending (last added first at top)
+            allOperators.sort((a, b) => {
+                let timeA = getUserTimestamp(a);
+                let timeB = getUserTimestamp(b);
+                if (timeA === 0 && timeB === 0) {
+                    return b.id.localeCompare(a.id);
+                }
+                return timeB - timeA;
+            });
+
             filterAndRender();
         });
 
         function filterAndRender() {
             const keyword = searchInput ? searchInput.value.toLowerCase().trim() : "";
+            const filterVal = membershipFilter ? membershipFilter.value : "all";
 
             filteredOperators = allOperators.filter(user => {
                 const nameMatch = user.display_name ? user.display_name.toLowerCase().includes(keyword) : false;
                 const emailMatch = user.email ? user.email.toLowerCase().includes(keyword) : false;
-                return nameMatch || emailMatch;
+                const matchesKeyword = nameMatch || emailMatch;
+
+                const mType = (user.membershipType || "free_membership").toLowerCase();
+                let matchesFilter = true;
+                if (filterVal !== "all") {
+                    if (filterVal === "free_membership") {
+                        matchesFilter = (mType !== "club_owner" && mType !== "athlete");
+                    } else {
+                        matchesFilter = (mType === filterVal);
+                    }
+                }
+
+                return matchesKeyword && matchesFilter;
             });
 
             const totalItems = filteredOperators.length;
@@ -309,9 +354,10 @@
                     }
                 }
 
+                let expiryDateVal = user.subscriptionExpireDate || user.subscriptionExpiryDate;
                 let expiryDateStr = "Never";
-                if (user.subscriptionExpiryDate) {
-                    const expObj = user.subscriptionExpiryDate.toDate ? user.subscriptionExpiryDate.toDate() : new Date(user.subscriptionExpiryDate);
+                if (expiryDateVal) {
+                    const expObj = expiryDateVal.toDate ? expiryDateVal.toDate() : new Date(expiryDateVal);
                     if (!isNaN(expObj.getTime())) {
                         expiryDateStr = expObj.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
                     }
@@ -438,6 +484,11 @@
                 });
             });
         }
+
+        membershipFilter?.addEventListener('change', () => {
+            currentPage = 1;
+            filterAndRender();
+        });
 
         if (searchInput) {
             searchInput.addEventListener('input', () => {
