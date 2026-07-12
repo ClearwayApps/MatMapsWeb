@@ -349,7 +349,7 @@
     <script type="module" src="./notifications-manager.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, query, orderBy, limit, startAfter, getDocs, doc, updateDoc, deleteDoc, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, onSnapshot, doc, updateDoc, deleteDoc, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
         const firebaseConfig = window.FIREBASE_CONFIG || {};
@@ -390,8 +390,8 @@
 
         const itemsPerPage = 20;
         let currentPage = 1;
-        let displayedClubs = [];
-        let pageHistoryDocs = [null];
+        let allClubsList = [];
+        let filteredClubsList = [];
         
         // Active Sport Tags Array
         let currentSportsTags = [];
@@ -424,49 +424,20 @@
             tagContainer.insertBefore(tagEl, tagInput);
         }
 
-        async function fetchClubsFromServerPipeline() {
-            tableBody.innerHTML = `
-                <tr id="tableLoaderRow">
-                    <td colspan="5" class="px-6 py-16 text-center">
-                        <div class="flex flex-col items-center justify-center space-y-3">
-                            <div class="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-                            <p class="text-xs text-gray-500 tracking-wider">Querying next clubs from Firestore server...</p>
-                        </div>
-                    </td>
-                </tr>`;
-
-            try {
-                const clubsCollectionRef = collection(db, "clubs");
-                let clubsQuery;
-                const startDoc = pageHistoryDocs[currentPage - 1];
-
-                if (startDoc) {
-                    clubsQuery = query(clubsCollectionRef, orderBy("name", "asc"), startAfter(startDoc), limit(itemsPerPage));
-                } else {
-                    clubsQuery = query(clubsCollectionRef, orderBy("name", "asc"), limit(itemsPerPage));
-                }
-
-                const querySnapshot = await getDocs(clubsQuery);
-                displayedClubs = [];
-
-                querySnapshot.forEach((docSnap) => {
-                    displayedClubs.push({
-                        id: docSnap.id,
-                        ...docSnap.data()
-                    });
+        // Real-time collection stream subscription to query all documents
+        onSnapshot(collection(db, "clubs"), (snapshot) => {
+            allClubsList = [];
+            snapshot.forEach((docSnap) => {
+                allClubsList.push({
+                    ...docSnap.data(),
+                    id: docSnap.id // Overwrite any internal id field to align with Firestore doc ID
                 });
-
-                if (querySnapshot.docs.length > 0) {
-                    const lastVisibleDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
-                    pageHistoryDocs[currentPage] = lastVisibleDoc;
-                }
-
-                executeRenderingPipeline();
-            } catch (error) {
-                console.error("Server-side pagination crashed: ", error);
-                tableBody.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-rose-500">Failed to sync data from server.</td></tr>`;
-            }
-        }
+            });
+            executeRenderingPipeline();
+        }, (error) => {
+            console.error("Failed to sync clubs from Firestore: ", error);
+            tableBody.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-rose-500">Failed to sync data from server.</td></tr>`;
+        });
 
         function isClubActiveValue(club) {
             return club?.isActive === true || club?.isActive === 'true' || club?.status === 'active' || club?.status === true;
@@ -481,7 +452,7 @@
             const statusFilterVal = statusClubsFilter ? statusClubsFilter.value : "all";
             const verifyFilterVal = verifyClubsFilter ? verifyClubsFilter.value : "all";
 
-            let sortedClubs = [...displayedClubs].sort((a, b) => {
+            let sortedClubs = [...allClubsList].sort((a, b) => {
                 let tsA = a.createdTime || a.created_time || 0;
                 let tsB = b.createdTime || b.created_time || 0;
                 let timeA = tsA ? (tsA.toDate ? tsA.toDate().getTime() : new Date(tsA).getTime()) : 0;
@@ -493,7 +464,7 @@
                 return orderDirection === "desc" ? timeB - timeA : timeA - timeB;
             });
 
-            let filtered = sortedClubs.filter(club => {
+            filteredClubsList = sortedClubs.filter(club => {
                 const nameMatch = club.name ? club.name.toLowerCase().includes(keyword) : false;
                 const cityMatch = club.city ? club.city.toLowerCase().includes(keyword) : false;
 
@@ -516,18 +487,26 @@
                 return matchesKeyword && matchesStatus && matchesVerify;
             });
 
-            renderTable(filtered);
+            const totalEntries = filteredClubsList.length;
+            const totalPages = Math.ceil(totalEntries / itemsPerPage) || 1;
+
+            if (currentPage > totalPages) currentPage = totalPages;
+            if (currentPage < 1) currentPage = 1;
+
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = Math.min(startIndex + itemsPerPage, totalEntries);
+            const paginatedList = filteredClubsList.slice(startIndex, endIndex);
+
+            renderTable(paginatedList);
 
             if (paginationFooter) {
-                const startEntry = ((currentPage - 1) * itemsPerPage) + 1;
-                const endEntry = startEntry + filtered.length - 1;
-
-                paginationStatusText.innerText = filtered.length > 0
-                    ? `Showing ${startEntry}-${endEntry} entries (Server Paginated Page ${currentPage})`
-                    : "No matching entries found on this page.";
+                const startEntry = totalEntries > 0 ? startIndex + 1 : 0;
+                paginationStatusText.innerText = totalEntries > 0
+                    ? `Showing ${startEntry}-${endIndex} of ${totalEntries} entries`
+                    : "No matching entries found.";
 
                 if (prevPageBtn) prevPageBtn.disabled = (currentPage === 1);
-                if (nextPageBtn) nextPageBtn.disabled = (displayedClubs.length < itemsPerPage);
+                if (nextPageBtn) nextPageBtn.disabled = (currentPage === totalPages);
             }
         }
 
@@ -611,7 +590,7 @@
             document.querySelectorAll('.btn-trigger-subpage').forEach(rowText => {
                 rowText.addEventListener('click', (e) => {
                     const selectedClubId = rowText.getAttribute('data-id');
-                    const targetClubObj = displayedClubs.find(item => item.id === selectedClubId);
+                    const targetClubObj = allClubsList.find(item => item.id === selectedClubId);
 
                     if (targetClubObj) {
                         document.getElementById('detailClubName').innerText = targetClubObj.name || "N/A";
@@ -764,7 +743,6 @@
                 
                 addClubModal.classList.add('hidden');
                 alert("New club successfully registered!");
-                fetchClubsFromServerPipeline();
             } catch (err) {
                 console.error("Manual injection exception caught: ", err);
                 alert("Error adding club.");
@@ -791,14 +769,15 @@
         prevPageBtn?.addEventListener('click', () => {
             if (currentPage > 1) {
                 currentPage--;
-                fetchClubsFromServerPipeline();
+                executeRenderingPipeline();
             }
         });
 
         nextPageBtn?.addEventListener('click', () => {
-            if (displayedClubs.length === itemsPerPage) {
+            const totalPages = Math.ceil(filteredClubsList.length / itemsPerPage) || 1;
+            if (currentPage < totalPages) {
                 currentPage++;
-                fetchClubsFromServerPipeline();
+                executeRenderingPipeline();
             }
         });
 
@@ -812,7 +791,6 @@
                         try {
                             await deleteDoc(doc(db, "clubs", docId));
                             alert("Club successfully removed from registry.");
-                            fetchClubsFromServerPipeline();
                         } catch (error) {
                             console.error("Error purging document: ", error);
                         }
@@ -820,8 +798,6 @@
                 });
             });
         }
-
-        fetchClubsFromServerPipeline();
 
         const openSidebarBtn = document.getElementById('openSidebar');
         const closeSidebarBtn = document.getElementById('closeSidebar');

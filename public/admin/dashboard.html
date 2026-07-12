@@ -130,6 +130,12 @@
                         <div>
                             <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Total Clubs</p>
                             <h3 id="statClubsCount" class="text-2xl font-bold mt-1 font-mono text-gray-100">...</h3>
+                            <div class="flex space-x-3 text-[11px] text-gray-400 mt-1 font-mono">
+                                <span>Active: <strong id="statClubsActiveCount"
+                                        class="text-emerald-400">0</strong></span>
+                                <span>Inactive: <strong id="statClubsInactiveCount"
+                                        class="text-rose-400">0</strong></span>
+                            </div>
                             <p class="text-[11px] text-emerald-400 font-medium mt-1.5 flex items-center">
                                 <i class="fa-solid fa-circle-plus text-[9px] mr-1"></i>
                                 <span id="statClubsWeekly">0 added last week</span>
@@ -141,12 +147,18 @@
                         </div>
                     </div>
 
-                    <!-- Active Events Card -->
+                    <!-- Total Events Card -->
                     <div onclick="window.location.href='events.html'"
                         class="bg-gray-900 border border-gray-800 p-5 rounded-xl flex items-center justify-between shadow-sm cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:border-amber-500/40 hover:shadow-lg hover:shadow-amber-500/5">
                         <div>
-                            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Active Events</p>
+                            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Total Events</p>
                             <h3 id="statEventsCount" class="text-2xl font-bold mt-1 font-mono text-gray-100">...</h3>
+                            <div class="flex space-x-3 text-[11px] text-gray-400 mt-1 font-mono">
+                                <span>Active: <strong id="statEventsActiveCount"
+                                        class="text-emerald-400">0</strong></span>
+                                <span>Inactive: <strong id="statEventsInactiveCount"
+                                        class="text-rose-400">0</strong></span>
+                            </div>
                             <p class="text-[11px] text-emerald-400 font-medium mt-1.5 flex items-center">
                                 <i class="fa-solid fa-circle-plus text-[9px] mr-1"></i>
                                 <span id="statEventsWeekly">0 added last week</span>
@@ -164,6 +176,12 @@
                         <div>
                             <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Total Posts</p>
                             <h3 id="statPostsCount" class="text-2xl font-bold mt-1 font-mono text-gray-100">...</h3>
+                            <div class="flex space-x-3 text-[11px] text-gray-400 mt-1 font-mono">
+                                <span>Approved: <strong id="statPostsApprovedCount"
+                                        class="text-emerald-400">0</strong></span>
+                                <span>Pending: <strong id="statPostsPendingCount"
+                                        class="text-rose-400">0</strong></span>
+                            </div>
                             <p class="text-[11px] text-emerald-400 font-medium mt-1.5 flex items-center">
                                 <i class="fa-solid fa-circle-plus text-[9px] mr-1"></i>
                                 <span id="statPostsWeekly">0 added last week</span>
@@ -175,12 +193,18 @@
                         </div>
                     </div>
 
-                    <!-- Pending Reviews Card -->
+                    <!-- Total Reviews Card -->
                     <div onclick="window.location.href='reviews.html'"
                         class="bg-gray-900 border border-gray-800 p-5 rounded-xl flex items-center justify-between shadow-sm cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:border-rose-500/40 hover:shadow-lg hover:shadow-rose-500/5">
                         <div>
-                            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Pending Reviews</p>
-                            <h3 id="statPendingCount" class="text-2xl font-bold mt-1 font-mono text-rose-500">...</h3>
+                            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Total Reviews</p>
+                            <h3 id="statPendingCount" class="text-2xl font-bold mt-1 font-mono text-gray-100">...</h3>
+                            <div class="flex space-x-3 text-[11px] text-gray-400 mt-1 font-mono">
+                                <span>Approved: <strong id="statReviewsApprovedCount"
+                                        class="text-emerald-400">0</strong></span>
+                                <span>Pending: <strong id="statReviewsPendingCount"
+                                        class="text-rose-400">0</strong></span>
+                            </div>
                             <p class="text-[11px] text-emerald-400 font-medium mt-1.5 flex items-center">
                                 <i class="fa-solid fa-circle-plus text-[9px] mr-1"></i>
                                 <span id="statPendingWeekly">0 added last week</span>
@@ -241,7 +265,7 @@
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                 <!-- Club Claims Column -->
                                 <div onclick="window.location.href='clubs-claims.html'"
-                                    class="bg-gray-950/40 p-4 rounded-xl border border-gray-800/80 hover:border-indigo-500/30 hover:scale-[1.02] transition-all duration-300 cursor-pointer flex flex-col justify-between h-28">
+                                    class="bg-gray-950/40 p-4 rounded-xl border border-gray-800/80 hover:border-indigo-500/30 hover:scale-[1.02] transition-all duration-300 cursor-pointer flex flex-col justify-between min-h-[130px]">
                                     <div class="flex items-center justify-between">
                                         <span class="text-xs font-bold text-gray-300">Club Claims</span>
                                         <div class="text-indigo-400 text-sm"><i class="fa-solid fa-passport"></i></div>
@@ -257,12 +281,17 @@
                                             <span id="detailPendingClaims"
                                                 class="font-mono text-amber-500 font-bold">...</span>
                                         </div>
+                                        <div class="flex justify-between items-baseline text-xs text-gray-500 mt-1">
+                                            <span>Approved:</span>
+                                            <span id="detailApprovedClaims"
+                                                class="font-mono text-emerald-400 font-bold">...</span>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <!-- Support Tickets Column -->
                                 <div onclick="window.location.href='support-requests.html'"
-                                    class="bg-gray-950/40 p-4 rounded-xl border border-gray-800/80 hover:border-amber-500/30 hover:scale-[1.02] transition-all duration-300 cursor-pointer flex flex-col justify-between h-28">
+                                    class="bg-gray-950/40 p-4 rounded-xl border border-gray-800/80 hover:border-amber-500/30 hover:scale-[1.02] transition-all duration-300 cursor-pointer flex flex-col justify-between min-h-[130px]">
                                     <div class="flex items-center justify-between">
                                         <span class="text-xs font-bold text-gray-300">Support Center</span>
                                         <div class="text-amber-500 text-sm"><i class="fa-solid fa-headset"></i></div>
@@ -278,21 +307,31 @@
                                             <span id="detailPendingTickets"
                                                 class="font-mono text-rose-500 font-bold">...</span>
                                         </div>
+                                        <div class="flex justify-between items-baseline text-xs text-gray-500 mt-1">
+                                            <span>Approved:</span>
+                                            <span id="detailApprovedTickets"
+                                                class="font-mono text-emerald-400 font-bold">...</span>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <!-- Staff Roles Column -->
                                 <div onclick="window.location.href='user-permissions.html'"
-                                    class="bg-gray-950/40 p-4 rounded-xl border border-gray-800/80 hover:border-blue-500/30 hover:scale-[1.02] transition-all duration-300 cursor-pointer flex flex-col justify-between h-28">
+                                    class="bg-gray-950/40 p-4 rounded-xl border border-gray-800/80 hover:border-blue-500/30 hover:scale-[1.02] transition-all duration-300 cursor-pointer flex flex-col justify-between min-h-[130px]">
                                     <div class="flex items-center justify-between">
                                         <span class="text-xs font-bold text-gray-300">Roles Distribution</span>
                                         <div class="text-blue-400 text-sm"><i class="fa-solid fa-users-gear"></i></div>
                                     </div>
                                     <div class="mt-2">
                                         <div class="flex justify-between items-baseline text-xs text-gray-500">
-                                            <span>Owners:</span>
+                                            <span>Free Users:</span>
+                                            <span id="detailFreeUsersCount"
+                                                class="font-mono text-emerald-400 font-bold">...</span>
+                                        </div>
+                                        <div class="flex justify-between items-baseline text-xs text-gray-500 mt-1">
+                                            <span>Club Owners:</span>
                                             <span id="detailClubOwnersCount"
-                                                class="font-mono text-gray-300 font-bold">...</span>
+                                                class="font-mono text-amber-500 font-bold">...</span>
                                         </div>
                                         <div class="flex justify-between items-baseline text-xs text-gray-500 mt-1">
                                             <span>Athletes:</span>
@@ -387,6 +426,14 @@
         const statEventsWeekly = document.getElementById('statEventsWeekly');
         const statPostsWeekly = document.getElementById('statPostsWeekly');
         const statPendingWeekly = document.getElementById('statPendingWeekly');
+        const statClubsActiveCount = document.getElementById('statClubsActiveCount');
+        const statClubsInactiveCount = document.getElementById('statClubsInactiveCount');
+        const statEventsActiveCount = document.getElementById('statEventsActiveCount');
+        const statEventsInactiveCount = document.getElementById('statEventsInactiveCount');
+        const statPostsApprovedCount = document.getElementById('statPostsApprovedCount');
+        const statPostsPendingCount = document.getElementById('statPostsPendingCount');
+        const statReviewsApprovedCount = document.getElementById('statReviewsApprovedCount');
+        const statReviewsPendingCount = document.getElementById('statReviewsPendingCount');
 
 
 
@@ -427,20 +474,75 @@
         // Operational desk element hooks
         const detailTotalClaims = document.getElementById('detailTotalClaims');
         const detailPendingClaims = document.getElementById('detailPendingClaims');
+        const detailApprovedClaims = document.getElementById('detailApprovedClaims');
         const detailTotalTickets = document.getElementById('detailTotalTickets');
         const detailPendingTickets = document.getElementById('detailPendingTickets');
+        const detailApprovedTickets = document.getElementById('detailApprovedTickets');
+        const detailFreeUsersCount = document.getElementById('detailFreeUsersCount');
+        const detailClubOwnersCount = document.getElementById('detailClubOwnersCount');
+        const detailAthletesCount = document.getElementById('detailAthletesCount');
 
         onSnapshot(collection(db, "clubs"), (snap) => {
             statClubsCount.innerText = snap.size;
             statClubsWeekly.innerText = `${countWeeklyAdditions(snap)} added last week`;
+
+            let activeClubs = 0;
+            let inactiveClubs = 0;
+            snap.forEach((doc) => {
+                const club = doc.data();
+                const isActive = club.isActive === true || club.isActive === 'true' || club.status === 'active' || club.status === true;
+                if (isActive) {
+                    activeClubs++;
+                } else {
+                    inactiveClubs++;
+                }
+            });
+            if (statClubsActiveCount) statClubsActiveCount.innerText = activeClubs;
+            if (statClubsInactiveCount) statClubsInactiveCount.innerText = inactiveClubs;
         });
         onSnapshot(collection(db, "events"), (snap) => {
             statEventsCount.innerText = snap.size;
             statEventsWeekly.innerText = `${countWeeklyAdditions(snap)} added last week`;
+
+            let activeEvents = 0;
+            let inactiveEvents = 0;
+            snap.forEach((doc) => {
+                const event = doc.data();
+                const isActive = event.isActive === true || event.isActive === 'true' || event.status === 'active' || event.status === true;
+                if (isActive) {
+                    activeEvents++;
+                } else {
+                    inactiveEvents++;
+                }
+            });
+            if (statEventsActiveCount) statEventsActiveCount.innerText = activeEvents;
+            if (statEventsInactiveCount) statEventsInactiveCount.innerText = inactiveEvents;
         });
         onSnapshot(collection(db, "postCollection"), (snap) => {
             statPostsCount.innerText = snap.size;
             statPostsWeekly.innerText = `${countWeeklyAdditions(snap)} added last week`;
+
+            let approvedPosts = 0;
+            let pendingPosts = 0;
+            snap.forEach((doc) => {
+                const item = doc.data();
+                let calculatedStatus = 'pending';
+                if (item.isDelete === true || item.isDelete === "true") {
+                    calculatedStatus = 'trashed';
+                } else if (item.isActive === true || item.isActive === "true") {
+                    calculatedStatus = 'approved';
+                } else if (item.isActive === false || item.isActive === "false") {
+                    calculatedStatus = 'pending';
+                }
+
+                if (calculatedStatus === 'approved') {
+                    approvedPosts++;
+                } else if (calculatedStatus === 'pending') {
+                    pendingPosts++;
+                }
+            });
+            if (statPostsApprovedCount) statPostsApprovedCount.innerText = approvedPosts;
+            if (statPostsPendingCount) statPostsPendingCount.innerText = pendingPosts;
         });
 
         // Mapped to "users" collection from database schema blueprints
@@ -451,6 +553,7 @@
             let activeSubsCounter = 0;
             let clubOwnersCount = 0;
             let athletesCount = 0;
+            let freeUsersCount = 0;
 
             snap.forEach((userDoc) => {
                 const userData = userDoc.data();
@@ -458,17 +561,17 @@
                     activeSubsCounter++;
                 }
 
-                const role = userData.membershipType || "";
-                if (role.toLowerCase() === "club_owner") {
+                const role = (userData.membershipType || "free_membership").toLowerCase();
+                if (role === "club_owner") {
                     clubOwnersCount++;
-                } else if (role.toLowerCase() === "athlete") {
+                } else if (role === "athlete") {
                     athletesCount++;
+                } else {
+                    freeUsersCount++;
                 }
             });
-            detailActiveSubsCount.innerText = activeSubsCounter;
-
-            const detailClubOwnersCount = document.getElementById('detailClubOwnersCount');
-            const detailAthletesCount = document.getElementById('detailAthletesCount');
+            if (detailActiveSubsCount) detailActiveSubsCount.innerText = activeSubsCounter;
+            if (detailFreeUsersCount) detailFreeUsersCount.innerText = freeUsersCount;
             if (detailClubOwnersCount) detailClubOwnersCount.innerText = clubOwnersCount;
             if (detailAthletesCount) detailAthletesCount.innerText = athletesCount;
 
@@ -482,30 +585,38 @@
         onSnapshot(collection(db, "club_claims"), (snap) => {
             let totalClaims = snap.size;
             let pendingClaims = 0;
+            let approvedClaims = 0;
             snap.forEach((docSnap) => {
                 const item = docSnap.data();
                 const status = item.status || 'pending';
                 if (status === 'pending') {
                     pendingClaims++;
+                } else if (status === 'approved') {
+                    approvedClaims++;
                 }
             });
             if (detailTotalClaims) detailTotalClaims.innerText = totalClaims;
             if (detailPendingClaims) detailPendingClaims.innerText = pendingClaims;
+            if (detailApprovedClaims) detailApprovedClaims.innerText = approvedClaims;
         });
 
         // Support requests real-time listener
         onSnapshot(collection(db, "support_requests"), (snap) => {
             let totalTickets = snap.size;
             let pendingTickets = 0;
+            let approvedTickets = 0;
             snap.forEach((docSnap) => {
                 const item = docSnap.data();
                 const status = item.status || 'pending';
                 if (status === 'pending') {
                     pendingTickets++;
+                } else if (status === 'approved') {
+                    approvedTickets++;
                 }
             });
             if (detailTotalTickets) detailTotalTickets.innerText = totalTickets;
             if (detailPendingTickets) detailPendingTickets.innerText = pendingTickets;
+            if (detailApprovedTickets) detailApprovedTickets.innerText = approvedTickets;
         });
 
         onSnapshot(collection(db, "reviews"), (snapshot) => {
@@ -513,14 +624,21 @@
             let weeklyCount = 0;
             const oneWeekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
 
+            let approvedReviews = 0;
+            let pendingReviews = 0;
+
             snapshot.forEach((docSnap) => {
                 const item = docSnap.data();
 
                 let calculatedStatus = 'pending';
                 if (item.isAproved === true) calculatedStatus = 'approved';
                 if (item.isAproved === 'trashed' || item.status === 'trashed') calculatedStatus = 'trashed';
+
                 if (calculatedStatus === 'pending') {
                     pendingItemsList.push({ id: docSnap.id, ...item });
+                    pendingReviews++;
+                } else if (calculatedStatus === 'approved') {
+                    approvedReviews++;
                 }
 
                 // Count reviews added in the last week
@@ -530,8 +648,10 @@
                 }
             });
 
-            statPendingCount.innerText = pendingItemsList.length;
+            statPendingCount.innerText = snapshot.size;
             statPendingWeekly.innerText = `${weeklyCount} added last week`;
+            if (statReviewsApprovedCount) statReviewsApprovedCount.innerText = approvedReviews;
+            if (statReviewsPendingCount) statReviewsPendingCount.innerText = pendingReviews;
 
             pendingItemsList.sort((a, b) => {
                 let timeA = a.createdTime ? (a.createdTime.toDate ? a.createdTime.toDate().getTime() : new Date(a.createdTime).getTime()) : 0;

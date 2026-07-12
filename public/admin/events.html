@@ -138,10 +138,27 @@
                                 tier indicators, and event lists.</p>
                         </div>
 
-                        <div class="relative w-full sm:w-64">
-                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1 text-gray-500 text-sm"></i>
-                            <input type="text" placeholder="Search by event name or type..." id="searchEvent"
-                                class="w-full bg-gray-950 border border-gray-800 rounded-lg pl-9 pr-3 py-1.5 text-xs focus:outline-none focus:border-indigo-500">
+                        <div class="flex flex-wrap items-center space-x-3 gap-y-2 w-full sm:w-auto justify-end">
+                            <div class="relative">
+                                <select id="statusEventsFilter"
+                                    class="bg-gray-950 border border-gray-800 rounded-lg px-3 py-1.5 text-xs font-semibold focus:outline-none focus:border-indigo-500 text-gray-300 cursor-pointer">
+                                    <option value="all" selected>All Status</option>
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                </select>
+                            </div>
+                            <div class="relative">
+                                <select id="sortEventsFilter"
+                                    class="bg-gray-950 border border-gray-800 rounded-lg px-3 py-1.5 text-xs font-semibold focus:outline-none focus:border-indigo-500 text-gray-300 cursor-pointer">
+                                    <option value="desc" selected>Last Added (Newest)</option>
+                                    <option value="asc">First Added (Oldest)</option>
+                                </select>
+                            </div>
+                            <div class="relative w-full sm:w-64">
+                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1.5 text-gray-500 text-xs"></i>
+                                <input type="text" placeholder="Search by event name or type..." id="searchEvent"
+                                    class="w-full bg-gray-950 border border-gray-800 rounded-lg pl-9 pr-3 py-1.5 text-xs focus:outline-none focus:border-indigo-500">
+                            </div>
                         </div>
                     </div>
 
@@ -458,6 +475,8 @@
         const paginationStatusText = document.getElementById('paginationStatusText');
         const prevPageBtn = document.getElementById('prevPageBtn');
         const nextPageBtn = document.getElementById('nextPageBtn');
+        const statusEventsFilter = document.getElementById('statusEventsFilter');
+        const sortEventsFilter = document.getElementById('sortEventsFilter');
 
         // sub-page navigation elements mapping
         const eventsMainListView = document.getElementById('eventsMainListView');
@@ -530,14 +549,46 @@
             filterAndRender();
         });
 
+        function getEventTimestamp(event) {
+            let ts = event.createdTime || event.created_time || event.createdAt || event.timestamp;
+            if (!ts && event.eventDate) {
+                ts = event.eventDate;
+            }
+            if (!ts) return 0;
+            if (ts.toDate) return ts.toDate().getTime();
+            if (ts.seconds) return ts.seconds * 1000;
+            const parsed = new Date(ts).getTime();
+            return isNaN(parsed) ? 0 : parsed;
+        }
+
         function filterAndRender() {
             const keyword = searchInput ? searchInput.value.toLowerCase().trim() : "";
+            const statusFilterVal = statusEventsFilter ? statusEventsFilter.value : "all";
+            const orderDirection = sortEventsFilter ? sortEventsFilter.value : "desc";
 
-            filteredEventsList = allEventsList.filter(event => {
+            let sortedEvents = [...allEventsList].sort((a, b) => {
+                let timeA = getEventTimestamp(a);
+                let timeB = getEventTimestamp(b);
+                
+                if (timeA === 0 && timeB === 0) {
+                    return orderDirection === "desc" ? b.id.localeCompare(a.id) : a.id.localeCompare(b.id);
+                }
+                return orderDirection === "desc" ? timeB - timeA : timeA - timeB;
+            });
+
+            filteredEventsList = sortedEvents.filter(event => {
                 const nameMatch = event.eventName ? event.eventName.toLowerCase().includes(keyword) : false;
                 const sportMatch = event.sportType ? event.sportType.toLowerCase().includes(keyword) : false;
                 const descMatch = event.description ? event.description.toLowerCase().includes(keyword) : false;
-                return nameMatch || sportMatch || descMatch;
+                
+                const matchesKeyword = nameMatch || sportMatch || descMatch;
+
+                const isEventActive = event.isActive === true || event.isActive === "true";
+                let matchesStatus = true;
+                if (statusFilterVal === "active") matchesStatus = isEventActive;
+                if (statusFilterVal === "inactive") matchesStatus = !isEventActive;
+
+                return matchesKeyword && matchesStatus;
             });
 
             const totalItems = filteredEventsList.length;
@@ -888,6 +939,16 @@
         // Modal Closers
         document.getElementById('closeModalBtn').addEventListener('click', () => eventEditModal.classList.add('hidden'));
         document.getElementById('cancelModalBtn').addEventListener('click', () => eventEditModal.classList.add('hidden'));
+
+        statusEventsFilter?.addEventListener('change', () => {
+            currentPage = 1;
+            filterAndRender();
+        });
+
+        sortEventsFilter?.addEventListener('change', () => {
+            currentPage = 1;
+            filterAndRender();
+        });
 
         if (searchInput) {
             searchInput.addEventListener('input', () => {

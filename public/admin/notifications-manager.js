@@ -212,7 +212,8 @@ function updateNotifications() {
 function renderNotifications(notifications, seenIds) {
     const badge = document.getElementById('notificationBadge');
     const list = document.getElementById('notificationList');
-    const unreadCount = notifications.filter(n => !n.read).length;
+    const unreadNotifications = notifications.filter(n => !n.read);
+    const unreadCount = unreadNotifications.length;
 
     if (badge) {
         if (unreadCount > 0) {
@@ -225,7 +226,7 @@ function renderNotifications(notifications, seenIds) {
 
     if (list) {
         list.innerHTML = '';
-        if (notifications.length === 0) {
+        if (unreadNotifications.length === 0) {
             list.innerHTML = `
                 <div class="p-6 text-center text-gray-500 flex flex-col items-center justify-center space-y-1">
                     <i class="fa-regular fa-bell-slash text-xl text-gray-700 mb-1"></i>
@@ -234,7 +235,7 @@ function renderNotifications(notifications, seenIds) {
             return;
         }
 
-        notifications.forEach(n => {
+        unreadNotifications.forEach(n => {
             let bgClass = 'bg-indigo-500/10 text-indigo-400';
             let iconClass = 'fa-solid fa-map-pin';
             if (n.type === 'event') {
@@ -250,7 +251,7 @@ function renderNotifications(notifications, seenIds) {
 
             const item = document.createElement('a');
             item.href = n.link;
-            item.className = `p-3 hover:bg-gray-800/40 transition flex items-start space-x-3 cursor-pointer border-l-2 ${n.read ? 'border-transparent opacity-70' : 'border-indigo-500 bg-indigo-500/[0.02]'}`;
+            item.className = `p-3 hover:bg-gray-800/40 transition flex items-start space-x-3 cursor-pointer border-l-2 border-indigo-500 bg-indigo-500/[0.02]`;
             item.innerHTML = `
                 <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${bgClass}">
                     <i class="${iconClass}"></i>
@@ -263,10 +264,8 @@ function renderNotifications(notifications, seenIds) {
             `;
 
             item.addEventListener('click', (e) => {
-                if (!n.read) {
-                    seenIds.push(n.id);
-                    localStorage.setItem('mm_seen_notifications', JSON.stringify(seenIds));
-                }
+                seenIds.push(n.id);
+                localStorage.setItem('mm_seen_notifications', JSON.stringify(seenIds));
             });
 
             list.appendChild(item);
