@@ -292,10 +292,10 @@
                 const emailMatch = user.email ? user.email.toLowerCase().includes(keyword) : false;
                 const matchesKeyword = nameMatch || emailMatch;
 
-                const mType = (user.membershipType || "free_membership").toLowerCase();
+                const mType = (user.membershipType || "free").toLowerCase();
                 let matchesFilter = true;
                 if (filterVal !== "all") {
-                    if (filterVal === "free_membership") {
+                    if (filterVal === "free") {
                         matchesFilter = (mType !== "club_owner" && mType !== "athlete");
                     } else {
                         matchesFilter = (mType === filterVal);
@@ -369,7 +369,7 @@
                     : `<span class="text-[10px] bg-gray-800 text-gray-500 border border-gray-700 px-2 py-0.5 rounded-full">Inactive</span>`;
 
                 // Fix value mapping based on case-sensitive values ​​for the Firestore database.
-                const mType = user.membershipType || "free_membership";
+                const mType = user.membershipType || "free";
 
                 const row = document.createElement('tr');
                 row.className = "border-b border-gray-800/40 text-gray-300";
@@ -390,7 +390,7 @@
                     </td>
                     <td class="px-6 py-4">
                         <select data-id="${docId}" data-current="${mType}" class="bg-gray-950 border border-gray-800 rounded-lg px-2.5 py-1 text-xs font-semibold focus:outline-none focus:border-indigo-500 text-indigo-400 change-membership-trigger">
-                            <option value="free_membership" ${mType === "free_membership" || mType === "Free Membership" ? "selected" : ""}>Free Membership</option>
+                            <option value="free" ${mType === "free" || mType === "Free Membership" ? "selected" : ""}>Free Membership</option>
                             <option value="athlete" ${mType === "athlete" || mType === "athlete" ? "selected" : ""}>Athletes</option>
                             <option value="club_owner" ${mType === "club_owner" || mType === "club_owner" ? "selected" : ""}>Club Owner</option>
                         </select>
