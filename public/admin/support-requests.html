@@ -174,13 +174,13 @@
     <script src="./firebase-config.js"></script>
     <script type="module" src="./notifications-manager.js"></script>
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, onSnapshot, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
         const firebaseConfig = window.FIREBASE_CONFIG || {};
 
-        const app = initializeApp(firebaseConfig);
+        const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const auth = getAuth(app);
 
@@ -223,7 +223,7 @@
                 const id = docSnap.id;
 
                 // Checking standard Firestore field 'status' mapped cleanly
-                let calculatedStatus = item.status || 'pending';
+                let calculatedStatus = item.status ? item.status.replace(/^["']|["']$/g, '') : 'pending';
 
                 if (calculatedStatus === 'pending') pendingCount++;
                 if (calculatedStatus === 'approved') approvedCount++;

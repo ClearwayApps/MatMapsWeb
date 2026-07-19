@@ -186,7 +186,7 @@
     <script type="module" src="./notifications-manager.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, onSnapshot, updateDoc, doc, writeBatch, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, onSnapshot, updateDoc, doc, writeBatch, getDoc, runTransaction } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
         // 1. Firebase configuration setup (must come first)
@@ -437,12 +437,101 @@
 
                     try {
                         if (action === 'approve') {
-                            await updateDoc(reviewDocRef, { isAproved: true });
+                            await runTransaction(db, async (transaction) => {
+                                const reviewSnap = await transaction.get(reviewDocRef);
+                                if (!reviewSnap.exists()) {
+                                    throw new Error("Review document does not exist!");
+                                }
+                                const reviewData = reviewSnap.data();
+                                const alreadyApproved = reviewData.isAproved === true || reviewData.isAproved === "true";
+                                if (alreadyApproved) {
+                                    transaction.update(reviewDocRef, { isAproved: true });
+                                    return;
+                                }
+
+                                // Perform all reads first
+                                let clubSnap = null;
+                                let clubDocRef = null;
+                                const ratingValue = Number(reviewData.rating);
+                                const hasValidRating = reviewData.rating !== undefined && reviewData.rating !== null && !isNaN(ratingValue);
+
+                                if (hasValidRating && reviewData.clubRef) {
+                                    const clubRefStr = reviewData.clubRef.path || reviewData.clubRef.toString();
+                                    const clubId = clubRefStr.split('/').pop();
+                                    if (clubId) {
+                                        clubDocRef = doc(db, "clubs", clubId);
+                                        clubSnap = await transaction.get(clubDocRef);
+                                    }
+                                }
+
+                                // Perform all updates/writes last
+                                transaction.update(reviewDocRef, { isAproved: true });
+
+                                if (clubSnap && clubSnap.exists() && clubDocRef) {
+                                    const clubData = clubSnap.data();
+                                    const prevRating = typeof clubData.rating === 'number' ? clubData.rating : 0;
+                                    const prevCount = typeof clubData.ratingCount === 'number' ? clubData.ratingCount : 0;
+
+                                    const newCount = prevCount + 1;
+                                    const newRating = ((prevRating * prevCount) + ratingValue) / newCount;
+
+                                    transaction.update(clubDocRef, {
+                                        rating: Number(newRating.toFixed(2)),
+                                        ratingCount: newCount
+                                    });
+                                }
+                            });
                         } else if (action === 'reject') {
-                            await updateDoc(reviewDocRef, { isAproved: 'trashed' });
+                            await runTransaction(db, async (transaction) => {
+                                const reviewSnap = await transaction.get(reviewDocRef);
+                                if (!reviewSnap.exists()) {
+                                    throw new Error("Review document does not exist!");
+                                }
+                                const reviewData = reviewSnap.data();
+                                const prevStatusApproved = reviewData.isAproved === true || reviewData.isAproved === "true";
+
+                                // Perform all reads first
+                                let clubSnap = null;
+                                let clubDocRef = null;
+                                const ratingValue = Number(reviewData.rating);
+                                const hasValidRating = reviewData.rating !== undefined && reviewData.rating !== null && !isNaN(ratingValue);
+
+                                if (prevStatusApproved && hasValidRating && reviewData.clubRef) {
+                                    const clubRefStr = reviewData.clubRef.path || reviewData.clubRef.toString();
+                                    const clubId = clubRefStr.split('/').pop();
+                                    if (clubId) {
+                                        clubDocRef = doc(db, "clubs", clubId);
+                                        clubSnap = await transaction.get(clubDocRef);
+                                    }
+                                }
+
+                                // Perform all updates/writes last
+                                transaction.update(reviewDocRef, { isAproved: 'trashed' });
+
+                                if (clubSnap && clubSnap.exists() && clubDocRef) {
+                                    const clubData = clubSnap.data();
+                                    const prevRating = typeof clubData.rating === 'number' ? clubData.rating : 0;
+                                    const prevCount = typeof clubData.ratingCount === 'number' ? clubData.ratingCount : 0;
+
+                                    if (prevCount > 1) {
+                                        const newCount = prevCount - 1;
+                                        const newRating = ((prevRating * prevCount) - ratingValue) / newCount;
+                                        transaction.update(clubDocRef, {
+                                            rating: Number(newRating.toFixed(2)),
+                                            ratingCount: newCount
+                                        });
+                                    } else {
+                                        transaction.update(clubDocRef, {
+                                            rating: 0,
+                                            ratingCount: 0
+                                        });
+                                    }
+                                }
+                            });
                         }
                     } catch (err) {
                         console.error("Failed executing state modification: ", err);
+                        alert("Error updating review: " + err.message);
                     }
                 });
             });
@@ -488,15 +577,81 @@
 
                 if (confirm(`Are you sure to approve all ${pendings.length} pending items in batch?`)) {
                     try {
-                        const batch = writeBatch(db);
-                        pendings.forEach(item => {
-                            const ref = doc(db, "reviews", item.id);
-                            batch.update(ref, { isAproved: true });
+                        await runTransaction(db, async (transaction) => {
+                            const clubUpdates = {};
+                            const clubsToFetch = new Set();
+                            const reviewDataList = [];
+
+                            for (const item of pendings) {
+                                const reviewDocRef = doc(db, "reviews", item.id);
+                                const reviewSnap = await transaction.get(reviewDocRef);
+                                if (reviewSnap.exists()) {
+                                    const reviewData = reviewSnap.data();
+                                    const alreadyApproved = reviewData.isAproved === true || reviewData.isAproved === "true";
+                                    if (!alreadyApproved) {
+                                        reviewDataList.push({ ref: reviewDocRef, data: reviewData });
+                                        const ratingValue = Number(reviewData.rating);
+                                        if (reviewData.rating !== undefined && reviewData.rating !== null && !isNaN(ratingValue)) {
+                                            let clubId = "";
+                                            if (reviewData.clubRef) {
+                                                const clubRefStr = reviewData.clubRef.path || reviewData.clubRef.toString();
+                                                clubId = clubRefStr.split('/').pop();
+                                            }
+                                            if (clubId) {
+                                                clubsToFetch.add(clubId);
+                                                if (!clubUpdates[clubId]) {
+                                                    clubUpdates[clubId] = [];
+                                                }
+                                                clubUpdates[clubId].push(ratingValue);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            // Fetch current state of unique clubs
+                            const clubSnaps = {};
+                            for (const clubId of clubsToFetch) {
+                                const clubDocRef = doc(db, "clubs", clubId);
+                                const clubSnap = await transaction.get(clubDocRef);
+                                if (clubSnap.exists()) {
+                                    clubSnaps[clubId] = clubSnap.data();
+                                }
+                            }
+
+                            // Update reviews to approved
+                            for (const r of reviewDataList) {
+                                transaction.update(r.ref, { isAproved: true });
+                            }
+
+                            // Update clubs average ratings and counts
+                            for (const clubId in clubUpdates) {
+                                const newReviewRatings = clubUpdates[clubId];
+                                const clubData = clubSnaps[clubId];
+                                if (clubData) {
+                                    const prevRating = typeof clubData.rating === 'number' ? clubData.rating : 0;
+                                    const prevCount = typeof clubData.ratingCount === 'number' ? clubData.ratingCount : 0;
+
+                                    let totalRatingSum = prevRating * prevCount;
+                                    for (const r of newReviewRatings) {
+                                        totalRatingSum += r;
+                                    }
+                                    const newCount = prevCount + newReviewRatings.length;
+                                    const newRating = totalRatingSum / newCount;
+
+                                    const clubDocRef = doc(db, "clubs", clubId);
+                                    transaction.update(clubDocRef, {
+                                        rating: Number(newRating.toFixed(2)),
+                                        ratingCount: newCount
+                                    });
+                                }
+                            }
                         });
-                        await batch.commit();
+
                         alert("All pending records optimized and approved!");
                     } catch (error) {
                         console.error("Batch update crashed: ", error);
+                        alert("Failed to batch approve reviews: " + error.message);
                     }
                 }
             });
