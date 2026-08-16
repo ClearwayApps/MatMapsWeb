@@ -74,10 +74,10 @@
                     </a>
                     <a href="posts-collections.html"
                         class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
-                        <i class="fa-solid fa-images w-5"></i> <span>Post Collection</span>
+                        <i class="fa-solid fa-images w-5"></i> <span>Posts & Comments</span>
                     </a>
                     <a href="comments.html"
-                        class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
+                        class="hidden items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
                         <i class="fa-solid fa-comments w-5"></i> <span>Comments</span>
                     </a>
                     <a href="reviews.html"
@@ -152,6 +152,14 @@
                                 </select>
                             </div>
                             <div class="relative">
+                                <select id="promoteClubsFilter"
+                                    class="bg-gray-950 border border-gray-800 rounded-lg px-3 py-1.5 text-xs font-semibold focus:outline-none focus:border-indigo-500 text-gray-300 cursor-pointer">
+                                    <option value="all" selected>All Promotions</option>
+                                    <option value="promoted">Promoted</option>
+                                    <option value="standard">Standard</option>
+                                </select>
+                            </div>
+                            <div class="relative">
                                 <select id="statusClubsFilter"
                                     class="bg-gray-950 border border-gray-800 rounded-lg px-3 py-1.5 text-xs font-semibold focus:outline-none focus:border-indigo-500 text-gray-300 cursor-pointer">
                                     <option value="all" selected>All Status</option>
@@ -182,12 +190,13 @@
                                     <th class="px-6 py-3.5">Location / City</th>
                                     <th class="px-6 py-3.5">Contact Details (Phone, Email, Web)</th>
                                     <th class="px-6 py-3.5 text-center">Status Badges</th>
+                                    <th class="px-6 py-3.5 text-center">Promotion</th>
                                     <th class="px-6 py-3.5 text-right w-48">Actions</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-800/60" id="clubsTableBody">
                                 <tr id="tableLoaderRow">
-                                    <td colspan="5" class="px-6 py-16 text-center">
+                                    <td colspan="6" class="px-6 py-16 text-center">
                                         <div class="flex flex-col items-center justify-center space-y-3">
                                             <div class="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
                                             <p class="text-xs text-gray-500 tracking-wider">Syncing Clubs Matrix with Firestore...</p>
@@ -230,8 +239,13 @@
                                 <h2 id="detailClubName" class="text-2xl md:text-3xl font-black text-white bg-indigo-600 px-4 py-0.5 rounded-2xl shadow-xl border border-indigo-500/20 inline-block">Club Name</h2>
                                 <div class="flex flex-wrap gap-1.5" id="detailSportsBadgesContainer"></div>
                             </div>
-                            <div id="detailVerifiedBadge" class="bg-indigo-600 text-white border border-indigo-500/20 font-black text-xs px-4 py-2 rounded-full shadow-xl flex items-center space-x-2">
-                                <i class="fa-solid fa-circle-check text-white"></i> <span class="font-mono uppercase tracking-wider">Matmaps Verified</span>
+                            <div class="flex flex-wrap gap-2">
+                                <div id="detailVerifiedBadge" class="bg-indigo-600 text-white border border-indigo-500/20 font-black text-xs px-4 py-2 rounded-full shadow-xl flex items-center space-x-2">
+                                    <i class="fa-solid fa-circle-check text-white"></i> <span class="font-mono uppercase tracking-wider">Matmaps Verified</span>
+                                </div>
+                                <div id="detailPromotedBadge" class="bg-amber-600 text-white border border-amber-500/20 font-black text-xs px-4 py-2 rounded-full shadow-xl flex items-center space-x-2 hidden">
+                                    <i class="fa-solid fa-circle-up text-white"></i> <span class="font-mono uppercase tracking-wider">Promoted Club</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -436,21 +450,75 @@
             executeRenderingPipeline();
         }, (error) => {
             console.error("Failed to sync clubs from Firestore: ", error);
-            tableBody.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-rose-500">Failed to sync data from server.</td></tr>`;
+            tableBody.innerHTML = `<tr><td colspan="6" class="px-6 py-8 text-center text-rose-500">Failed to sync data from server.</td></tr>`;
         });
 
         function isClubActiveValue(club) {
             return club?.isActive === true || club?.isActive === 'true' || club?.status === 'active' || club?.status === true;
         }
 
+        function getLocalDateString(ts) {
+            if (!ts) return "";
+            let dateMs = 0;
+            if (ts.toDate) {
+                dateMs = ts.toDate().getTime();
+            } else if (ts.seconds) {
+                dateMs = ts.seconds * 1000;
+            } else {
+                dateMs = new Date(ts).getTime();
+            }
+            if (isNaN(dateMs) || dateMs === 0) return "";
+            
+            const d = new Date(dateMs);
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        function getPromotionTimeLeft(club) {
+            const isPromoted = club.isPromoted === true || club.isPromoted === "true";
+            if (!isPromoted) return "";
+            if (!club.featuredTo) return '<span class="text-[10px] text-gray-500">No expiry date set</span>';
+            let expiryMs = 0;
+            const ts = club.featuredTo;
+            if (ts.toDate) {
+                expiryMs = ts.toDate().getTime();
+            } else if (ts.seconds) {
+                expiryMs = ts.seconds * 1000;
+            } else {
+                expiryMs = new Date(ts).getTime();
+            }
+
+            if (isNaN(expiryMs) || expiryMs === 0) {
+                return '<span class="text-[10px] text-gray-500">No expiry date set</span>';
+            }
+
+            const expiryDate = new Date(expiryMs);
+            const dateString = expiryDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+
+            const now = Date.now();
+            const diffMs = expiryMs - now;
+
+            if (diffMs <= 0) {
+                return `<span class="text-rose-500 font-bold">Expired</span> <span class="text-[10px] text-gray-500">(${dateString})</span>`;
+            }
+
+            const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+            const dayLabel = diffDays === 1 ? "1 day left" : `${diffDays} days left`;
+            return `<span class="text-amber-500 font-bold">${dayLabel}</span> <span class="text-[10px] text-gray-400">(${dateString})</span>`;
+        }
+
         function executeRenderingPipeline() {
             const statusClubsFilter = document.getElementById('statusClubsFilter');
             const verifyClubsFilter = document.getElementById('verifyClubsFilter');
+            const promoteClubsFilter = document.getElementById('promoteClubsFilter');
 
             const keyword = searchInput ? searchInput.value.toLowerCase().trim() : "";
             const orderDirection = sortClubsFilter ? sortClubsFilter.value : "desc";
             const statusFilterVal = statusClubsFilter ? statusClubsFilter.value : "all";
             const verifyFilterVal = verifyClubsFilter ? verifyClubsFilter.value : "all";
+            const promoteFilterVal = promoteClubsFilter ? promoteClubsFilter.value : "all";
 
             let sortedClubs = [...allClubsList].sort((a, b) => {
                 let tsA = a.createdTime || a.created_time || 0;
@@ -484,7 +552,12 @@
                 if (verifyFilterVal === "verified") matchesVerify = isVerified;
                 if (verifyFilterVal === "unverified") matchesVerify = !isVerified;
 
-                return matchesKeyword && matchesStatus && matchesVerify;
+                const isPromoted = club.isPromoted === true || club.isPromoted === "true";
+                let matchesPromoted = true;
+                if (promoteFilterVal === "promoted") matchesPromoted = isPromoted;
+                if (promoteFilterVal === "standard") matchesPromoted = !isPromoted;
+
+                return matchesKeyword && matchesStatus && matchesVerify && matchesPromoted;
             });
 
             const totalEntries = filteredClubsList.length;
@@ -514,7 +587,7 @@
             tableBody.innerHTML = '';
 
             if (clubsList.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-gray-500">No registered clubs found in this segment.</td></tr>`;
+                tableBody.innerHTML = `<tr><td colspan="6" class="px-6 py-8 text-center text-gray-500">No registered clubs found in this segment.</td></tr>`;
                 return;
             }
 
@@ -535,6 +608,16 @@
                         <option value="true" ${isVerified ? 'selected' : ''}>Verified</option>
                         <option value="false" ${!isVerified ? 'selected' : ''}>Unverified</option>
                     </select>`;
+
+                const isPromoted = club.isPromoted === true || club.isPromoted === "true";
+                const promotionSelectorHTML = `
+                    <select data-id="${docId}" data-current="${isPromoted ? 'true' : 'false'}" onclick="event.stopPropagation();" class="bg-gray-950 border border-gray-800 rounded-lg px-2 py-1 text-xs font-semibold focus:outline-none update-promote-trigger ${isPromoted ? 'text-amber-400' : 'text-gray-400'}">
+                        <option value="true" ${isPromoted ? 'selected' : ''}>Promoted</option>
+                        <option value="false" ${!isPromoted ? 'selected' : ''}>Standard</option>
+                    </select>`;
+
+                const currentDateString = getLocalDateString(club.featuredTo);
+                const durationText = getPromotionTimeLeft(club);
 
                 const isStatusActive = isClubActiveValue(club);
 
@@ -563,6 +646,12 @@
                     </td>
                     <td class="px-6 py-4 text-center">
                         <div class="flex items-center justify-center">${verificationSelectorHTML}</div>
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        <div class="flex flex-col items-center space-y-1.5" onclick="event.stopPropagation();">
+                            ${promotionSelectorHTML}
+                            <div class="text-[11px] font-mono duration-label" data-id="${docId}">${durationText}</div>
+                        </div>
                     </td>
                     <td class="px-6 py-4 text-right">
                         <div class="flex items-center justify-end space-x-3" onclick="event.stopPropagation();">
@@ -631,6 +720,16 @@
                             verifiedBadge.classList.add('hidden');
                         }
 
+                        const promotedBadge = document.getElementById('detailPromotedBadge');
+                        if (targetClubObj.isPromoted === true || targetClubObj.isPromoted === "true") {
+                            promotedBadge.classList.remove('hidden');
+                            const durationHTML = getPromotionTimeLeft(targetClubObj);
+                            const cleanText = durationHTML ? durationHTML.replace(/<[^>]*>/g, '') : "No duration set";
+                            promotedBadge.innerHTML = `<i class="fa-solid fa-circle-up text-white"></i> <span class="font-mono uppercase tracking-wider">Promoted Club - ${cleanText}</span>`;
+                        } else {
+                            promotedBadge.classList.add('hidden');
+                        }
+
                         clubsMainListView.classList.add('hidden');
                         clubDetailsSubPage.classList.remove('hidden');
                         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -651,11 +750,13 @@
 
                 const verifySelect = document.querySelector(`.update-verify-trigger[data-id="${recordId}"]`);
                 const statusSelect = document.querySelector(`.update-status-trigger[data-id="${recordId}"]`);
+                const promoteSelect = document.querySelector(`.update-promote-trigger[data-id="${recordId}"]`);
 
                 const verifyChanged = verifySelect && verifySelect.value !== verifySelect.getAttribute('data-current');
                 const statusChanged = statusSelect && statusSelect.value !== statusSelect.getAttribute('data-current');
+                const promoteChanged = promoteSelect && promoteSelect.value !== promoteSelect.getAttribute('data-current');
 
-                if (verifyChanged || statusChanged) {
+                if (verifyChanged || statusChanged || promoteChanged) {
                     saveBtn.classList.remove('hidden');
                 } else {
                     saveBtn.classList.add('hidden');
@@ -670,28 +771,42 @@
                 select.addEventListener('change', checkChanges);
             });
 
+            document.querySelectorAll('.update-promote-trigger').forEach(select => {
+                select.addEventListener('change', checkChanges);
+            });
+
             document.querySelectorAll('.btn-IndividualSave').forEach(btn => {
                 btn.addEventListener('click', async (e) => {
                     const recordId = e.currentTarget.getAttribute('data-id');
                     const verifySelect = document.querySelector(`.update-verify-trigger[data-id="${recordId}"]`);
                     const statusSelect = document.querySelector(`.update-status-trigger[data-id="${recordId}"]`);
+                    const promoteSelect = document.querySelector(`.update-promote-trigger[data-id="${recordId}"]`);
 
                     const isVerifiedValue = verifySelect.value === "true";
                     const statusValue = statusSelect.value;
                     const isActiveValue = statusValue === "active";
+                    const isPromotedValue = promoteSelect.value === "true";
 
                     btn.disabled = true;
                     btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i>`;
 
                     try {
-                        await updateDoc(doc(db, "clubs", recordId), {
+                        const updateData = {
                             verified: isVerifiedValue,
                             isActive: isActiveValue,
-                            status: isActiveValue ? "active" : "inactive"
-                        });
+                            status: isActiveValue ? "active" : "inactive",
+                            isPromoted: isPromotedValue
+                        };
+
+                        if (!isPromotedValue) {
+                            updateData.featuredTo = "";
+                        }
+
+                        await updateDoc(doc(db, "clubs", recordId), updateData);
 
                         verifySelect.setAttribute('data-current', verifySelect.value);
                         statusSelect.setAttribute('data-current', statusSelect.value);
+                        promoteSelect.setAttribute('data-current', promoteSelect.value);
 
                         if (isVerifiedValue) {
                             verifySelect.className = "bg-gray-950 border border-gray-800 rounded-lg px-2 py-1 text-xs font-semibold focus:outline-none update-verify-trigger text-emerald-400";
@@ -703,6 +818,12 @@
                             statusSelect.className = "bg-gray-950 border border-gray-800 rounded-lg px-2 py-1 text-xs font-semibold focus:outline-none update-status-trigger text-emerald-500";
                         } else {
                             statusSelect.className = "bg-gray-950 border border-gray-800 rounded-lg px-2 py-1 text-xs font-semibold focus:outline-none update-status-trigger text-gray-500";
+                        }
+
+                        if (isPromotedValue) {
+                            promoteSelect.className = "bg-gray-950 border border-gray-800 rounded-lg px-2 py-1 text-xs font-semibold focus:outline-none update-promote-trigger text-amber-400";
+                        } else {
+                            promoteSelect.className = "bg-gray-950 border border-gray-800 rounded-lg px-2 py-1 text-xs font-semibold focus:outline-none update-promote-trigger text-gray-400";
                         }
 
                         btn.classList.add('hidden');
@@ -765,6 +886,7 @@
 
         document.getElementById('statusClubsFilter')?.addEventListener('change', () => executeRenderingPipeline());
         document.getElementById('verifyClubsFilter')?.addEventListener('change', () => executeRenderingPipeline());
+        document.getElementById('promoteClubsFilter')?.addEventListener('change', () => executeRenderingPipeline());
 
         prevPageBtn?.addEventListener('click', () => {
             if (currentPage > 1) {

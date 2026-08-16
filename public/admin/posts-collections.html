@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/image/matMaps_logo.png">
-    <title>Post Collection Management - MatMaps</title>
+    <title>Posts & Comments Management - MatMaps</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -68,10 +68,10 @@
                     </a>
                     <a href="posts-collections.html"
                         class="flex items-center space-x-3 px-4 py-2.5 rounded-lg bg-indigo-600 text-white transition">
-                        <i class="fa-solid fa-images w-5"></i> <span>Post Collection</span>
+                        <i class="fa-solid fa-images w-5"></i> <span>Posts & Comments</span>
                     </a>
                     <a href="comments.html"
-                        class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
+                        class="hidden items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
                         <i class="fa-solid fa-comments w-5"></i> <span>Comments</span>
                     </a>
                     <a href="reviews.html"
@@ -118,11 +118,11 @@
                         <i class="fa-solid fa-bars"></i>
                     </button>
                     <i class="fa-solid fa-images text-indigo-400 text-lg hidden md:inline-block"></i>
-                    <h1 class="text-lg font-semibold">Post Collections</h1>
+                    <h1 class="text-lg font-semibold">Posts & Comments</h1>
                 </div>
             </header>
 
-            <div class="py-6 px-4 md:px-8 space-y-8 w-full">
+            <div id="postsMainListView" class="py-6 px-4 md:px-8 space-y-8 w-full">
 
                 <div
                     class="bg-gray-900 border border-gray-800 rounded-xl p-4 flex flex-col sm:flex-row gap-4 items-center justify-between shadow-sm">
@@ -162,6 +162,67 @@
                     </div>
                 </div>
 
+            </div>
+
+            <div id="postDetailsSubPage" class="p-6 max-w-7xl w-full mx-auto space-y-6 hidden">
+                <div class="bg-gray-900 border border-gray-800 rounded-xl p-4 flex items-center justify-between shadow-md animate-fadeIn">
+                    <button id="btnBackToListView"
+                        class="flex items-center space-x-2 text-xs uppercase tracking-wider font-bold text-white bg-indigo-600 hover:bg-indigo-750 px-5 py-2.5 rounded-lg transition shadow-lg focus:outline-none">
+                        <i class="fa-solid fa-arrow-left"></i> <span>Return to Post Directory</span>
+                    </button>
+                    <h2 class="text-sm font-bold uppercase tracking-wider text-gray-400">Post Detail View</h2>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- Left: Post Card Details -->
+                    <div class="lg:col-span-7 bg-gray-900 border border-gray-800 rounded-2xl p-6 space-y-5 shadow-xl flex flex-col justify-between">
+                        <div class="space-y-4">
+                            <div class="flex items-center space-x-3 text-left">
+                                <div id="detailUserAvatar"></div>
+                                <div>
+                                    <h3 id="detailUserName" class="text-sm font-bold text-gray-200 tracking-wide">...</h3>
+                                    <p id="detailPostDate" class="text-[10px] text-gray-500 font-mono mt-0.5">...</p>
+                                </div>
+                            </div>
+
+                            <div id="detailMediaContainer"></div>
+
+                            <div class="space-y-2 text-left">
+                                <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider">Post Caption</h4>
+                                <p id="detailPostDesc" class="text-sm text-gray-300 font-light leading-relaxed whitespace-pre-wrap bg-gray-950/40 p-4 rounded-xl border border-gray-800/80">...</p>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row items-center justify-between pt-4 border-t border-gray-800/80 gap-4">
+                            <div class="flex items-center space-x-4 text-[11px] text-gray-500 font-mono">
+                                <div class="flex items-center space-x-1">
+                                    <i class="fa-solid fa-heart text-indigo-400 text-xs mr-1"></i>
+                                    <span id="detailLikesCount" class="font-bold text-gray-400">0</span>
+                                </div>
+                                <div class="flex items-center space-x-1">
+                                    <i class="fa-solid fa-comment text-indigo-400 text-xs mr-1"></i>
+                                    <span id="detailCommentsCount" class="font-bold text-gray-400">0</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center space-x-2.5" id="detailActionsContainer">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Associated Comments List -->
+                    <div class="lg:col-span-5 bg-gray-900 border border-gray-800 rounded-2xl p-6 flex flex-col space-y-4 shadow-xl">
+                        <div>
+                            <h3 class="text-sm font-bold uppercase tracking-wider text-gray-400"><i class="fa-solid fa-comments mr-2 text-indigo-400"></i>Comments</h3>
+                            <p class="text-[11px] text-gray-500 mt-0.5">User comments received on this post node.</p>
+                        </div>
+                        
+                        <div class="space-y-3.5 overflow-y-auto max-h-[480px] pr-1" id="detailCommentsList">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
@@ -208,7 +269,9 @@
 
         let globalPostsMemoryCache = [];
         let usersMemoryCache = {}; // Cache to map uid to user object
+        let globalCommentsList = [];
         let currentStatusFilter = 'pending';
+        let currentSelectedPostId = null;
 
         // Listen to users collection to fetch user details for posts
         onSnapshot(collection(db, "users"), (snapshot) => {
@@ -216,6 +279,67 @@
                 usersMemoryCache[docSnap.id] = docSnap.data();
             });
             executeRenderingPipeline();
+        });
+
+        // Listen to comments collection to fetch comments for posts
+        onSnapshot(collection(db, "comment_Collection"), (snapshot) => {
+            globalCommentsList = [];
+            snapshot.forEach((docSnap) => {
+                globalCommentsList.push({
+                    id: docSnap.id,
+                    ...docSnap.data()
+                });
+            });
+            executeRenderingPipeline();
+
+            // If a post details subpage is currently open, refresh its comments section dynamically
+            if (currentSelectedPostId) {
+                const targetPost = globalPostsMemoryCache.find(p => p.id === currentSelectedPostId);
+                if (targetPost) {
+                    const matchedUserId = targetPost.uid || targetPost.userId || targetPost.user_id || targetPost.user || "";
+                    const matchedUser = usersMemoryCache[matchedUserId] || {};
+                    let relativeDate = "Live Node";
+                    if (targetPost.time_posted) {
+                        const dateObj = targetPost.time_posted.toDate ? targetPost.time_posted.toDate() : new Date(targetPost.time_posted);
+                        if (!isNaN(dateObj.getTime())) {
+                            relativeDate = dateObj.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+                        }
+                    }
+
+                    const isVideoType = targetPost.post_Type === "video" || targetPost.post_Type === "Video" || targetPost.post_Video;
+                    let mediaDisplayShellHTML = '';
+                    if (isVideoType && targetPost.post_Video) {
+                        const posterAttr = targetPost.post_photo ? `poster="${targetPost.post_photo}"` : '';
+                        mediaDisplayShellHTML = `
+                            <div class="w-full h-48 bg-black rounded-xl overflow-hidden border border-gray-800/80 relative">
+                                <video src="${targetPost.post_Video}" controls preload="metadata" class="w-full h-full object-contain" ${posterAttr}></video>
+                            </div>`;
+                    } else if (targetPost.post_photo) {
+                        mediaDisplayShellHTML = `
+                            <div class="w-full h-48 bg-gray-950 rounded-xl overflow-hidden border border-gray-800/80 relative group select-none">
+                                <img src="${targetPost.post_photo}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="MatMaps Matrix">
+                            </div>`;
+                    } else {
+                        mediaDisplayShellHTML = `
+                            <div class="w-full h-48 bg-gray-950 rounded-xl border border-gray-800/80 flex flex-col items-center justify-center space-y-1.5 text-gray-600">
+                                <i class="fa-regular fa-file-image text-2xl"></i>
+                                <span class="text-[10px] tracking-wide">Text Only Post Stream</span>
+                            </div>`;
+                    }
+
+                    const postComments = globalCommentsList.filter(c => {
+                        let cPostId = "";
+                        if (c.postRef) {
+                            cPostId = typeof c.postRef === 'string' ? c.postRef.split('/').pop() : (c.postRef.id || c.postRef.path?.split('/').pop() || "");
+                        }
+                        const isDeleted = c.isDelete === true || c.isDelete === "true";
+                        return cPostId === targetPost.id && !isDeleted;
+                    });
+                    const commentCount = postComments.length;
+
+                    openPostDetails(targetPost, matchedUser, relativeDate, mediaDisplayShellHTML, commentCount, postComments, true);
+                }
+            }
         });
 
         // ========================================================
@@ -351,30 +475,19 @@
                         </div>`;
                 }
 
-                // Dynamic Context buttons rendering matrix block
-                let contextActionsHTML = '';
-                if (item.calculatedStatus === 'pending') {
-                    contextActionsHTML = `
-                        <button data-action="approve" data-id="${docId}" class="action-btn px-4 py-1.5 bg-emerald-600/10 hover:bg-emerald-600 text-emerald-400 hover:text-white text-xs font-bold rounded-lg border border-emerald-500/20 transition flex items-center space-x-1">
-                            <i class="fa-solid fa-circle-check"></i> <span>Approve Post</span>
-                        </button>
-                        <button data-action="trash" data-id="${docId}" class="action-btn px-4 py-1.5 bg-rose-600/10 hover:bg-rose-600 text-rose-400 hover:text-white text-xs font-bold rounded-lg border border-rose-500/20 transition flex items-center space-x-1">
-                            <i class="fa-solid fa-trash-can"></i> <span>Trash Post</span>
-                        </button>`;
-                } else if (item.calculatedStatus === 'approved') {
-                    contextActionsHTML = `
-                        <button data-action="trash" data-id="${docId}" class="action-btn px-4 py-1.5 bg-rose-600/10 hover:bg-rose-600 text-rose-400 hover:text-white text-xs font-bold rounded-lg border border-rose-500/20 transition flex items-center space-x-1">
-                            <i class="fa-solid fa-trash-can"></i> <span>Trash Post</span>
-                        </button>`;
-                } else {
-                    contextActionsHTML = `
-                        <button data-action="approve" data-id="${docId}" class="action-btn px-4 py-1.5 bg-emerald-600/10 hover:bg-emerald-600 text-emerald-400 hover:text-white text-xs font-bold rounded-lg border border-emerald-500/20 transition flex items-center space-x-1">
-                            <i class="fa-solid fa-rotate-left"></i> <span>Restore Post</span>
-                        </button>`;
-                }
+                // Calculate comment count for the post
+                const postComments = globalCommentsList.filter(c => {
+                    let cPostId = "";
+                    if (c.postRef) {
+                        cPostId = typeof c.postRef === 'string' ? c.postRef.split('/').pop() : (c.postRef.id || c.postRef.path?.split('/').pop() || "");
+                    }
+                    const isDeleted = c.isDelete === true || c.isDelete === "true";
+                    return cPostId === docId && !isDeleted;
+                });
+                const commentCount = postComments.length;
 
                 const card = document.createElement('div');
-                card.className = "post-card-matrix bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden p-4 flex flex-col justify-between space-y-3.5 shadow-lg relative";
+                card.className = "post-card-matrix bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden p-4 flex flex-col justify-between space-y-3.5 shadow-lg relative cursor-pointer hover:scale-[1.02] hover:-translate-y-0.5 hover:border-indigo-500/40 hover:shadow-indigo-500/5 transition-all duration-300";
                 card.innerHTML = `
                     <div class="space-y-3">
                         <div class="flex items-center space-x-3 text-left">
@@ -393,58 +506,214 @@
                     </div>
 
                     <div class="flex items-center justify-between pt-2 border-t border-gray-800/80 text-[11px] text-gray-500 font-mono">
-                        <div class="flex items-center space-x-1">
-                            <i class="fa-solid fa-heart text-indigo-400 text-xs mr-1"></i>
-                            <span class="font-bold text-gray-400">${item.num_likes || 0}</span>
-                        </div>
-                        
-                        <div class="flex items-center space-x-2">
-                            ${contextActionsHTML}
+                        <div class="flex items-center space-x-3">
+                            <div class="flex items-center space-x-1">
+                                <i class="fa-solid fa-heart text-indigo-400 text-xs mr-1"></i>
+                                <span class="font-bold text-gray-400">${item.num_likes || 0}</span>
+                            </div>
+                            <div class="flex items-center space-x-1">
+                                <i class="fa-solid fa-comment text-indigo-400 text-xs mr-1"></i>
+                                <span class="font-bold text-gray-400">${commentCount}</span>
+                            </div>
                         </div>
                     </div>`;
+
+                card.addEventListener('click', () => {
+                    openPostDetails(item, matchedUser, relativeDate, mediaDisplayShellHTML, commentCount, postComments);
+                });
+
                 postsContainer.appendChild(card);
             });
-
-            bindActiveInteractiveTriggers();
         }
 
         // ========================================================
         // 3. Tab Switches & Firebase Write Actions Listeners
-        // ========================================================
-        function bindActiveInteractiveTriggers() {
-            document.querySelectorAll('.action-btn').forEach(btn => {
-                btn.addEventListener('click', async (e) => {
-                    const docId = btn.getAttribute('data-id');
-                    const actionType = btn.getAttribute('data-action');
-                    const docRef = doc(db, "postCollection", docId);
+        function openPostDetails(item, matchedUser, relativeDate, mediaDisplayShellHTML, commentCount, postComments) {
+            const postsMainListView = document.getElementById('postsMainListView');
+            const postDetailsSubPage = document.getElementById('postDetailsSubPage');
 
+            const dispName = matchedUser.display_name || matchedUser.name || item.display_name || 'Anonymous Fighter';
+            const profPhoto = matchedUser.profile_photo || matchedUser.photoURL || matchedUser.image || item.profile_photo || "";
+
+            const detailUserAvatar = document.getElementById('detailUserAvatar');
+            if (profPhoto) {
+                detailUserAvatar.innerHTML = `<img src="${profPhoto}" class="w-10 h-10 rounded-full object-cover border border-gray-800">`;
+            } else {
+                detailUserAvatar.innerHTML = `<div class="w-10 h-10 bg-indigo-600/10 text-indigo-400 rounded-full flex items-center justify-center font-bold text-sm border border-indigo-500/20 uppercase font-mono">${dispName.substring(0, 2)}</div>`;
+            }
+
+            document.getElementById('detailUserName').innerText = dispName;
+            document.getElementById('detailPostDate').innerText = relativeDate;
+            // Construct detail view media container (larger size)
+            const isVideoType = item.post_Type === "video" || item.post_Type === "Video" || item.post_Video;
+            let detailMediaHTML = '';
+            if (isVideoType && item.post_Video) {
+                const posterAttr = item.post_photo ? `poster="${item.post_photo}"` : '';
+                detailMediaHTML = `
+                    <div class="w-full h-64 sm:h-96 bg-black rounded-2xl overflow-hidden border border-gray-800/85 relative">
+                        <video src="${item.post_Video}" controls preload="metadata" class="w-full h-full object-contain" ${posterAttr}></video>
+                    </div>`;
+            } else if (item.post_photo) {
+                detailMediaHTML = `
+                    <div class="w-full h-64 sm:h-96 bg-gray-955 rounded-2xl overflow-hidden border border-gray-800/85 relative">
+                        <img src="${item.post_photo}" class="w-full h-full object-cover" alt="Post Image">
+                    </div>`;
+            } else {
+                detailMediaHTML = `
+                    <div class="w-full h-48 bg-gray-955 rounded-2xl border border-gray-800/85 flex flex-col items-center justify-center space-y-1.5 text-gray-600">
+                        <i class="fa-regular fa-file-image text-2xl"></i>
+                        <span class="text-[10px] tracking-wide">Text Only Post Stream</span>
+                    </div>`;
+            }
+            document.getElementById('detailMediaContainer').innerHTML = detailMediaHTML;
+            document.getElementById('detailPostDesc').innerText = item.post_description || 'No caption provided with asset.';
+            document.getElementById('detailLikesCount').innerText = item.num_likes || 0;
+            document.getElementById('detailCommentsCount').innerText = commentCount;
+
+            // Render Approve/Restore and Trash action buttons dynamically
+            const actionsContainer = document.getElementById('detailActionsContainer');
+            let actionsHTML = '';
+            if (item.calculatedStatus === 'pending') {
+                actionsHTML = `
+                    <button id="btnDetailApprove" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-lg transition flex items-center space-x-1.5 shadow-md">
+                        <i class="fa-solid fa-circle-check"></i> <span>Approve Post</span>
+                    </button>
+                    <button id="btnDetailTrash" class="px-5 py-2 bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold rounded-lg transition flex items-center space-x-1.5 shadow-md">
+                        <i class="fa-solid fa-trash-can"></i> <span>Trash Post</span>
+                    </button>`;
+            } else if (item.calculatedStatus === 'approved') {
+                actionsHTML = `
+                    <button id="btnDetailTrash" class="px-5 py-2 bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold rounded-lg transition flex items-center space-x-1.5 shadow-md">
+                        <i class="fa-solid fa-trash-can"></i> <span>Trash Post</span>
+                    </button>`;
+            } else {
+                actionsHTML = `
+                    <button id="btnDetailApprove" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-lg transition flex items-center space-x-1.5 shadow-md">
+                        <i class="fa-solid fa-rotate-left"></i> <span>Restore Post</span>
+                    </button>`;
+            }
+            actionsContainer.innerHTML = actionsHTML;
+
+            // Bind click handlers to the detail page buttons
+            const docRef = doc(db, "postCollection", item.id);
+            const btnApprove = document.getElementById('btnDetailApprove');
+            const btnTrash = document.getElementById('btnDetailTrash');
+
+            if (btnApprove) {
+                btnApprove.addEventListener('click', async () => {
+                    btnApprove.disabled = true;
                     try {
-                        if (actionType === 'approve') {
-                            await updateDoc(docRef, { isActive: true, isDelete: false });
-                        } else if (actionType === 'trash') {
-                            await updateDoc(docRef, { isActive: false, isDelete: true });
-                        }
+                        await updateDoc(docRef, { isActive: true, isDelete: false });
+                        alert("Post successfully approved!");
+                        postDetailsSubPage.classList.add('hidden');
+                        postsMainListView.classList.remove('hidden');
                     } catch (err) {
-                        console.error("Firebase update failed: ", err);
+                        console.error(err);
+                        alert("Error approving post: " + err.message);
                     }
                 });
-            });
+            }
 
-            // Permanent deletion trigger handler
-            document.querySelectorAll('.btn-purge-hard').forEach(btn => {
-                btn.addEventListener('click', async (e) => {
-                    const docId = btn.getAttribute('data-id');
-                    if (confirm("Are you sure you want to permanently wipe out this node from Firestore registry?")) {
-                        try {
-                            await deleteDoc(doc(db, "postCollection", docId));
-                            alert("Post completely purged from cluster server.");
-                        } catch (err) {
-                            console.error("Hard delete crash: ", err);
+            if (btnTrash) {
+                btnTrash.addEventListener('click', async () => {
+                    btnTrash.disabled = true;
+                    try {
+                        await updateDoc(docRef, { isActive: false, isDelete: true });
+                        alert("Post successfully moved to trash!");
+                        postDetailsSubPage.classList.add('hidden');
+                        postsMainListView.classList.remove('hidden');
+                    } catch (err) {
+                        console.error(err);
+                        alert("Error trashing post: " + err.message);
+                    }
+                });
+            }
+
+            // Render comments listing for the post
+            const commentsListContainer = document.getElementById('detailCommentsList');
+            commentsListContainer.innerHTML = '';
+            if (postComments.length === 0) {
+                commentsListContainer.innerHTML = `
+                    <div class="py-10 text-center text-gray-500 text-xs font-medium">
+                        No comments found on this post.
+                    </div>`;
+            } else {
+                postComments.forEach(comment => {
+                    let commentUserId = "";
+                    if (comment.userRef) {
+                        commentUserId = typeof comment.userRef === 'string' ? comment.userRef.split('/').pop() : (comment.userRef.id || comment.userRef.path?.split('/').pop() || "");
+                    }
+                    const commUser = usersMemoryCache[commentUserId] || {};
+                    const commName = commUser.display_name || commUser.name || 'Anonymous User';
+                    const commPhoto = commUser.profile_photo || commUser.photoURL || commUser.image || "";
+
+                    let commAvatarHTML = '';
+                    if (commPhoto) {
+                        commAvatarHTML = `<img src="${commPhoto}" class="w-8 h-8 rounded-full object-cover border border-gray-800">`;
+                    } else {
+                        commAvatarHTML = `<div class="w-8 h-8 bg-indigo-600/10 text-indigo-400 rounded-full flex items-center justify-center font-bold text-xs border border-indigo-500/20 uppercase font-mono">${commName.substring(0, 2)}</div>`;
+                    }
+
+                    let commDate = "Just now";
+                    if (comment.time_posted) {
+                        const dateObj = comment.time_posted.toDate ? comment.time_posted.toDate() : new Date(comment.time_posted);
+                        if (!isNaN(dateObj.getTime())) {
+                            commDate = dateObj.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) + ' • ' + dateObj.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
                         }
                     }
+
+                    const commentEl = document.createElement('div');
+                    commentEl.className = "bg-gray-950/40 border border-indigo-800/50 p-3.5 rounded-xl flex items-start justify-between space-x-3 text-left";
+                    commentEl.innerHTML = `
+                        <div class="flex items-start space-x-2.5 flex-1 min-w-0">
+                            ${commAvatarHTML}
+                            <div class="min-w-0 flex-1">
+                                <div class="font-bold text-xs text-gray-300 truncate">${commName}</div>
+                                <div class="text-[9px] text-gray-500 font-mono mt-0.5">${commDate}</div>
+                                <p class="text-xs text-gray-400 font-light leading-relaxed mt-2 break-words">${comment.comment_Text || 'No comment text.'}</p>
+                            </div>
+                        </div>
+                        <button data-comment-id="${comment.id}" class="btn-trash-comment text-rose-500 hover:text-rose-400 transition p-1 hover:bg-rose-500/10 rounded shrink-0" title="Delete Comment">
+                            <i class="fa-solid fa-trash-can text-xs"></i>
+                        </button>
+                    `;
+                    commentsListContainer.appendChild(commentEl);
                 });
-            });
+
+                // Bind click handlers to the comment trash buttons
+                commentsListContainer.querySelectorAll('.btn-trash-comment').forEach(btn => {
+                    btn.addEventListener('click', async (e) => {
+                        e.stopPropagation();
+                        const commentId = btn.getAttribute('data-comment-id');
+                        if (confirm("Are you sure you want to move this comment to trash?")) {
+                            try {
+                                btn.disabled = true;
+                                btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-[10px]"></i>`;
+                                await updateDoc(doc(db, "comment_Collection", commentId), {
+                                    isActive: false,
+                                    isDelete: true
+                                });
+                            } catch (err) {
+                                console.error("Failed to trash comment: ", err);
+                                alert("Failed to trash comment.");
+                                btn.disabled = false;
+                                btn.innerHTML = `<i class="fa-solid fa-trash-can text-xs"></i>`;
+                            }
+                        }
+                    });
+                });
+            }
+
+            postsMainListView.classList.add('hidden');
+            postDetailsSubPage.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+
+        const btnBackToListView = document.getElementById('btnBackToListView');
+        btnBackToListView.addEventListener('click', () => {
+            document.getElementById('postDetailsSubPage').classList.add('hidden');
+            document.getElementById('postsMainListView').classList.remove('hidden');
+        });
 
         // Tab selection change engine
         tabButtons.forEach(tab => {

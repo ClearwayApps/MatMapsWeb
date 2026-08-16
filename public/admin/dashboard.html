@@ -62,10 +62,10 @@
                     </a>
                     <a href="posts-collections.html"
                         class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
-                        <i class="fa-solid fa-images w-5"></i> <span>Post Collection</span>
+                        <i class="fa-solid fa-images w-5"></i> <span>Posts & Comments</span>
                     </a>
                     <a href="comments.html"
-                        class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
+                        class="hidden items-center space-x-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
                         <i class="fa-solid fa-comments w-5"></i> <span>Comments</span>
                     </a>
                     <a href="reviews.html"
@@ -130,11 +130,13 @@
                         <div>
                             <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Total Clubs</p>
                             <h3 id="statClubsCount" class="text-2xl font-bold mt-1 font-mono text-gray-100">...</h3>
-                            <div class="flex space-x-3 text-[11px] text-gray-400 mt-1 font-mono">
+                            <div class="flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-gray-400 mt-1 font-mono">
                                 <span>Active: <strong id="statClubsActiveCount"
                                         class="text-emerald-400">0</strong></span>
                                 <span>Inactive: <strong id="statClubsInactiveCount"
                                         class="text-rose-400">0</strong></span>
+                                <span>Promoted: <strong id="statClubsPromotedCount"
+                                        class="text-amber-400">0</strong></span>
                             </div>
                             <p class="text-[11px] text-emerald-400 font-medium mt-1.5 flex items-center">
                                 <i class="fa-solid fa-circle-plus text-[9px] mr-1"></i>
@@ -428,6 +430,7 @@
         const statPendingWeekly = document.getElementById('statPendingWeekly');
         const statClubsActiveCount = document.getElementById('statClubsActiveCount');
         const statClubsInactiveCount = document.getElementById('statClubsInactiveCount');
+        const statClubsPromotedCount = document.getElementById('statClubsPromotedCount');
         const statEventsActiveCount = document.getElementById('statEventsActiveCount');
         const statEventsInactiveCount = document.getElementById('statEventsInactiveCount');
         const statPostsApprovedCount = document.getElementById('statPostsApprovedCount');
@@ -499,6 +502,7 @@
 
             let activeClubs = 0;
             let inactiveClubs = 0;
+            let promotedClubs = 0;
             snap.forEach((docSnap) => {
                 const club = docSnap.data();
                 clubsMemoryCache[docSnap.id] = club;
@@ -508,9 +512,14 @@
                 } else {
                     inactiveClubs++;
                 }
+                const isPromoted = club.isPromoted === true || club.isPromoted === 'true';
+                if (isPromoted) {
+                    promotedClubs++;
+                }
             });
             if (statClubsActiveCount) statClubsActiveCount.innerText = activeClubs;
             if (statClubsInactiveCount) statClubsInactiveCount.innerText = inactiveClubs;
+            if (statClubsPromotedCount) statClubsPromotedCount.innerText = promotedClubs;
             triggerQueueReRender();
         });
         onSnapshot(collection(db, "events"), (snap) => {
