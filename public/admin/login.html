@@ -97,8 +97,20 @@
 
         const firebaseConfig = window.FIREBASE_CONFIG || {};
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
+        let app, auth;
+        let isFirebaseInitialized = false;
+
+        if (firebaseConfig.apiKey) {
+            try {
+                app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                isFirebaseInitialized = true;
+            } catch (e) {
+                console.error("Firebase initialization failed:", e);
+            }
+        } else {
+            console.error("Firebase config is missing. Please ensure firebase-config.js is correctly loaded.");
+        }
 
         const loginForm = document.getElementById('loginForm');
         const emailInput = document.getElementById('loginEmail');
@@ -108,11 +120,13 @@
         const passwordIcon = document.getElementById('passwordIcon');
 
         // সেশন রুট চেক: লগইন করা থাকলে সরাসরি সুরক্ষিত dashboard.html-এ পাঠাবে
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                window.location.href = 'dashboard.html';
-            }
-        });
+        if (isFirebaseInitialized && auth) {
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    window.location.href = 'dashboard.html';
+                }
+            });
+        }
 
         if (togglePasswordBtn && passwordInput && passwordIcon) {
             togglePasswordBtn.addEventListener('click', () => {
@@ -131,6 +145,10 @@
         if (loginForm) {
             loginForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
+                if (!isFirebaseInitialized || !auth) {
+                    alert("Firebase is not initialized. Please verify configuration.");
+                    return;
+                }
                 const email = emailInput.value.trim();
                 const password = passwordInput.value;
 
