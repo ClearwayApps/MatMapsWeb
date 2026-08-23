@@ -176,6 +176,30 @@
             });
         }
     </script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, getDocs, limit, query } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        const firebaseConfig = window.FIREBASE_CONFIG || {};
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        
+        async function debugCollections() {
+            const collections = ['clubs', 'events', 'postCollection', 'reviews', 'users', 'comment_Collection'];
+            for (const col of collections) {
+                try {
+                    const snap = await getDocs(query(collection(db, col), limit(1)));
+                    if (!snap.empty) {
+                        const doc = snap.docs[0];
+                        console.log(`KEYS_OF_${col}: ` + JSON.stringify(Object.keys(doc.data())));
+                    } else {
+                        console.log(`KEYS_OF_${col}: empty`);
+                    }
+                } catch (e) {
+                    console.error(`KEYS_OF_${col}_ERR: ` + e.message);
+                }
+            }
+        }
+        debugCollections();
+    </script>
 </body>
-
 </html>

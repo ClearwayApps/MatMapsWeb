@@ -1,5 +1,5 @@
 import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getFirestore, collection, onSnapshot, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 // Initialize Firebase App reusing existing initialization if possible
 const firebaseConfig = window.FIREBASE_CONFIG || {};
@@ -363,36 +363,48 @@ function injectNotificationDOM() {
 
 // Set up snapshot streams
 function initializeStreams() {
-    onSnapshot(collection(db, "clubs"), (snap) => {
+    const clubsQuery = query(collection(db, "clubs"), orderBy("createdTime", "desc"), limit(30));
+    onSnapshot(clubsQuery, (snap) => {
         latestClubs = [];
         snap.forEach(docSnap => {
             latestClubs.push({ id: docSnap.id, ...docSnap.data() });
         });
         updateNotifications();
+    }, (error) => {
+        console.error("Clubs stream error:", error);
     });
 
-    onSnapshot(collection(db, "events"), (snap) => {
+    const eventsQuery = query(collection(db, "events"), orderBy("createdDate", "desc"), limit(30));
+    onSnapshot(eventsQuery, (snap) => {
         latestEvents = [];
         snap.forEach(docSnap => {
             latestEvents.push({ id: docSnap.id, ...docSnap.data() });
         });
         updateNotifications();
+    }, (error) => {
+        console.error("Events stream error:", error);
     });
 
-    onSnapshot(collection(db, "postCollection"), (snap) => {
+    const postsQuery = query(collection(db, "postCollection"), orderBy("time_posted", "desc"), limit(30));
+    onSnapshot(postsQuery, (snap) => {
         latestPosts = [];
         snap.forEach(docSnap => {
             latestPosts.push({ id: docSnap.id, ...docSnap.data() });
         });
         updateNotifications();
+    }, (error) => {
+        console.error("Posts stream error:", error);
     });
 
-    onSnapshot(collection(db, "reviews"), (snap) => {
+    const reviewsQuery = query(collection(db, "reviews"), orderBy("createdTime", "desc"), limit(30));
+    onSnapshot(reviewsQuery, (snap) => {
         latestReviews = [];
         snap.forEach(docSnap => {
             latestReviews.push({ id: docSnap.id, ...docSnap.data() });
         });
         updateNotifications();
+    }, (error) => {
+        console.error("Reviews stream error:", error);
     });
 }
 
