@@ -121,10 +121,10 @@
                     <h1 class="text-lg font-semibold">Comments Collections</h1>
                 </div>
                 <div class="flex space-x-2">
-                    <button id="btnApproveAll"
-                        class="bg-gray-800 border border-gray-700 text-xs px-3 py-1.5 rounded-lg text-emerald-400 hover:bg-gray-700 transition max-sm:hidden">
-                        <i class="fa-solid fa-check-double mr-1.5"></i> Approve All Pending
-                    </button>
+                    <a href="arena-reports.html"
+                        class="bg-gray-800 border border-gray-700 text-xs px-3 py-1.5 rounded-lg text-amber-300 hover:bg-gray-700 transition max-sm:hidden">
+                        <i class="fa-solid fa-shield-halved mr-1.5"></i> Open Arena Reports
+                    </a>
                 </div>
             </header>
 
@@ -136,18 +136,18 @@
                     <div id="statusTabGroup"
                         class="flex space-x-2 bg-gray-950 p-1 rounded-lg border border-gray-800 text-xs font-medium w-full md:w-auto">
                         <button data-status="pending"
-                            class="tab-btn bg-indigo-600 text-white px-4 py-2 rounded-md shadow-sm transition">
-                            Pending <span id="pendingBadgeCount"
+                            class="tab-btn text-gray-400 hover:text-white px-4 py-2 rounded-md transition">
+                            Hidden / Flagged <span id="pendingBadgeCount"
                                 class="ml-1.5 px-1.5 py-0.5 text-[10px] bg-indigo-800 text-indigo-200 rounded-full">0</span>
                         </button>
                         <button data-status="approved"
-                            class="tab-btn text-gray-400 hover:text-white px-4 py-2 rounded-md transition">
-                            Approved <span id="activeBadgeCount"
+                            class="tab-btn bg-indigo-600 text-white px-4 py-2 rounded-md shadow-sm transition">
+                            Visible <span id="activeBadgeCount"
                                 class="ml-1.5 px-1.5 py-0.5 text-[10px] bg-indigo-800 text-indigo-200 rounded-full">0</span>
                         </button>
                         <button data-status="trashed"
                             class="tab-btn text-gray-400 hover:text-white px-4 py-2 rounded-md transition">
-                            Trashed <span id="trashedBadgeCount"
+                            Removed <span id="trashedBadgeCount"
                                 class="ml-1.5 px-1.5 py-0.5 text-[10px] bg-indigo-800 text-indigo-200 rounded-full">0</span>
                         </button>
                     </div>
@@ -186,8 +186,9 @@
     <script type="module" src="./notifications-manager.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, onSnapshot, updateDoc, doc, writeBatch } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { requireAdminAccess } from "./admin-access.js";
 
         // 1. Firebase configuration setup (must come first)
         const firebaseConfig = window.FIREBASE_CONFIG || {};
@@ -198,15 +199,12 @@
         const auth = getAuth(app);
 
         // 3. Root guard mechanism (checks after the app initializes)
-        onAuthStateChanged(auth, (user) => {
-            if (!user) {
-                window.location.href = 'login.html';
-            } else {
-                console.log("Welcome Admin:", user.email);
-                const bodyEl = document.getElementById('mainBodyFramework');
-                if (bodyEl) {
-                    bodyEl.classList.remove('hidden');
-                }
+        onAuthStateChanged(auth, async (user) => {
+            if (!(await requireAdminAccess(auth, user))) return;
+            console.log("Welcome Admin:", user.email);
+            const bodyEl = document.getElementById('mainBodyFramework');
+            if (bodyEl) {
+                bodyEl.classList.remove('hidden');
             }
         });
 
@@ -222,7 +220,6 @@
         const entryCountText = document.getElementById('entryCountText');
         const tabButtons = document.querySelectorAll('.tab-btn');
         const sortOrder = document.getElementById('sortOrder');
-        const btnApproveAll = document.getElementById('btnApproveAll');
         const prevPageBtn = document.getElementById('prevPageBtn');
         const nextPageBtn = document.getElementById('nextPageBtn');
 
@@ -230,7 +227,7 @@
         let rawItemsList = [];
         let usersMemoryCache = {}; // Cache to map uid to user object
         let postsMemoryCache = {}; // Cache to map post id to post object
-        let currentStatusFilter = 'pending';
+        let currentStatusFilter = 'approved';
         const itemsPerPage = 10;
         let currentPage = 1;
 
@@ -383,26 +380,9 @@
                     postAvatarHTML = `<span class="w-5 h-5 bg-indigo-500/10 text-indigo-400 rounded-full inline-flex items-center justify-center font-bold text-[9px] mx-1 border border-indigo-500/20 font-mono">${avatarTextPost}</span>`;
                 }
 
-                let actionButtonsHTML = '';
-                if (item.calculatedStatus === 'pending') {
-                    actionButtonsHTML = `
-                        <button data-action="approve" data-id="${item.id}" class="action-btn bg-emerald-600/10 hover:bg-emerald-600 text-emerald-400 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold border border-emerald-500/20 transition flex items-center">
-                            <i class="fa-solid fa-circle-check mr-1.5"></i> Approve
-                        </button>
-                        <button data-action="trash" data-id="${item.id}" class="action-btn bg-rose-600/10 hover:bg-rose-600 text-rose-400 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold border border-rose-500/20 transition flex items-center">
-                            <i class="fa-solid fa-trash-can mr-1.5"></i> Move to Trash
-                        </button>`;
-                } else if (item.calculatedStatus === 'approved') {
-                    actionButtonsHTML = `
-                        <button data-action="trash" data-id="${item.id}" class="action-btn bg-rose-600/10 hover:bg-rose-600 text-rose-400 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold border border-rose-500/20 transition flex items-center">
-                            <i class="fa-solid fa-trash-can mr-1.5"></i> Move to Trash
-                        </button>`;
-                } else {
-                    actionButtonsHTML = `
-                        <button data-action="approve" data-id="${item.id}" class="action-btn bg-emerald-600/10 hover:bg-emerald-600 text-emerald-400 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold border border-emerald-500/20 transition flex items-center">
-                            <i class="fa-solid fa-rotate-left mr-1.5"></i> Restore Comment
-                        </button>`;
-                }
+                const actionButtonsHTML = item.calculatedStatus === 'approved'
+                    ? '<span class="text-[11px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1.5 rounded-lg font-bold"><i class="fa-solid fa-eye mr-1.5"></i>Visible</span>'
+                    : '<a href="arena-reports.html" class="text-[11px] bg-amber-500/10 text-amber-300 border border-amber-500/20 px-3 py-1.5 rounded-lg font-bold"><i class="fa-solid fa-shield-halved mr-1.5"></i>Review report</a>';
 
                 const blockNode = document.createElement('div');
                 blockNode.className = "review-card-item bg-gray-900 border border-gray-800 rounded-xl p-5 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4";
@@ -434,27 +414,6 @@
                 reviewsContainer.appendChild(blockNode);
             });
 
-            bindCardActionListeners();
-        }
-
-        function bindCardActionListeners() {
-            document.querySelectorAll('.action-btn').forEach(btn => {
-                btn.addEventListener('click', async (e) => {
-                    const docId = e.currentTarget.getAttribute('data-id');
-                    const action = e.currentTarget.getAttribute('data-action');
-                    const reviewDocRef = doc(db, "comment_Collection", docId);
-
-                    try {
-                        if (action === 'approve') {
-                            await updateDoc(reviewDocRef, { isActive: true, isDelete: false });
-                        } else if (action === 'trash') {
-                            await updateDoc(reviewDocRef, { isActive: false, isDelete: true });
-                        }
-                    } catch (err) {
-                        console.error("Failed executing state modification: ", err);
-                    }
-                });
-            });
         }
 
         // Tab Event Target Trigger Binding Matrix
@@ -489,27 +448,6 @@
                 processAndRenderUI();
             }
         });
-
-        if (btnApproveAll) {
-            btnApproveAll.addEventListener('click', async () => {
-                const pendings = rawItemsList.filter(item => item.calculatedStatus === 'pending');
-                if (pendings.length === 0) return alert("No pending records to execute.");
-
-                if (confirm(`Are you sure to approve all ${pendings.length} pending items in batch?`)) {
-                    try {
-                        const batch = writeBatch(db);
-                        pendings.forEach(item => {
-                            const ref = doc(db, "reviews", item.id);
-                            batch.update(ref, { isAproved: true });
-                        });
-                        await batch.commit();
-                        alert("All pending records optimized and approved!");
-                    } catch (error) {
-                        console.error("Batch update crashed: ", error);
-                    }
-                }
-            });
-        }
 
         const openSidebarBtn = document.getElementById('openSidebar');
         const closeSidebarBtn = document.getElementById('closeSidebar');

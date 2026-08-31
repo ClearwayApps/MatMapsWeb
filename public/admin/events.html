@@ -438,8 +438,10 @@
     <script type="module" src="./notifications-manager.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, onSnapshot, updateDoc, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-functions.js";
+        import { requireAdminAccess } from "./admin-access.js";
 
         // 1. Firebase configuration setup (must come first)
         const firebaseConfig = window.FIREBASE_CONFIG || {};
@@ -448,17 +450,16 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const auth = getAuth(app);
+        const functions = getFunctions(app, 'europe-west2');
+        const manageLaunchData = httpsCallable(functions, 'adminManageLaunchData');
 
         // 3. Root guard mechanism (checks after the app initializes)
-        onAuthStateChanged(auth, (user) => {
-            if (!user) {
-                window.location.href = 'login.html';
-            } else {
-                console.log("Welcome Admin:", user.email);
-                const bodyEl = document.getElementById('mainBodyFramework');
-                if (bodyEl) {
-                    bodyEl.classList.remove('hidden');
-                }
+        onAuthStateChanged(auth, async (user) => {
+            if (!(await requireAdminAccess(auth, user))) return;
+            console.log("Welcome Admin:", user.email);
+            const bodyEl = document.getElementById('mainBodyFramework');
+            if (bodyEl) {
+                bodyEl.classList.remove('hidden');
             }
         });
 
@@ -786,7 +787,11 @@
                     btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i>`;
 
                     try {
-                        await updateDoc(doc(db, "events", recordId), { isActive: updatedValue });
+                        await manageLaunchData({
+                            action: 'update_event_status',
+                            eventPath: `events/${recordId}`,
+                            isActive: updatedValue
+                        });
 
                         selectElement.setAttribute('data-current', selectElement.value);
                         if (updatedValue) {
@@ -799,7 +804,7 @@
                         alert("Event status successfully updated!");
                     } catch (err) {
                         console.error("Failed executing visibility modification parameters: ", err);
-                        alert("Failed to update event status.");
+                        alert(err?.message || "Failed to update event status. No records were changed.");
                     } finally {
                         btn.disabled = false;
                         btn.innerHTML = `<i class="fa-solid fa-floppy-disk mr-1"></i> Save`;
@@ -877,12 +882,16 @@
                     const docId = e.currentTarget.getAttribute('data-id');
                     const eventName = e.currentTarget.getAttribute('data-name');
 
-                    if (confirm(`Are you sure you want to permanently cancel and delete "${eventName}"?`)) {
+                    if (confirm(`Archive "${eventName}"? The event record will be preserved but made inactive.`)) {
                         try {
-                            await deleteDoc(doc(db, "events", docId));
-                            alert("Event successfully deleted from server.");
+                            await manageLaunchData({
+                                action: 'archive_event',
+                                eventPath: `events/${docId}`
+                            });
+                            alert("Event archived. Its existing data has been preserved.");
                         } catch (error) {
-                            console.error("Error deleting event record: ", error);
+                            console.error("Error archiving event record: ", error);
+                            alert(error?.message || "The event could not be archived.");
                         }
                     }
                 });
@@ -904,7 +913,6 @@
         editEventForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const targetId = document.getElementById('editEventId').value;
-            const docRef = doc(db, "events", targetId);
 
             try {
                 let eventDateStr = document.getElementById('editEventDate').value.trim();
@@ -916,15 +924,17 @@
                     eventTimeObj = new Date(`${eventDateStr}T${eventTimeStr}`);
                 }
 
-                await updateDoc(docRef, {
+                await manageLaunchData({
+                    action: 'update_event_details',
+                    eventPath: `events/${targetId}`,
                     eventName: document.getElementById('editEventName').value.trim(),
                     regularPrice: parseFloat(document.getElementById('editRegularPrice').value) || 0,
                     earlyBirdPrice: parseFloat(document.getElementById('editEarlyPrice').value) || 0,
                     dayOfPrice: parseFloat(document.getElementById('editDayPrice').value) || 0,
                     sportType: document.getElementById('editSportType').value.trim(),
                     city: document.getElementById('editCity').value.trim(),
-                    eventDate: eventDateObj || eventDateStr,
-                    eventTime: eventTimeObj || eventTimeStr,
+                    eventDate: eventDateObj ? eventDateObj.toISOString() : '',
+                    eventTime: eventTimeObj ? eventTimeObj.toISOString() : '',
                     registrationLink: document.getElementById('editRegLinkInput').value.trim(),
                     image: document.getElementById('editEventImageUrl').value.trim(),
                     description: document.getElementById('editEventDesc').value.trim()
@@ -933,6 +943,7 @@
                 alert("Event properties deployed and synchronized perfectly.");
             } catch (error) {
                 console.error("Failed submitting snapshot updates: ", error);
+                alert(error?.message || "The event could not be updated. No records were changed.");
             }
         });
 

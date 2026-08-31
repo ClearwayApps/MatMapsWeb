@@ -138,6 +138,11 @@
                             Approved Claims <span id="approvedBadgeCount"
                                 class="ml-1.5 px-1.5 py-0.5 text-[10px] bg-indigo-800 text-indigo-200 rounded-full">0</span>
                         </button>
+                        <button data-status="rejected"
+                            class="tab-btn text-gray-400 hover:text-white px-4 py-2 rounded-md transition">
+                            Rejected <span id="rejectedBadgeCount"
+                                class="ml-1.5 px-1.5 py-0.5 text-[10px] bg-rose-900 text-rose-200 rounded-full">0</span>
+                        </button>
                     </div>
 
                     <div class="flex items-center space-x-3 w-full md:w-auto justify-end">
@@ -177,6 +182,7 @@
         import { getFirestore, collection, onSnapshot, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-functions.js";
+        import { requireAdminAccess } from "./admin-access.js";
 
         const firebaseConfig = window.FIREBASE_CONFIG || {};
 
@@ -186,15 +192,12 @@
         const functions = getFunctions(app, 'europe-west2');
         const approveClubClaim = httpsCallable(functions, 'adminManageLaunchData');
 
-        onAuthStateChanged(auth, (user) => {
-            if (!user) {
-                window.location.href = 'login.html';
-            } else {
-                console.log("Welcome Admin:", user.email);
-                const bodyEl = document.getElementById('mainBodyFramework');
-                if (bodyEl) {
-                    bodyEl.classList.remove('hidden');
-                }
+        onAuthStateChanged(auth, async (user) => {
+            if (!(await requireAdminAccess(auth, user))) return;
+            console.log("Welcome Admin:", user.email);
+            const bodyEl = document.getElementById('mainBodyFramework');
+            if (bodyEl) {
+                bodyEl.classList.remove('hidden');
             }
         });
 
@@ -205,6 +208,7 @@
         const claimsContainer = document.getElementById('claimsContainer');
         const pendingBadgeCount = document.getElementById('pendingBadgeCount');
         const approvedBadgeCount = document.getElementById('approvedBadgeCount');
+        const rejectedBadgeCount = document.getElementById('rejectedBadgeCount');
         const entryCountText = document.getElementById('entryCountText');
         const tabButtons = document.querySelectorAll('.tab-btn');
         const sortOrder = document.getElementById('sortOrder');
@@ -230,6 +234,7 @@
             rawItemsList = [];
             let pendingCount = 0;
             let approvedCount = 0;
+            let rejectedCount = 0;
 
             snapshot.forEach((docSnap) => {
                 const item = docSnap.data();
@@ -237,15 +242,19 @@
 
                 // Checking standard Firestore field 'status' mapped cleanly
                 let calculatedStatus = item.status || 'pending';
+                if (item.isApproved === true) calculatedStatus = 'approved';
+                if (item.isReject === true) calculatedStatus = 'rejected';
 
                 if (calculatedStatus === 'pending') pendingCount++;
                 if (calculatedStatus === 'approved') approvedCount++;
+                if (calculatedStatus === 'rejected') rejectedCount++;
 
                 rawItemsList.push({ id, calculatedStatus, ...item });
             });
 
             if (pendingBadgeCount) pendingBadgeCount.innerText = pendingCount;
             if (approvedBadgeCount) approvedBadgeCount.innerText = approvedCount;
+            if (rejectedBadgeCount) rejectedBadgeCount.innerText = rejectedCount;
             processAndRenderUI();
         });
 
@@ -321,6 +330,9 @@
                     actionButtonsHTML = `
                 <button data-action="approve" data-id="${item.id}" class="action-btn bg-emerald-600/15 hover:bg-emerald-600 text-emerald-400 hover:text-white px-4 py-2 rounded-lg text-xs font-bold border border-emerald-500/20 transition flex items-center shadow-sm">
                     <i class="fa-solid fa-circle-check mr-1.5"></i> ${actionLabel}
+                </button>
+                <button data-action="reject" data-id="${item.id}" class="action-btn bg-rose-600/15 hover:bg-rose-600 text-rose-400 hover:text-white px-4 py-2 rounded-lg text-xs font-bold border border-rose-500/20 transition flex items-center shadow-sm">
+                    <i class="fa-solid fa-circle-xmark mr-1.5"></i> Reject
                 </button>`;
                 } else {
                     actionButtonsHTML = `
@@ -380,18 +392,26 @@
             document.querySelectorAll('.action-btn').forEach(btn => {
                 btn.addEventListener('click', async (e) => {
                     const docId = e.currentTarget.getAttribute('data-id');
+                    const action = e.currentTarget.getAttribute('data-action');
                     const actionButton = e.currentTarget;
                     const previousLabel = actionButton.innerHTML;
 
                     try {
                         actionButton.disabled = true;
-                        actionButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1.5"></i> Linking club...';
+                        actionButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1.5"></i> Saving...';
+                        if (action === 'reject' && !confirm('Reject this club claim? No club or user data will be deleted.')) {
+                            return;
+                        }
                         const response = await approveClubClaim({
-                            action: 'approve_club_claim',
+                            action: action === 'reject' ? 'reject_club_claim' : 'approve_club_claim',
                             claimPath: `club_claims/${docId}`,
                         });
-                        const clubName = response.data?.clubName || 'the club';
-                        alert(`Claim approved and ${clubName} is now linked to the owner.`);
+                        if (action === 'reject') {
+                            alert('Claim rejected. No club or user data was deleted.');
+                        } else {
+                            const clubName = response.data?.clubName || 'the club';
+                            alert(`Claim approved and ${clubName} is now linked to the owner.`);
+                        }
                     } catch (err) {
                         console.error("Secure claim approval failed: ", err);
                         alert(err?.message || "The claim could not be approved. No records were changed.");

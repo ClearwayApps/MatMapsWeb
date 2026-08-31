@@ -129,19 +129,19 @@
                     <div id="statusTabGroup"
                         class="flex space-x-2 bg-gray-950 p-1 rounded-lg border border-gray-800 text-xs font-medium w-full sm:w-auto">
                         <button data-status="pending"
-                            class="tab-btn bg-indigo-600 text-white px-5 py-2 rounded-md shadow-sm transition">
-                            Pending <span id="pendingBadgeCount"
+                            class="tab-btn text-gray-400 hover:text-white px-5 py-2 rounded-md transition">
+                            Hidden / Flagged <span id="pendingBadgeCount"
                                 class="ml-1.5 px-1.5 py-0.5 text-[10px] bg-indigo-800 text-indigo-200 rounded-full">0</span>
                         </button>
                         <button data-status="approved"
-                            class="tab-btn text-gray-400 hover:text-white px-5 py-2 rounded-md transition flex items-center">
-                            Approved
+                            class="tab-btn bg-indigo-600 text-white px-5 py-2 rounded-md shadow-sm transition flex items-center">
+                            Visible
                             <span id="activeBadgeCount"
                                 class="ml-1.5 px-1.5 py-0.5 text-[10px] bg-indigo-800 text-indigo-200 rounded-full">0</span>
                         </button>
                         <button data-status="trashed"
                             class="tab-btn text-gray-400 hover:text-white px-5 py-2 rounded-md transition flex items-center">
-                            Trashed
+                            Removed
                             <span id="trashedBadgeCount"
                                 class="ml-1.5 px-1.5 py-0.5 text-[10px] bg-indigo-800 text-indigo-200 rounded-full">0</span>
                         </button>
@@ -231,8 +231,9 @@
     <script type="module" src="./notifications-manager.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, onSnapshot, updateDoc, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { requireAdminAccess } from "./admin-access.js";
 
         // 1. Firebase configuration setup (must come first)
         const firebaseConfig = window.FIREBASE_CONFIG || {};
@@ -243,15 +244,12 @@
         const auth = getAuth(app);
 
         // 3. Root guard mechanism (checks after the app initializes)
-        onAuthStateChanged(auth, (user) => {
-            if (!user) {
-                window.location.href = 'login.html';
-            } else {
-                console.log("Welcome Admin:", user.email);
-                const bodyEl = document.getElementById('mainBodyFramework');
-                if (bodyEl) {
-                    bodyEl.classList.remove('hidden');
-                }
+        onAuthStateChanged(auth, async (user) => {
+            if (!(await requireAdminAccess(auth, user))) return;
+            console.log("Welcome Admin:", user.email);
+            const bodyEl = document.getElementById('mainBodyFramework');
+            if (bodyEl) {
+                bodyEl.classList.remove('hidden');
             }
         });
 
@@ -270,7 +268,7 @@
         let globalPostsMemoryCache = [];
         let usersMemoryCache = {}; // Cache to map uid to user object
         let globalCommentsList = [];
-        let currentStatusFilter = 'pending';
+        let currentStatusFilter = 'approved';
         let currentSelectedPostId = null;
 
         // Listen to users collection to fetch user details for posts
@@ -570,64 +568,12 @@
             document.getElementById('detailLikesCount').innerText = item.num_likes || 0;
             document.getElementById('detailCommentsCount').innerText = commentCount;
 
-            // Render Approve/Restore and Trash action buttons dynamically
+            // Normal Arena posts publish immediately. Moderation is handled
+            // only from Arena Reports for user-reported or auto-flagged items.
             const actionsContainer = document.getElementById('detailActionsContainer');
-            let actionsHTML = '';
-            if (item.calculatedStatus === 'pending') {
-                actionsHTML = `
-                    <button id="btnDetailApprove" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-lg transition flex items-center space-x-1.5 shadow-md">
-                        <i class="fa-solid fa-circle-check"></i> <span>Approve Post</span>
-                    </button>
-                    <button id="btnDetailTrash" class="px-5 py-2 bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold rounded-lg transition flex items-center space-x-1.5 shadow-md">
-                        <i class="fa-solid fa-trash-can"></i> <span>Trash Post</span>
-                    </button>`;
-            } else if (item.calculatedStatus === 'approved') {
-                actionsHTML = `
-                    <button id="btnDetailTrash" class="px-5 py-2 bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold rounded-lg transition flex items-center space-x-1.5 shadow-md">
-                        <i class="fa-solid fa-trash-can"></i> <span>Trash Post</span>
-                    </button>`;
-            } else {
-                actionsHTML = `
-                    <button id="btnDetailApprove" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-lg transition flex items-center space-x-1.5 shadow-md">
-                        <i class="fa-solid fa-rotate-left"></i> <span>Restore Post</span>
-                    </button>`;
-            }
-            actionsContainer.innerHTML = actionsHTML;
-
-            // Bind click handlers to the detail page buttons
-            const docRef = doc(db, "postCollection", item.id);
-            const btnApprove = document.getElementById('btnDetailApprove');
-            const btnTrash = document.getElementById('btnDetailTrash');
-
-            if (btnApprove) {
-                btnApprove.addEventListener('click', async () => {
-                    btnApprove.disabled = true;
-                    try {
-                        await updateDoc(docRef, { isActive: true, isDelete: false });
-                        alert("Post successfully approved!");
-                        postDetailsSubPage.classList.add('hidden');
-                        postsMainListView.classList.remove('hidden');
-                    } catch (err) {
-                        console.error(err);
-                        alert("Error approving post: " + err.message);
-                    }
-                });
-            }
-
-            if (btnTrash) {
-                btnTrash.addEventListener('click', async () => {
-                    btnTrash.disabled = true;
-                    try {
-                        await updateDoc(docRef, { isActive: false, isDelete: true });
-                        alert("Post successfully moved to trash!");
-                        postDetailsSubPage.classList.add('hidden');
-                        postsMainListView.classList.remove('hidden');
-                    } catch (err) {
-                        console.error(err);
-                        alert("Error trashing post: " + err.message);
-                    }
-                });
-            }
+            actionsContainer.innerHTML = item.calculatedStatus === 'approved'
+                ? '<span class="px-4 py-2 rounded-lg border border-emerald-500/20 bg-emerald-500/10 text-emerald-400 text-xs font-bold"><i class="fa-solid fa-eye mr-1.5"></i>Visible in Arena</span>'
+                : '<a href="arena-reports.html" class="px-4 py-2 rounded-lg border border-amber-500/20 bg-amber-500/10 text-amber-300 text-xs font-bold"><i class="fa-solid fa-shield-halved mr-1.5"></i>Review in Arena Reports</a>';
 
             // Render comments listing for the post
             const commentsListContainer = document.getElementById('detailCommentsList');
@@ -673,34 +619,8 @@
                                 <p class="text-xs text-gray-400 font-light leading-relaxed mt-2 break-words">${comment.comment_Text || 'No comment text.'}</p>
                             </div>
                         </div>
-                        <button data-comment-id="${comment.id}" class="btn-trash-comment text-rose-500 hover:text-rose-400 transition p-1 hover:bg-rose-500/10 rounded shrink-0" title="Delete Comment">
-                            <i class="fa-solid fa-trash-can text-xs"></i>
-                        </button>
                     `;
                     commentsListContainer.appendChild(commentEl);
-                });
-
-                // Bind click handlers to the comment trash buttons
-                commentsListContainer.querySelectorAll('.btn-trash-comment').forEach(btn => {
-                    btn.addEventListener('click', async (e) => {
-                        e.stopPropagation();
-                        const commentId = btn.getAttribute('data-comment-id');
-                        if (confirm("Are you sure you want to move this comment to trash?")) {
-                            try {
-                                btn.disabled = true;
-                                btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-[10px]"></i>`;
-                                await updateDoc(doc(db, "comment_Collection", commentId), {
-                                    isActive: false,
-                                    isDelete: true
-                                });
-                            } catch (err) {
-                                console.error("Failed to trash comment: ", err);
-                                alert("Failed to trash comment.");
-                                btn.disabled = false;
-                                btn.innerHTML = `<i class="fa-solid fa-trash-can text-xs"></i>`;
-                            }
-                        }
-                    });
                 });
             }
 

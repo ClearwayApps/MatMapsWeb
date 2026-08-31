@@ -361,6 +361,35 @@ function injectNotificationDOM() {
     }
 }
 
+function injectLaunchAdminNavigation() {
+    const nav = document.querySelector('#sidebarPanel nav');
+    if (!nav || document.getElementById('phase2AdminLink')) return;
+    const currentPage = window.location.pathname.split('/').pop();
+    const links = [
+        {
+            id: 'arenaReportsAdminLink',
+            href: 'arena-reports.html',
+            icon: 'fa-solid fa-shield-halved',
+            label: 'Arena Reports'
+        },
+        {
+            id: 'phase2AdminLink',
+            href: 'phase2-controls.html',
+            icon: 'fa-solid fa-layer-group',
+            label: 'Launch Controls'
+        }
+    ];
+    links.forEach((entry) => {
+        const link = document.createElement('a');
+        link.id = entry.id;
+        link.href = entry.href;
+        const active = currentPage === entry.href;
+        link.className = `flex items-center space-x-3 px-4 py-2.5 rounded-lg transition ${active ? 'bg-indigo-600 text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white'}`;
+        link.innerHTML = `<i class="${entry.icon} w-5"></i> <span>${entry.label}</span>`;
+        nav.appendChild(link);
+    });
+}
+
 // Set up snapshot streams
 function initializeStreams() {
     const clubsQuery = query(collection(db, "clubs"), orderBy("createdTime", "desc"), limit(30));
@@ -413,6 +442,7 @@ let isNotificationsInitialized = false;
 function initNotificationsSystem() {
     if (isNotificationsInitialized) return;
     isNotificationsInitialized = true;
+    injectLaunchAdminNavigation();
     injectNotificationDOM();
     initializeStreams();
 }

@@ -363,9 +363,10 @@
     <script type="module" src="./notifications-manager.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, onSnapshot, doc, deleteDoc, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-functions.js";
+        import { requireAdminAccess } from "./admin-access.js";
 
         const firebaseConfig = window.FIREBASE_CONFIG || {};
 
@@ -375,15 +376,12 @@
         const functions = getFunctions(app, 'europe-west2');
         const mutateLaunchData = httpsCallable(functions, 'adminManageLaunchData');
 
-        onAuthStateChanged(auth, (user) => {
-            if (!user) {
-                window.location.href = 'login.html';
-            } else {
-                console.log("Welcome Admin:", user.email);
-                const bodyEl = document.getElementById('mainBodyFramework');
-                if (bodyEl) {
-                    bodyEl.classList.remove('hidden');
-                }
+        onAuthStateChanged(auth, async (user) => {
+            if (!(await requireAdminAccess(auth, user))) return;
+            console.log("Welcome Admin:", user.email);
+            const bodyEl = document.getElementById('mainBodyFramework');
+            if (bodyEl) {
+                bodyEl.classList.remove('hidden');
             }
         });
 
@@ -843,7 +841,8 @@
             e.preventDefault();
 
             try {
-                await addDoc(collection(db, "clubs"), {
+                await mutateLaunchData({
+                    action: 'create_club',
                     name: document.getElementById('addName').value.trim(),
                     logoUrl: document.getElementById('addLogoUrl').value.trim(),
                     website: document.getElementById('addWebsite').value.trim(),
@@ -851,22 +850,15 @@
                     email: document.getElementById('addEmail').value.trim(),
                     address: document.getElementById('addAddress').value.trim(),
                     city: document.getElementById('addCity').value.trim(),
-                    sports_types: currentSportsTags,
-                    description: document.getElementById('addDesc').value.trim(),
-                    verified: false,
-                    isActive: true,
-                    status: "active",
-                    isPromoted: false,
-                    featuredFrom: "",
-                    featuredTo: "",
-                    createdTime: new Date()
+                    sportsTypes: currentSportsTags,
+                    description: document.getElementById('addDesc').value.trim()
                 });
                 
                 addClubModal.classList.add('hidden');
                 alert("New club successfully registered!");
             } catch (err) {
                 console.error("Manual injection exception caught: ", err);
-                alert("Error adding club.");
+                alert(err?.message || "Error adding club. No records were changed.");
             }
         });
 
@@ -909,12 +901,16 @@
                     const docId = e.currentTarget.getAttribute('data-id');
                     const clubName = e.currentTarget.getAttribute('data-name');
 
-                    if (confirm(`Are you sure you want to permanently delete "${clubName}"?`)) {
+                    if (confirm(`Archive "${clubName}"? The club and all related data will be preserved, but the listing will become inactive.`)) {
                         try {
-                            await deleteDoc(doc(db, "clubs", docId));
-                            alert("Club successfully removed from registry.");
+                            await mutateLaunchData({
+                                action: 'archive_club',
+                                clubPath: `clubs/${docId}`
+                            });
+                            alert("Club archived. Its existing data has been preserved.");
                         } catch (error) {
-                            console.error("Error purging document: ", error);
+                            console.error("Error archiving club: ", error);
+                            alert(error?.message || "The club could not be archived.");
                         }
                     }
                 });

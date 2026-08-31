@@ -205,8 +205,10 @@
     <script type="module" src="./notifications-manager.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, onSnapshot, updateDoc, doc, query, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, onSnapshot, query } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-functions.js";
+        import { requireAdminAccess } from "./admin-access.js";
 
         // 1. Firebase configuration setup (must come first)
         const firebaseConfig = window.FIREBASE_CONFIG || {};
@@ -215,17 +217,16 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const auth = getAuth(app);
+        const functions = getFunctions(app, 'europe-west2');
+        const manageLaunchData = httpsCallable(functions, 'adminManageLaunchData');
 
         // 3. Root guard mechanism (checks after the app initializes)
-        onAuthStateChanged(auth, (user) => {
-            if (!user) {
-                window.location.href = 'login.html';
-            } else {
-                console.log("Welcome Admin:", user.email);
-                const bodyEl = document.getElementById('mainBodyFramework');
-                if (bodyEl) {
-                    bodyEl.classList.remove('hidden');
-                }
+        onAuthStateChanged(auth, async (user) => {
+            if (!(await requireAdminAccess(auth, user))) return;
+            console.log("Welcome Admin:", user.email);
+            const bodyEl = document.getElementById('mainBodyFramework');
+            if (bodyEl) {
+                bodyEl.classList.remove('hidden');
             }
         });
 
@@ -290,7 +291,8 @@
             filteredOperators = allOperators.filter(user => {
                 const nameMatch = user.display_name ? user.display_name.toLowerCase().includes(keyword) : false;
                 const emailMatch = user.email ? user.email.toLowerCase().includes(keyword) : false;
-                const matchesKeyword = nameMatch || emailMatch;
+                const usernameMatch = user.username ? user.username.toLowerCase().includes(keyword.replace(/^@/, '')) : false;
+                const matchesKeyword = nameMatch || emailMatch || usernameMatch;
 
                 const mType = (user.membershipType || "free").toLowerCase();
                 let matchesFilter = true;
@@ -379,6 +381,7 @@
                     </td>
                     <td class="px-6 py-4">
                         <div class="font-bold text-gray-200 text-sm tracking-wide">${user.display_name || 'Anonymous Fighter'}</div>
+                        <div class="text-[11px] text-indigo-400 font-mono mt-0.5">${user.username ? '@' + user.username : 'No @username'}</div>
                         <div class="text-[10px] text-gray-500 font-mono mt-0.5">UID: ${docId.substring(0, 10)}...</div>
                     </td>
                     <td class="px-6 py-4 text-xs space-y-0.5">
@@ -413,7 +416,6 @@
                 tableBody.appendChild(row);
             });
 
-            setupRemoveButtons();
             setupMembershipDropdowns();
         }
 
@@ -446,40 +448,34 @@
                     btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i>`;
 
                     try {
-                        const docRef = doc(db, "users", recordId);
-                        await updateDoc(docRef, {
+                        const currentValue = selectElement.getAttribute('data-current');
+                        if (currentValue === 'club_owner' && updatedValue !== 'club_owner') {
+                            const confirmed = confirm('This will remove Club Dashboard management access while preserving the club, events, media and reviews. Continue?');
+                            if (!confirmed) {
+                                selectElement.value = currentValue;
+                                btn.classList.add('hidden');
+                                return;
+                            }
+                        }
+                        const response = await manageLaunchData({
+                            action: 'update_user_membership',
+                            userPath: `users/${recordId}`,
                             membershipType: updatedValue
                         });
 
                         // Upon a successful save, the attribute will be updated and the button will be hidden.
                         selectElement.setAttribute('data-current', updatedValue);
                         btn.classList.add('hidden');
-                        alert("User membership status successfully updated in Firestore!");
+                        const released = Number(response.data?.clubsReleased || 0);
+                        alert(released > 0
+                            ? `Membership updated. ${released} club listing(s) were preserved and released from this owner account.`
+                            : "User membership status successfully updated.");
                     } catch (error) {
                         console.error("Failed executing database update: ", error);
-                        alert("Database write error. Access denied.");
+                        alert(error?.message || "The membership could not be updated. No records were changed.");
                     } finally {
                         btn.disabled = false;
                         btn.innerHTML = `<i class="fa-solid fa-floppy-disk mr-1"></i> Save`;
-                    }
-                });
-            });
-        }
-
-        function setupRemoveButtons() {
-            const RemoveButtons = document.querySelectorAll('.btn-Remove');
-            RemoveButtons.forEach(btn => {
-                btn.addEventListener('click', async (e) => {
-                    const docId = e.currentTarget.getAttribute('data-id');
-                    const userName = e.currentTarget.getAttribute('data-name');
-
-                    if (confirm(`Are you sure you want to permanently delete user "${userName}" from the MatMaps dataset?`)) {
-                        try {
-                            await deleteDoc(doc(db, "users", docId));
-                            alert("User profile successfully purged from cluster.");
-                        } catch (error) {
-                            console.error("Error unlinking database profile node: ", error);
-                        }
                     }
                 });
             });

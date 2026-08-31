@@ -186,8 +186,10 @@
     <script type="module" src="./notifications-manager.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, onSnapshot, updateDoc, doc, writeBatch, getDoc, runTransaction } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, onSnapshot, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-functions.js";
+        import { requireAdminAccess } from "./admin-access.js";
 
         // 1. Firebase configuration setup (must come first)
         const firebaseConfig = window.FIREBASE_CONFIG || {};
@@ -196,17 +198,16 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const auth = getAuth(app);
+        const functions = getFunctions(app, 'europe-west2');
+        const moderateClubReview = httpsCallable(functions, 'moderateClubReview');
 
         // 3. Root guard mechanism (checks after the app initializes)
-        onAuthStateChanged(auth, (user) => {
-            if (!user) {
-                window.location.href = 'login.html';
-            } else {
-                console.log("Welcome Admin:", user.email);
-                const bodyEl = document.getElementById('mainBodyFramework');
-                if (bodyEl) {
-                    bodyEl.classList.remove('hidden');
-                }
+        onAuthStateChanged(auth, async (user) => {
+            if (!(await requireAdminAccess(auth, user))) return;
+            console.log("Welcome Admin:", user.email);
+            const bodyEl = document.getElementById('mainBodyFramework');
+            if (bodyEl) {
+                bodyEl.classList.remove('hidden');
             }
         });
 
@@ -263,8 +264,8 @@
                 const id = docSnap.id;
 
                 let calculatedStatus = 'pending';
-                if (item.isAproved === true || item.isAproved === "true") calculatedStatus = 'approved';
-                if (item.isAproved === 'trashed' || item.status === 'trashed') calculatedStatus = 'trashed';
+                if (item.status === 'approved' || item.isAproved === true || item.isAproved === "true") calculatedStatus = 'approved';
+                if (['rejected', 'removed', 'trashed'].includes(item.status) || item.isAproved === 'trashed' || item.isReject === true) calculatedStatus = 'trashed';
 
                 if (calculatedStatus === 'pending') pendingCount++;
                 if (calculatedStatus === 'approved') activeCount++;
@@ -433,105 +434,22 @@
                 btn.addEventListener('click', async (e) => {
                     const docId = e.currentTarget.getAttribute('data-id');
                     const action = e.currentTarget.getAttribute('data-action');
-                    const reviewDocRef = doc(db, "reviews", docId);
-
+                    const reason = action === 'reject'
+                        ? (prompt('Optional rejection reason for the audit record:', '') ?? '')
+                        : '';
                     try {
-                        if (action === 'approve') {
-                            await runTransaction(db, async (transaction) => {
-                                const reviewSnap = await transaction.get(reviewDocRef);
-                                if (!reviewSnap.exists()) {
-                                    throw new Error("Review document does not exist!");
-                                }
-                                const reviewData = reviewSnap.data();
-                                const alreadyApproved = reviewData.isAproved === true || reviewData.isAproved === "true";
-                                if (alreadyApproved) {
-                                    transaction.update(reviewDocRef, { isAproved: true });
-                                    return;
-                                }
-
-                                // Perform all reads first
-                                let clubSnap = null;
-                                let clubDocRef = null;
-                                const ratingValue = Number(reviewData.rating);
-                                const hasValidRating = reviewData.rating !== undefined && reviewData.rating !== null && !isNaN(ratingValue);
-
-                                if (hasValidRating && reviewData.clubRef) {
-                                    const clubRefStr = reviewData.clubRef.path || reviewData.clubRef.toString();
-                                    const clubId = clubRefStr.split('/').pop();
-                                    if (clubId) {
-                                        clubDocRef = doc(db, "clubs", clubId);
-                                        clubSnap = await transaction.get(clubDocRef);
-                                    }
-                                }
-
-                                // Perform all updates/writes last
-                                transaction.update(reviewDocRef, { isAproved: true });
-
-                                if (clubSnap && clubSnap.exists() && clubDocRef) {
-                                    const clubData = clubSnap.data();
-                                    const prevRating = typeof clubData.rating === 'number' ? clubData.rating : 0;
-                                    const prevCount = typeof clubData.ratingCount === 'number' ? clubData.ratingCount : 0;
-
-                                    const newCount = prevCount + 1;
-                                    const newRating = ((prevRating * prevCount) + ratingValue) / newCount;
-
-                                    transaction.update(clubDocRef, {
-                                        rating: Number(newRating.toFixed(2)),
-                                        ratingCount: newCount
-                                    });
-                                }
-                            });
-                        } else if (action === 'reject') {
-                            await runTransaction(db, async (transaction) => {
-                                const reviewSnap = await transaction.get(reviewDocRef);
-                                if (!reviewSnap.exists()) {
-                                    throw new Error("Review document does not exist!");
-                                }
-                                const reviewData = reviewSnap.data();
-                                const prevStatusApproved = reviewData.isAproved === true || reviewData.isAproved === "true";
-
-                                // Perform all reads first
-                                let clubSnap = null;
-                                let clubDocRef = null;
-                                const ratingValue = Number(reviewData.rating);
-                                const hasValidRating = reviewData.rating !== undefined && reviewData.rating !== null && !isNaN(ratingValue);
-
-                                if (prevStatusApproved && hasValidRating && reviewData.clubRef) {
-                                    const clubRefStr = reviewData.clubRef.path || reviewData.clubRef.toString();
-                                    const clubId = clubRefStr.split('/').pop();
-                                    if (clubId) {
-                                        clubDocRef = doc(db, "clubs", clubId);
-                                        clubSnap = await transaction.get(clubDocRef);
-                                    }
-                                }
-
-                                // Perform all updates/writes last
-                                transaction.update(reviewDocRef, { isAproved: 'trashed' });
-
-                                if (clubSnap && clubSnap.exists() && clubDocRef) {
-                                    const clubData = clubSnap.data();
-                                    const prevRating = typeof clubData.rating === 'number' ? clubData.rating : 0;
-                                    const prevCount = typeof clubData.ratingCount === 'number' ? clubData.ratingCount : 0;
-
-                                    if (prevCount > 1) {
-                                        const newCount = prevCount - 1;
-                                        const newRating = ((prevRating * prevCount) - ratingValue) / newCount;
-                                        transaction.update(clubDocRef, {
-                                            rating: Number(newRating.toFixed(2)),
-                                            ratingCount: newCount
-                                        });
-                                    } else {
-                                        transaction.update(clubDocRef, {
-                                            rating: 0,
-                                            ratingCount: 0
-                                        });
-                                    }
-                                }
-                            });
-                        }
+                        e.currentTarget.disabled = true;
+                        await moderateClubReview({
+                            reviewPath: `reviews/${docId}`,
+                            action,
+                            reason
+                        });
+                        alert(`Review ${action === 'approve' ? 'approved' : 'rejected'} successfully.`);
                     } catch (err) {
                         console.error("Failed executing state modification: ", err);
                         alert("Error updating review: " + err.message);
+                    } finally {
+                        e.currentTarget.disabled = false;
                     }
                 });
             });
@@ -577,81 +495,20 @@
 
                 if (confirm(`Are you sure to approve all ${pendings.length} pending items in batch?`)) {
                     try {
-                        await runTransaction(db, async (transaction) => {
-                            const clubUpdates = {};
-                            const clubsToFetch = new Set();
-                            const reviewDataList = [];
-
-                            for (const item of pendings) {
-                                const reviewDocRef = doc(db, "reviews", item.id);
-                                const reviewSnap = await transaction.get(reviewDocRef);
-                                if (reviewSnap.exists()) {
-                                    const reviewData = reviewSnap.data();
-                                    const alreadyApproved = reviewData.isAproved === true || reviewData.isAproved === "true";
-                                    if (!alreadyApproved) {
-                                        reviewDataList.push({ ref: reviewDocRef, data: reviewData });
-                                        const ratingValue = Number(reviewData.rating);
-                                        if (reviewData.rating !== undefined && reviewData.rating !== null && !isNaN(ratingValue)) {
-                                            let clubId = "";
-                                            if (reviewData.clubRef) {
-                                                const clubRefStr = reviewData.clubRef.path || reviewData.clubRef.toString();
-                                                clubId = clubRefStr.split('/').pop();
-                                            }
-                                            if (clubId) {
-                                                clubsToFetch.add(clubId);
-                                                if (!clubUpdates[clubId]) {
-                                                    clubUpdates[clubId] = [];
-                                                }
-                                                clubUpdates[clubId].push(ratingValue);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                            // Fetch current state of unique clubs
-                            const clubSnaps = {};
-                            for (const clubId of clubsToFetch) {
-                                const clubDocRef = doc(db, "clubs", clubId);
-                                const clubSnap = await transaction.get(clubDocRef);
-                                if (clubSnap.exists()) {
-                                    clubSnaps[clubId] = clubSnap.data();
-                                }
-                            }
-
-                            // Update reviews to approved
-                            for (const r of reviewDataList) {
-                                transaction.update(r.ref, { isAproved: true });
-                            }
-
-                            // Update clubs average ratings and counts
-                            for (const clubId in clubUpdates) {
-                                const newReviewRatings = clubUpdates[clubId];
-                                const clubData = clubSnaps[clubId];
-                                if (clubData) {
-                                    const prevRating = typeof clubData.rating === 'number' ? clubData.rating : 0;
-                                    const prevCount = typeof clubData.ratingCount === 'number' ? clubData.ratingCount : 0;
-
-                                    let totalRatingSum = prevRating * prevCount;
-                                    for (const r of newReviewRatings) {
-                                        totalRatingSum += r;
-                                    }
-                                    const newCount = prevCount + newReviewRatings.length;
-                                    const newRating = totalRatingSum / newCount;
-
-                                    const clubDocRef = doc(db, "clubs", clubId);
-                                    transaction.update(clubDocRef, {
-                                        rating: Number(newRating.toFixed(2)),
-                                        ratingCount: newCount
-                                    });
-                                }
-                            }
-                        });
-
+                        btnApproveAll.disabled = true;
+                        for (const item of pendings) {
+                            await moderateClubReview({
+                                reviewPath: `reviews/${item.id}`,
+                                action: 'approve',
+                                reason: 'Approved in Admin Hub batch action.'
+                            });
+                        }
                         alert("All pending records optimized and approved!");
                     } catch (error) {
                         console.error("Batch update crashed: ", error);
                         alert("Failed to batch approve reviews: " + error.message);
+                    } finally {
+                        btnApproveAll.disabled = false;
                     }
                 }
             });
