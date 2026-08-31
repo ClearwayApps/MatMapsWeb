@@ -363,14 +363,17 @@
     <script type="module" src="./notifications-manager.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, onSnapshot, doc, updateDoc, deleteDoc, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, onSnapshot, doc, deleteDoc, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-functions.js";
 
         const firebaseConfig = window.FIREBASE_CONFIG || {};
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const auth = getAuth(app);
+        const functions = getFunctions(app, 'europe-west2');
+        const mutateLaunchData = httpsCallable(functions, 'adminManageLaunchData');
 
         onAuthStateChanged(auth, (user) => {
             if (!user) {
@@ -792,17 +795,14 @@
 
                     try {
                         const updateData = {
+                            action: "update_club_status",
+                            clubPath: `clubs/${recordId}`,
                             verified: isVerifiedValue,
                             isActive: isActiveValue,
-                            status: isActiveValue ? "active" : "inactive",
                             isPromoted: isPromotedValue
                         };
 
-                        if (!isPromotedValue) {
-                            updateData.featuredTo = "";
-                        }
-
-                        await updateDoc(doc(db, "clubs", recordId), updateData);
+                        await mutateLaunchData(updateData);
 
                         verifySelect.setAttribute('data-current', verifySelect.value);
                         statusSelect.setAttribute('data-current', statusSelect.value);
@@ -830,7 +830,7 @@
                         alert("Club status successfully updated!");
                     } catch (err) {
                         console.error("Failed to update club: ", err);
-                        alert("Failed to update club status.");
+                        alert(`Failed to update club status: ${err.message || "Please try again."}`);
                     } finally {
                         btn.disabled = false;
                         btn.innerHTML = `<i class="fa-solid fa-floppy-disk mr-1"></i> Save`;
