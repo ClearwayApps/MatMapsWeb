@@ -174,14 +174,17 @@
     <script type="module" src="./notifications-manager.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, onSnapshot, updateDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, onSnapshot, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-functions.js";
 
         const firebaseConfig = window.FIREBASE_CONFIG || {};
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const auth = getAuth(app);
+        const functions = getFunctions(app, 'europe-west2');
+        const approveClubClaim = httpsCallable(functions, 'adminManageLaunchData');
 
         onAuthStateChanged(auth, (user) => {
             if (!user) {
@@ -311,10 +314,13 @@
 
                 // Action controls interface mapping logic pipeline
                 let actionButtonsHTML = '';
-                if (item.calculatedStatus === 'pending') {
+                if (item.calculatedStatus === 'pending' || item.isApproved !== true) {
+                    const actionLabel = item.calculatedStatus === 'pending'
+                        ? 'Approve Claim'
+                        : 'Complete Setup';
                     actionButtonsHTML = `
                 <button data-action="approve" data-id="${item.id}" class="action-btn bg-emerald-600/15 hover:bg-emerald-600 text-emerald-400 hover:text-white px-4 py-2 rounded-lg text-xs font-bold border border-emerald-500/20 transition flex items-center shadow-sm">
-                    <i class="fa-solid fa-circle-check mr-1.5"></i> Approve Claim
+                    <i class="fa-solid fa-circle-check mr-1.5"></i> ${actionLabel}
                 </button>`;
                 } else {
                     actionButtonsHTML = `
@@ -374,15 +380,26 @@
             document.querySelectorAll('.action-btn').forEach(btn => {
                 btn.addEventListener('click', async (e) => {
                     const docId = e.currentTarget.getAttribute('data-id');
-                    const claimDocRef = doc(db, "club_claims", docId);
+                    const actionButton = e.currentTarget;
+                    const previousLabel = actionButton.innerHTML;
 
                     try {
-                        // Updates 'status' to approved and pushes dynamically to the next tab state block
-                        await updateDoc(claimDocRef, { status: 'approved' });
-                        alert("Claim setup verified and approved successfully!");
+                        actionButton.disabled = true;
+                        actionButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1.5"></i> Linking club...';
+                        const response = await approveClubClaim({
+                            action: 'approve_club_claim',
+                            claimPath: `club_claims/${docId}`,
+                        });
+                        const clubName = response.data?.clubName || 'the club';
+                        alert(`Claim approved and ${clubName} is now linked to the owner.`);
                     } catch (err) {
-                        console.error("Execution failed updating profile status: ", err);
-                        alert("Write cluster execution rejected.");
+                        console.error("Secure claim approval failed: ", err);
+                        alert(err?.message || "The claim could not be approved. No records were changed.");
+                    } finally {
+                        if (actionButton.isConnected) {
+                            actionButton.disabled = false;
+                            actionButton.innerHTML = previousLabel;
+                        }
                     }
                 });
             });
