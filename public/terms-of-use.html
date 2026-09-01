@@ -1,708 +1,183 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en-GB">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="assets/image/matMaps_logo.png">
-    <title>Terms of Use - MatMaps</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <style>
-        html,
-        main,
-        div {
-            scroll-behavior: smooth !important;
-        }
-    </style>
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        cyberBlack: '#06070a',
-                        cyberCard: '#0d0e15',
-                        brandRed: '#931A16', /* MatMaps Exact Brand Crimson Core */
-                        brandAccent: '#E63935', /* Glowing Light Red Accent */
-
-                        indigo: {
-                            400: '#E63935',
-                            500: '#B71C1C',
-                            600: '#931A16',
-                            700: '#7A1310',
-                            800: '#5F0E0B',
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Terms governing use of the MatMaps mobile apps and website.">
+  <link rel="icon" type="image/png" href="assets/image/matMaps_logo.png">
+  <title>Terms of Use - MatMaps</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: {
+        colors: { cyberBlack: '#06070a', cyberCard: '#0d0e15', brandRed: '#931A16', brandAccent: '#E63935' },
+        fontFamily: { sans: ['Inter', 'Arial', 'sans-serif'] }
+      }}
+    };
+  </script>
+  <style>html { scroll-behavior: smooth; } .legal a { color: #b91c1c; text-decoration: underline; }</style>
 </head>
-
-<body
-    class="bg-gray-950 text-gray-100 font-sans antialiased min-h-screen flex flex-col justify-between relative overflow-x-hidden">
-
-    <!-- HEADER NAVIGATION -->
-    <div class="w-full radial-red-gradient">
-        <div class="max-w-7xl mx-auto">
-            <header class="bg-transparent px-6 md:px-16 h-20 flex items-center justify-between">
-                <a class="flex items-center space-x-3 hover:opacity-90 transition" href="index.html">
-                    <img src="assets/image/matMaps_logo.png" alt="logo" class="h-16"
-                        onerror="this.style.display='none'; document.getElementById('logoIcon').classList.remove('hidden')" />
-                    <i id="logoIcon" class="fa-solid fa-square-poll-vertical text-xl text-brandRed hidden"></i>
-                    <span class="text-lg font-bold tracking-tight text-white uppercase font-mono">Mat<span
-                            class="text-brandRed">Maps</span></span>
-                </a>
-
-                <!-- <div class="flex items-center space-x-4">
-                    <a href="admin/login.html"
-                        class="bg-brandRed hover:bg-brandAccent text-white text-xs font-bold px-6 py-2.5 rounded-full transition duration-300 flex items-center space-x-1.5 shadow-[0_0_20px_rgba(147,26,22,0.3)] border border-brandAccent/20">
-                        <i class="fa-solid fa-user-shield text-[10px]"></i>
-                        <span>Admin Login</span>
-                        <i class="fa-solid fa-arrow-right text-[10px]"></i>
-                    </a>
-                </div> -->
-            </header>
-        </div>
+<body class="bg-cyberBlack text-gray-200 font-sans antialiased min-h-screen">
+  <header class="border-b border-white/10 bg-[#090b11]">
+    <div class="max-w-6xl mx-auto h-20 px-6 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3" aria-label="MatMaps home">
+        <img src="assets/image/matMaps_logo.png" alt="MatMaps" class="h-16 w-auto">
+        <span class="text-xl font-extrabold uppercase">Mat<span class="text-brandAccent">Maps</span></span>
+      </a>
+      <a href="privacy-policy.html" class="text-sm font-semibold hover:text-brandAccent">Privacy Policy</a>
     </div>
+  </header>
 
-    <!-- Main Workspace -->
-    <main id="mainContentArea" class="flex-1 flex flex-col overflow-y-auto bg-gray-950 relative">
+  <main class="px-4 py-10">
+    <article class="legal max-w-4xl mx-auto bg-white text-gray-700 rounded-2xl shadow-2xl border border-gray-200 p-6 md:p-10 leading-relaxed space-y-8">
+      <header class="border-b border-gray-200 pb-5">
+        <p class="text-xs font-bold tracking-[0.18em] text-brandRed uppercase">MatMaps legal</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-gray-950 mt-2">Terms of Use</h1>
+        <p class="text-sm text-gray-500 mt-2">Last updated: 1 September 2026</p>
+      </header>
 
-        <div class="p-6 max-w-4xl w-full mx-auto relative">
-            <div
-                class="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 shadow-2xl text-gray-700 leading-relaxed text-sm space-y-6">
+      <section class="bg-red-50 border border-red-100 rounded-xl p-5">
+        <h2 class="text-lg font-bold text-gray-950">Agreement</h2>
+        <p class="mt-2">These terms form an agreement between you and MatMaps covering the MatMaps Android and iOS applications, matmaps.co.uk and related services (together, the “Services”). By creating an account or using the Services, you agree to these terms and our <a href="privacy-policy.html">Privacy Policy</a>. If you do not agree, do not use the Services.</p>
+        <p class="mt-2">Contact: <a href="mailto:hello@matmaps.co.uk">hello@matmaps.co.uk</a>, MatMaps Team, 483 Green Lanes, London, N13 5XT.</p>
+      </section>
 
-                <div class="border-b border-gray-200 pb-4">
-                    <h2 class="text-3xl font-extrabold text-gray-900">TERMS OF SERVICE</h2>
-                    <p class="text-xs text-gray-500 mt-1 font-mono">Last updated 21 July 2026</p>
-                </div>
+      <nav aria-label="Contents" class="bg-gray-50 border border-gray-200 rounded-xl p-5">
+        <h2 class="font-bold text-gray-950">Contents</h2>
+        <ol class="list-decimal pl-5 mt-3 grid md:grid-cols-2 gap-x-8 gap-y-1 text-sm">
+          <li><a href="#eligibility">Eligibility</a></li><li><a href="#accounts">Accounts and usernames</a></li>
+          <li><a href="#services">Directory, events and training</a></li><li><a href="#social">Social and messaging</a></li>
+          <li><a href="#clubs">Club owners and staff</a></li><li><a href="#reviews">Reviews</a></li>
+          <li><a href="#content">Your content and licence</a></li><li><a href="#conduct">Acceptable use</a></li>
+          <li><a href="#moderation">Reports and moderation</a></li><li><a href="#subscriptions">Subscriptions and purchases</a></li>
+          <li><a href="#ads">Advertising</a></li><li><a href="#thirdparty">Third-party services</a></li>
+          <li><a href="#deletion">Deletion and termination</a></li><li><a href="#availability">Availability and changes</a></li>
+          <li><a href="#liability">Responsibility and liability</a></li><li><a href="#law">Law and complaints</a></li>
+        </ol>
+      </nav>
 
-                <div class="space-y-3 text-gray-600">
-                    <h3 class="text-sm font-bold text-gray-900 uppercase">AGREEMENT TO OUR LEGAL TERMS</h3>
-                    <p>We are <strong class="text-gray-900">MatMaps</strong> (<strong class="text-gray-900">"Company,"
-                            "we," "us," "our"</strong>).</p>
-                    <p>We operate, as well as any other related products and services that refer or link to these
-                        legal terms (the <strong class="text-gray-900">"Legal Terms"</strong>) (collectively, the
-                        <strong class="text-gray-900">"Services"</strong>). You can contact us by email at <a
-                            href="mailto:hello@matmaps.co.uk"
-                            class="text-indigo-600 font-mono hover:underline">hello@matmaps.co.uk</a>.
-                    </p>
-                    <p>These Legal Terms constitute a legally binding agreement made between you, whether personally
-                        or on behalf of an entity (<strong class="text-gray-900">"you"</strong>), and <strong
-                            class="text-gray-900">MatMaps</strong> concerning your access to and use of the
-                        Services. You agree that by accessing the Services, you have read, understood, and agreed to
-                        be bound by all of these Legal Terms.</p>
-                    <p
-                        class="bg-red-50 border border-red-100 rounded-xl p-4 font-semibold text-red-700 text-xs tracking-wide">
-                        IF YOU DO NOT AGREE WITH ALL OF THESE LEGAL TERMS, THEN YOU ARE EXPRESSLY PROHIBITED FROM
-                        USING THE SERVICES AND YOU MUST DISCONTINUE USE IMMEDIATELY.
-                    </p>
-                    <p>Supplemental terms and conditions or documents that may be posted on the Services from time
-                        to time are hereby expressly incorporated herein by reference. We reserve the right, in our
-                        sole discretion, to make changes or modifications to these Legal Terms at any time and for
-                        any reason. We will alert you about any changes by updating the "Last updated" date of these
-                        Legal Terms, and you waive any right to receive specific notice of each such change. It is
-                        your responsibility to periodically review these Legal Terms to stay informed of updates.
-                    </p>
-                    <p>You will be subject to and will be deemed to have been made aware of and to have accepted,
-                        the changes in any revised Legal Terms by your continued use of the Services after the date
-                        such revised Legal Terms are posted. We recommend that you print a copy of these Legal Terms
-                        for your records.</p>
-                </div>
+      <section id="eligibility" class="space-y-3 scroll-mt-6">
+        <h2 class="text-xl font-bold text-gray-950">1. Eligibility</h2>
+        <p>You must be at least 13 to use MatMaps. If you are under 18, you confirm that a parent or guardian has given permission and provides appropriate supervision. A person using MatMaps for a club confirms they have authority to act for that club.</p>
+        <p>You may not use the Services if prohibited by applicable law or if we previously removed your account for serious or repeated misuse.</p>
+      </section>
 
-                <!-- TABLE OF CONTENTS -->
-                <div id="tableOfContents"
-                    class="text-xs text-gray-500 border-t border-b border-gray-200 py-4 bg-gray-50/50 px-4 rounded-xl scroll-mt-24">
-                    <h4 class="font-extrabold text-gray-900 mb-3 tracking-wide text-sm">TABLE OF CONTENTS</h4>
-                    <ol class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 list-decimal pl-4 font-mono font-medium">
-                        <li><a href="#section-1"
-                                class="text-indigo-600 hover:text-indigo-800 hover:underline transition">OUR
-                                SERVICES</a></li>
-                        <li><a href="#section-2"
-                                class="text-indigo-600 hover:text-indigo-800 hover:underline transition">INTELLECTUAL
-                                PROPERTY RIGHTS</a></li>
-                        <li><a href="#section-3"
-                                class="text-indigo-600 hover:text-indigo-800 hover:underline transition">USER
-                                REPRESENTATIONS</a></li>
-                        <li><a href="#section-4"
-                                class="text-indigo-600 hover:text-indigo-800 hover:underline transition">PROHIBITED
-                                ACTIVITIES</a></li>
-                        <li><a href="#section-5"
-                                class="text-indigo-600 hover:text-indigo-800 hover:underline transition">USER
-                                GENERATED CONTRIBUTIONS</a></li>
-                        <li><a href="#section-6"
-                                class="text-indigo-600 hover:text-indigo-800 hover:underline transition">CONTRIBUTION
-                                LICENSE</a></li>
-                        <li><a href="#section-7"
-                                class="text-indigo-600 hover:text-indigo-800 hover:underline transition">SERVICES
-                                MANAGEMENT</a></li>
-                        <li><a href="#section-8"
-                                class="text-indigo-600 hover:text-indigo-800 hover:underline transition">TERM AND
-                                TERMINATION</a></li>
-                        <li><a href="#section-9"
-                                class="text-indigo-600 hover:text-indigo-800 hover:underline transition">MODIFICATIONS
-                                AND INTERRUPTIONS</a></li>
-                        <li><a href="#section-10"
-                                class="text-indigo-600 hover:text-indigo-800 hover:underline transition">GOVERNING
-                                LAW</a></li>
-                        <li><a href="#section-11"
-                                class="text-indigo-600 hover:text-indigo-800 hover:underline transition">DISPUTE
-                                RESOLUTION</a></li>
-                        <li><a href="#section-12"
-                                class="text-indigo-600 hover:text-indigo-800 hover:underline transition">CORRECTIONS</a>
-                        </li>
-                        <li><a href="#section-13"
-                                class="text-indigo-600 hover:text-indigo-800 hover:underline transition">DISCLAIMER</a>
-                        </li>
-                        <li><a href="#section-14"
-                                class="text-indigo-600 hover:text-indigo-800 hover:underline transition">LIMITATIONS
-                                OF LIABILITY</a></li>
-                        <li><a href="#section-15"
-                                class="text-indigo-600 hover:text-indigo-800 hover:underline transition">INDEMNIFICATION</a>
-                        </li>
-                        <li><a href="#section-16"
-                                class="text-indigo-600 hover:text-indigo-800 hover:underline transition">USER
-                                DATA</a></li>
-                        <li><a href="#section-17"
-                                class="text-indigo-600 hover:text-indigo-800 hover:underline transition">ELECTRONIC
-                                COMMUNICATIONS, TRANSACTIONS, AND SIGNATURES</a></li>
-                        <li><a href="#section-18"
-                                class="text-indigo-600 hover:text-indigo-800 hover:underline transition">MISCELLANEOUS</a>
-                        </li>
-                        <li><a href="#section-19"
-                                class="text-indigo-600 hover:text-indigo-800 hover:underline transition">CONTACT
-                                US</a></li>
-                    </ol>
-                </div>
+      <section id="accounts" class="space-y-3 scroll-mt-6">
+        <h2 class="text-xl font-bold text-gray-950">2. Accounts and usernames</h2>
+        <p>Provide accurate information, keep your sign-in details secure and tell us promptly about suspected unauthorised access. You are responsible for activity conducted through your account unless caused by our failure to use reasonable care.</p>
+        <p>Eligible account types can select a unique @username. Usernames must not impersonate another person or club, infringe rights, mislead, harass or contain prohibited content. Username-change limits shown in the app help preserve identity and prevent abuse. Club usernames are based on the club's official name and may be changed only under the conditions shown in the club workflow.</p>
+        <p>Do not transfer, sell or share an account. Club staff must use their own personal account and the official invitation process.</p>
+      </section>
 
-                <!-- 1. OUR SERVICES -->
-                <div id="section-1" class="space-y-3 pt-2 scroll-mt-24">
-                    <h3 class="text-base font-bold text-gray-900 border-b border-gray-100 pb-1">1. OUR SERVICES</h3>
-                    <p class="text-gray-600">The information provided when using the Services is not intended for
-                        distribution to or use by any person or entity in any jurisdiction or country where such
-                        distribution or use would be contrary to law or regulation or which would subject us to any
-                        registration requirement within such jurisdiction or country. Accordingly, those persons who
-                        choose to access the Services from other locations do so on their own initiative and are
-                        solely responsible for compliance with local laws, if and to the extent local laws are
-                        applicable.</p>
+      <section id="services" class="space-y-3 scroll-mt-6">
+        <h2 class="text-xl font-bold text-gray-950">3. Club directory, events and training</h2>
+        <p>MatMaps helps users discover combat-sports clubs, events and training opportunities. Some directory data comes from clubs, users or public sources and can change. Verify addresses, schedules, prices, eligibility and safety arrangements directly with the club or organiser before travelling, paying or participating.</p>
+        <p>Training timers, scorekeeping, logs and notes are organisational tools only. They are not medical, coaching or safety advice. Combat sports involve an inherent risk of injury. Train within your ability, use suitable equipment and qualified supervision, and seek professional medical advice when appropriate.</p>
+        <p>Map locations, distances and search results are estimates and may be incomplete or inaccurate. Do not rely on MatMaps for emergency navigation.</p>
+      </section>
 
-                    <h4 class="text-sm font-bold text-gray-900 pt-2">1.1 Directory Information Accuracy</h4>
-                    <p class="text-gray-600">The Services include a public directory of martial arts clubs and events.
-                        We do not verify all information provided by clubs or third parties. You acknowledge that:</p>
-                    <ul class="list-disc pl-10 space-y-1 text-gray-600">
-                        <li>Club and event details (addresses, times, contact information, etc.) may change or be
-                            inaccurate.</li>
-                        <li>We are not responsible for the accuracy, safety, or quality of any club, training session,
-                            or event listed.</li>
-                        <li>You attend any event or contact any club at your own risk.</li>
-                    </ul>
-                    <p class="text-gray-600">We strongly recommend you verify all details directly with the club or
-                        organiser before attending.</p>
+      <section id="social" class="space-y-3 scroll-mt-6">
+        <h2 class="text-xl font-bold text-gray-950">4. Arena, Travelling Fighter Hub, friends and messages</h2>
+        <p>Public-feed posts may be viewed, shared, reported and moderated. Friends and eligible account holders can use one-to-one messaging. A message from a non-friend may enter Message Requests until accepted. Club notices may provide a route to message the individual owner or staff member who posted the notice; they do not create a club-page inbox.</p>
+        <p>Private messages are intended for the participants but are not end-to-end encrypted. Do not send passwords, payment details, medical records or other highly sensitive information. Never use MatMaps to arrange unsafe conduct, exploit a child, threaten someone or send repeated unwanted messages.</p>
+        <p>Blocking, declining or reporting someone does not guarantee that person cannot contact you outside MatMaps. Contact emergency services or law enforcement where there is an immediate risk.</p>
+      </section>
 
-                    <h4 class="text-sm font-bold text-gray-900 pt-2">1.2 Directory Information</h4>
-                    <p class="text-gray-600">The Services include a public directory of clubs and events. We do not
-                        independently verify all information provided by third parties. We make no guarantees regarding
-                        the accuracy, completeness, safety, or availability of any club, training session, or event
-                        listed. You are responsible for verifying all details directly with the relevant club or
-                        organiser before attending any event or making contact.</p>
-                </div>
+      <section id="clubs" class="space-y-3 scroll-mt-6">
+        <h2 class="text-xl font-bold text-gray-950">5. Club owners, staff, affiliations and notices</h2>
+        <p>Club management requires an eligible paid club plan. Only an authorised club owner may create, cancel or manage staff invitations and seats. Staff can join only through a valid one-time invitation link, subject to expiry, available plan capacity and account eligibility. Staff act through personal accounts and must follow the owner's directions and these terms.</p>
+        <p>Owners are responsible for ensuring club details, staff access, events, notices, member verification, media and coaching notes are accurate, lawful and appropriate. Remove staff access promptly when it is no longer required. MatMaps may require evidence before approving a claim or change of control.</p>
+        <p>A member's claimed affiliation can remain unverified until authorised club personnel confirm it. Verification means only that the club accepted the affiliation in MatMaps; it is not a safeguarding, identity, qualification or background check.</p>
+      </section>
 
-                <!-- 2. INTELLECTUAL PROPERTY RIGHTS -->
-                <div id="section-2" class="space-y-3 pt-2 scroll-mt-24">
-                    <h3 class="text-base font-bold text-gray-900 border-b border-gray-100 pb-1">2. INTELLECTUAL PROPERTY
-                        RIGHTS</h3>
-                    <h4 class="text-sm font-bold text-gray-900">Our intellectual property</h4>
-                    <p class="text-gray-600">We are the owner or the licensee of all intellectual property rights in our
-                        Services, including all source code, databases, functionality, software, website designs, audio,
-                        video, text, photographs, and graphics in the Services (collectively, the <strong
-                            class="text-gray-900">"Content"</strong>), as well as the trademarks, service marks, and
-                        logos contained therein (the <strong class="text-gray-900">"Marks"</strong>).</p>
-                    <p class="text-gray-600">Our Content and Marks are protected by copyright and trademark laws (and
-                        various other intellectual property rights and unfair competition laws) and treaties around the
-                        world.</p>
-                    <p class="text-gray-600">The Content and Marks are provided in or through the Services "AS IS" for
-                        your personal, non-commercial use or internal business purpose only.</p>
+      <section id="reviews" class="space-y-3 scroll-mt-6">
+        <h2 class="text-xl font-bold text-gray-950">6. Club reviews</h2>
+        <p>Reviews must reflect a genuine experience and be fair, relevant and lawful. Reviews may be held for moderation before publication. Club owners and staff must not review a club they manage and cannot remove reviews of their own club. MatMaps may approve, reject, hide or remove reviews under these terms, but does not endorse a review merely because it is published.</p>
+      </section>
 
-                    <h4 class="text-sm font-bold text-gray-900 pt-2">Your use of our Services</h4>
-                    <p class="text-gray-600">Subject to your compliance with these Legal Terms, including the
-                        "PROHIBITED ACTIVITIES" section below, we grant you a non-exclusive, non-transferable, revocable
-                        license to:</p>
-                    <ul class="list-disc pl-10 space-y-1 text-gray-600">
-                        <li>access the Services; and</li>
-                        <li>download or print a copy of any portion of the Content to which you have properly gained
-                            access, solely for your personal, non-commercial use or internal business purpose.</li>
-                    </ul>
-                    <p class="text-gray-600">Except as set out in this section or elsewhere in our Legal Terms, no part
-                        of the Services and no Content or Marks may be copied, reproduced, aggregated, republished,
-                        uploaded, posted, publicly displayed, encoded, translated, transmitted, distributed, sold,
-                        licensed, or otherwise exploited for any commercial purpose whatsoever, without our express
-                        prior written permission. If you wish to make any use of the Services, Content, or Marks other
-                        than as set out in this section or elsewhere in our Legal Terms, please address your request to:
-                        <a href="mailto:clearwayapps@gmail.com"
-                            class="text-indigo-600 font-mono hover:underline">clearwayapps@gmail.com</a>. If we ever
-                        grant you the permission to post, reproduce, or publicly display any part of our Services or
-                        Content, you must identify us as the owners or licensors of the Services, Content, or Marks and
-                        ensure that any copyright or proprietary notice appears or is visible on posting, reproducing,
-                        or displaying our Content. We reserve all rights not expressly granted to you in and to the
-                        Services, Content, and Marks. Any breach of these Intellectual Property Rights will constitute a
-                        material breach of our Legal Terms and your right to use our Services will terminate
-                        immediately.</p>
+      <section id="content" class="space-y-3 scroll-mt-6">
+        <h2 class="text-xl font-bold text-gray-950">7. Your content and licence</h2>
+        <p>You retain ownership of text, photos, videos, comments, reviews and other material you submit (“User Content”). You confirm you created it or have all permissions needed to use it, including permission from identifiable people where required.</p>
+        <p>You grant MatMaps a non-exclusive, worldwide, royalty-free licence to host, store, reproduce, format, display, transmit and make User Content available only as needed to operate, secure, improve and promote the Services. This licence ends when the content is deleted, except for copies already shared by others, protected backups and material we must retain for legal or safety reasons.</p>
+        <p>You must not upload confidential information, content that infringes copyright, or media of another person without a lawful basis and appropriate permission. You are responsible for preserving your own copies.</p>
+      </section>
 
-                    <h4 class="text-sm font-bold text-gray-900 pt-2">Your Submission</h4>
-                    <p class="text-gray-600">Please review this section and the "PROHIBITED ACTIVITIES" section
-                        carefully prior to using our Services to understand the (a) rights you give us and (b)
-                        obligations you have when you post or upload any content through the Services.</p>
-                    <p class="text-gray-600"><strong>Submissions:</strong> By directly sending us any question, comment,
-                        suggestion, idea, feedback, or other information about the Services ("Submissions"), you agree
-                        to assign to us all intellectual property rights in such Submission. You agree that we shall own
-                        this Submission and be entitled to its unrestricted use and dissemination for any lawful
-                        purpose, commercial or otherwise, without acknowledgment or compensation to you.</p>
-                    <p class="text-gray-600"><strong>You are responsible for what you post or upload:</strong> By
-                        sending us Submissions through any part of the Services you:</p>
-                    <ul class="list-disc pl-10 space-y-2 text-gray-600">
-                        <li>confirm that you have read and agree with our "PROHIBITED ACTIVITIES" and will not post,
-                            send, publish, upload, or transmit through the Services any Submission that is illegal,
-                            harassing, hateful, harmful, defamatory, obscene, bullying, abusive, discriminatory,
-                            threatening to any person or group, sexually explicit, false, inaccurate, deceitful, or
-                            misleading;</li>
-                        <li>to the extent permissible by applicable law, waive any and all moral rights to any such
-                            Submission;</li>
-                        <li>warrant that any such Submission are original to you or that you have the necessary rights
-                            and licenses to submit such Submissions and that you have full authority to grant us the
-                            above-mentioned rights in relation to your Submissions; and</li>
-                        <li>warrant and represent that your Submissions do not constitute confidential information.</li>
-                    </ul>
-                    <p class="text-gray-600">You are solely responsible for your Submissions and you expressly agree to
-                        reimburse us for any and all losses that we may suffer because of your breach of (a) this
-                        section, (b) any third party's intellectual property rights, or (c) applicable law.</p>
-                </div>
+      <section id="conduct" class="space-y-3 scroll-mt-6">
+        <h2 class="text-xl font-bold text-gray-950">8. Acceptable use</h2>
+        <p>You must not use the Services to:</p>
+        <ul class="list-disc pl-6 space-y-2">
+          <li>post illegal, sexually exploitative, threatening, hateful, deceptive, defamatory or seriously abusive material;</li>
+          <li>harass, stalk, intimidate, spam or repeatedly contact someone who declined or blocked contact;</li>
+          <li>impersonate a person or club, create fake reviews, manipulate ratings or misrepresent an affiliation;</li>
+          <li>publish private information, malicious software or content that infringes intellectual-property or privacy rights;</li>
+          <li>scrape, bulk-download, reverse engineer, bypass access controls, probe security or overload the Services;</li>
+          <li>misuse staff invitations, promotions, subscriptions, reports, refunds or support channels;</li>
+          <li>use the Services for unlawful commercial solicitation or sell access to an account.</li>
+        </ul>
+      </section>
 
-                <!-- 3. USER REPRESENTATIONS -->
-                <div id="section-3" class="space-y-3 pt-2 scroll-mt-24">
-                    <h3 class="text-base font-bold text-gray-900 border-b border-gray-100 pb-1">3. USER
-                        REPRESENTATIONS</h3>
-                    <p class="text-gray-600">By using the Services, you represent and warrant that: (1) you have the
-                        legal capacity and you agree to comply with these Legal Terms; (2) you are not a minor in
-                        the jurisdiction in which you reside; (3) you will not access the Services through automated
-                        or non-human means, whether through a bot, script or otherwise; (4) you will not use the
-                        Services for any illegal or unauthorized purpose; and (5) your use of the Services will not
-                        violate any applicable law or regulation.</p>
-                    <p class="text-gray-600">If you provide any information that is untrue,
-                        inaccurate, not current, or incomplete, we have the right to suspend or terminate your
-                        account and refuse any and all current or future use of the Services (or any portion thereof).
-                    </p>
-                    <p class="text-gray-600">You represent and warrant that you are at least 13 years old. If you are
-                        under 18
-                        years old, you may only use the Services with the consent and supervision of a
-                        parent or legal guardian.</p>
-                </div>
+      <section id="moderation" class="space-y-3 scroll-mt-6">
+        <h2 class="text-xl font-bold text-gray-950">9. Reports and moderation</h2>
+        <p>Normal Arena and Travelling Fighter Hub posts may appear immediately. Users can report posts and comments. Automated systems may temporarily hide obvious sexual, abusive or spam content and repeated identical submissions. Reviews may require approval before publication.</p>
+        <p>We may investigate and keep, restrict, restore, label or remove content; limit messaging; suspend features; or suspend or terminate accounts where reasonably necessary to enforce these terms, protect users or comply with law. We may preserve relevant records and cooperate with lawful authorities. You can question a moderation decision by contacting <a href="mailto:hello@matmaps.co.uk">hello@matmaps.co.uk</a>.</p>
+      </section>
 
-                <!-- 4. PROHIBITED ACTIVITIES -->
-                <div id="section-4" class="space-y-2 pt-2 scroll-mt-24">
-                    <h3 class="text-base font-bold text-gray-900 border-b border-gray-100 pb-1">4. PROHIBITED
-                        ACTIVITIES</h3>
-                    <p class="text-gray-600">You may not access or use the Services for any purpose other than that
-                        for which we make the Services available. The Services may not be used in connection with
-                        any commercial endeavours except those that are specifically endorsed or approved by us. As
-                        a user of the Services, you agree not to:</p>
-                    <ul class="list-disc pl-5 space-y-1.5 text-gray-600">
-                        <li>Systematically retrieve data or other content from the Services to create or compile,
-                            directly or indirectly, a collection, compilation, database, or directory without
-                            written permission from us.</li>
-                        <li>Trick, defraud, or mislead us and other users, especially in any attempt to learn
-                            sensitive account information such as user passwords.</li>
-                        <li>Circumvent, disable, or otherwise interfere with security-related features of the
-                            Services, including features that prevent or restrict the use or copying of any Content or
-                            enforce limitations on the use of the Services and/or the Content contained therein.</li>
-                        <li>Disparage, tarnish, or otherwise harm, in our opinion, us and/or the Services.</li>
-                        <li>Use any information obtained from the Services in order to harass, abuse, or harm
-                            another person.</li>
-                        <li>Make improper use of our support services or submit false reports of abuse or
-                            misconduct.</li>
-                        <li>Use the Services in a manner inconsistent with any applicable laws or regulations.</li>
-                        <li>Engage in unauthorized framing of or linking to the Services. Upload or transmit (or attempt
-                            to upload or to transmit)
-                            viruses, Trojan horses, or other material, including excessive use of capital letters
-                            and spamming (continuous posting of repetitive text), that interferes with any party's
-                            uninterrupted use and enjoyment of the Services or modifies, impairs, disrupts, alters, or
-                            interferes with the use, features, functions, operation, or maintenance of the Services.
-                        </li>
-                        <li>Engage in any automated use of the system, such as using scripts to send comments or
-                            messages, or using any data mining, robots, or similar data gathering and extraction
-                            tools.</li>
-                        <li>Delete the copyright or other proprietary rights notice from any Content.</li>
-                        <li>Attempt to impersonate another user or person or use the username of another user.</li>
-                        <li>Upload or transmit (or attempt to upload or to transmit) any material that acts as a passive
-                            or active information collection
-                            or transmission mechanism, including without limitation, clear graphics interchange formats
-                            ("gifs"), 1x1
-                            pixels, web bugs, cookies, or other similar devices (sometimes referred to as "spyware" or
-                            "passive collection mechanisms" or "pcms").</li>
-                        <li>Interfere with, disrupt, or create an undue burden on the Services or the networks
-                            connected to the Services.</li>
-                        <li>Harass, annoy, intimidate, or threaten any of our employees or agents engaged in
-                            providing any portion of the Services to you.</li>
-                        <li>Attempt to bypass any measures of the Services designed to prevent or restrict access to the
-                            Services, or any portion of the Services.</li>
-                        <li>Copy or adapt the Services' software, including but not limited to Flash, PHP, HTML,
-                            JavaScript, or other code. Except as permitted by applicable law, decipher, decompile,
-                            disassemble, or reverse
-                            engineer any of the software comprising or in any way making up a part of the Services.</li>
-                        <li>Except as may be the result of standard search engine or Internet browser usage, use,
-                            launch, develop, or distribute any automated system, including without limitation, any
-                            spider, robot,
-                            cheat utility, scraper, or offline reader that accesses the Services, or use or launch any
-                            unauthorized script or other software.</li>
-                        <li>Use a buying agent or purchasing agent to make purchases on the Services.</li>
-                        <li>Make any unauthorized use of the Services, including collecting usernames and/or email
-                            addresses of users by electronic or other means for the purpose of sending unsolicited
-                            email, or creating user accounts by automated means or under false pretenses.</li>
-                        <li>Use the Services as part of any effort to compete with us or otherwise use the Services
-                            and/or the Content for any revenue generating endeavour or commercial enterprise.</li>
-                    </ul>
-                </div>
+      <section id="subscriptions" class="space-y-3 scroll-mt-6">
+        <h2 class="text-xl font-bold text-gray-950">10. Subscriptions, boosts and purchases</h2>
+        <p>Paid athlete and club plans, staff-seat limits, billing period, price, trial if any and included features are displayed before purchase. Club staff do not pay separately where their seat is included in the club plan. A club cannot exceed the maximum number of authorised managers shown for its plan.</p>
+        <p>Mobile subscriptions are processed by Apple App Store or Google Play and managed with RevenueCat. Unless the purchase screen says otherwise, a subscription renews automatically for the same period until cancelled through the relevant store. Cancel before the store's renewal deadline to avoid the next charge. Deleting the MatMaps account or app does not cancel a subscription.</p>
+        <p>Use Restore Purchases to restore an eligible store entitlement. Refunds, billing disputes and statutory cancellation rights are handled under applicable consumer law and the store's rules. Nothing in these terms removes rights that cannot lawfully be excluded.</p>
+        <p>Club promotional boosts are time-limited placements described at purchase. Placement, rotation and visibility can vary with eligible inventory, app usage, moderation and service availability; a boost does not guarantee a particular number of views, enquiries or customers.</p>
+      </section>
 
-                <!-- 5. USER GENERATED CONTRIBUTIONS -->
-                <div id="section-5" class="space-y-2 pt-2 scroll-mt-24">
-                    <h3 class="text-base font-bold text-gray-900 border-b border-gray-100 pb-1">5. USER GENERATED
-                        CONTRIBUTIONS</h3>
-                    <p class="text-gray-600 font-medium">The Services does not offer users to submit or post content. We
-                        may
-                        provide you with the opportunity to create, submit, post, display, transmit, perform,
-                        publish, distribute, or broadcast content and materials to us or on the Services, including
-                        but not limited to text, writings, video, audio, photographs, graphics, comments,
-                        suggestions, or personal information or other material (collectively, <strong
-                            class="text-gray-900">"Contributions"</strong>). Contributions may be viewable by other
-                        users of the Services and through third-party websites. When you create or make available any
-                        Contributions, you thereby represent and warrant that:</p>
-                </div>
+      <section id="ads" class="space-y-3 scroll-mt-6">
+        <h2 class="text-xl font-bold text-gray-950">11. Advertising</h2>
+        <p>Free users may see adverts supplied through Google AdMob. Eligible paid subscriptions remove AdMob adverts while the entitlement remains active. Advertising choices, including consent for personalised advertising where required, are described in our <a href="privacy-policy.html#ads">Privacy Policy</a> and the in-app consent controls.</p>
+        <p>We do not endorse an advertiser merely because its advert appears in MatMaps. Transactions with advertisers are between you and the advertiser, subject to your statutory rights.</p>
+      </section>
 
-                <!-- 6. CONTRIBUTION LICENSE -->
-                <div id="section-6" class="space-y-3 pt-2 scroll-mt-24">
-                    <h3 class="text-base font-bold text-gray-900 border-b border-gray-100 pb-1">6. CONTRIBUTION
-                        LICENSE</h3>
-                    <p class="text-gray-600">You and Services agree that we may access, store, process, and use any
-                        information and personal data that you provide and your choices (including settings).</p>
-                    <p class="text-gray-600">By submitting suggestions or other feedback regarding the Services, you
-                        agree that we can use
-                        and share such feedback for any purpose without compensation to you.</p>
-                    <p class="text-gray-600">We do not assert any ownership over your Contributions. You retain full
-                        ownership of all of your Contributions and any intellectual property rights or other
-                        proprietary rights associated with your Contributions. We are not liable for any statements
-                        or representations in your Contributions provided by you in any area on the Services. You
-                        are solely responsible for your Contributions to the Services and you expressly agree to
-                        exonerate us from any and all responsibility and to refrain from any legal action against us
-                        regarding your Contributions.</p>
-                    <p class="text-gray-600 border-l-4 border-indigo-500 pl-4 py-1 bg-gray-50/50 rounded-r-lg">
-                        <strong>6.1</strong> The Services are for informational purposes only and do not constitute
-                        professional advice. Always seek advice from qualified professionals where appropriate.</p>
-                </div>
+      <section id="thirdparty" class="space-y-3 scroll-mt-6">
+        <h2 class="text-xl font-bold text-gray-950">12. Third-party services and links</h2>
+        <p>The Services rely on or link to third parties including Firebase, Apple, Google Play, RevenueCat, Google AdMob, OpenStreetMap-derived tiles and club websites. Their terms and privacy policies may apply separately. An “Open in Google Maps” or other external link opens an independent service; MatMaps does not operate that service.</p>
+      </section>
 
-                <!-- 7. SERVICES MANAGEMENT -->
-                <div id="section-7" class="space-y-2 pt-2 scroll-mt-24">
-                    <h3 class="text-base font-bold text-gray-900 border-b border-gray-100 pb-1">7. SERVICES
-                        MANAGEMENT</h3>
-                    <p class="text-gray-600">We reserve the right, but not the obligation, to: (1) monitor the
-                        Services for violations of these Legal Terms; (2) take appropriate legal action against
-                        anyone who, in our sole discretion, violates the law or these Legal Terms, including without
-                        limitation, reporting such user to law enforcement authorities; (3) in our sole discretion
-                        and without limitation, refuse, restrict access to, limit the availability of, or disable
-                        (to the extent technologically feasible) any of your Contributions or any portion thereof;
-                        (4) in our sole discretion and without limitation, notice, or liability, to remove from the
-                        Services or otherwise disable all files and content that are excessive in size or are in any
-                        way burdensome to our systems; and (5) otherwise manage the Services in a manner designed to
-                        protect our rights and property and to facilitate the proper functioning of the Services.
-                    </p>
-                </div>
+      <section id="deletion" class="space-y-3 scroll-mt-6">
+        <h2 class="text-xl font-bold text-gray-950">13. Account deletion, suspension and termination</h2>
+        <p>You can request account deletion using the in-app profile/settings controls. Eligible club owners may separately request deletion of club data they control. Deletion and retention are explained in the <a href="privacy-policy.html#deletion">Privacy Policy</a>.</p>
+        <p>We may restrict, suspend or terminate access after serious or repeated breaches, credible safety risks, fraud, non-payment, legal requirements or threats to the Services. Where appropriate, we will explain the reason and provide a reasonable opportunity to respond. Provisions concerning ownership, licences already exercised, payments, liability, disputes and lawful retention survive termination where necessary.</p>
+      </section>
 
-                <!-- 8. TERM AND TERMINATION -->
-                <div id="section-8" class="space-y-2 pt-2 scroll-mt-24">
-                    <h3 class="text-base font-bold text-gray-900 border-b border-gray-100 pb-1">8. TERM AND
-                        TERMINATION</h3>
-                    <p class="text-gray-600">These Legal Terms shall remain in full force and effect while you use
-                        the Services. <strong class="text-gray-900">WITHOUT LIMITING ANY OTHER PROVISION OF THESE
-                            LEGAL TERMS, WE RESERVE THE RIGHT TO, IN OUR SOLE DISCRETION AND WITHOUT NOTICE OR
-                            LIABILITY, DENY ACCESS TO AND USE OF THE SERVICES (INCLUDING BLOCKING CERTAIN IP
-                            ADDRESSES), TO ANY PERSON FOR ANY REASON OR FOR NO REASON, INCLUDING WITHOUT LIMITATION
-                            FOR BREACH OF ANY REPRESENTATION, WARRANTY, OR COVENANT CONTAINED IN THESE LEGAL TERMS
-                            OR OF ANY APPLICABLE LAW OR REGULATION. WE MAY TERMINATE YOUR USE OR PARTICIPATION IN
-                            THE SERVICES OR DELETE ANY CONTENT OR INFORMATION THAT YOU POSTED AT ANY TIME, WITHOUT
-                            WARNING, IN OUR SOLE DISCRETION.</strong></p>
-                    <p class="text-gray-600">If we terminate or suspend your account for any reason, you are
-                        prohibited from registering and creating a new account under your name, a fake or borrowed
-                        name, or the name of any third party, even if you may be acting on behalf of the third
-                        party. In addition to terminating or suspending your account, we reserve the right to take
-                        appropriate legal action, including without limitation pursuing civil, criminal, and
-                        injunctive redress.</p>
-                </div>
+      <section id="availability" class="space-y-3 scroll-mt-6">
+        <h2 class="text-xl font-bold text-gray-950">14. Availability and changes</h2>
+        <p>We work to keep MatMaps available but do not promise uninterrupted or error-free operation. Features may be temporarily unavailable for maintenance, security, provider outages or technical problems. We may change or discontinue features, but will provide notice where required by law or where a change materially affects a paid service.</p>
+        <p>We may update these terms. The date above will change and material updates will receive reasonable notice. Continued use after an effective update means you accept it; if you disagree, stop using the Services and cancel any subscription.</p>
+      </section>
 
-                <!-- 9. MODIFICATIONS AND INTERRUPTIONS -->
-                <div id="section-9" class="space-y-2 pt-2 scroll-mt-24">
-                    <h3 class="text-base font-bold text-gray-900 border-b border-gray-100 pb-1">9. MODIFICATIONS AND
-                        INTERRUPTIONS</h3>
-                    <p class="text-gray-600">We reserve the right to change, modify, or remove the contents of the
-                        Services at any time or for any reason at our sole discretion without notice. However, we
-                        have no obligation to update any information on our Services. We will not be liable to you
-                        or any third party for any modification, price change, suspension, or discontinuance of the
-                        Services.</p>
-                    <p class="text-gray-600">We cannot guarantee the Services will be available at all times. We may
-                        experience hardware, software, or other problems or need to perform maintenance related to
-                        the Services, resulting in interruptions, delays, or errors. We reserve the right to change,
-                        revise, update, suspend, discontinue, or otherwise modify the Services at any time or for
-                        any reason without notice to you. You agree that we have no liability whatsoever for any
-                        loss, damage, or inconvenience caused by your inability to access or use the Services during
-                        any downtime or discontinuance of the Services.</p>
-                </div>
+      <section id="liability" class="space-y-3 scroll-mt-6">
+        <h2 class="text-xl font-bold text-gray-950">15. Responsibility and liability</h2>
+        <p>Nothing in these terms excludes or limits liability for death or personal injury caused by negligence, fraud or fraudulent misrepresentation, or any liability or consumer right that cannot legally be excluded.</p>
+        <p>Subject to that, MatMaps is not responsible for losses that were not reasonably foreseeable when you agreed to these terms, business losses suffered by a consumer, or the acts, omissions, safety, facilities, qualifications, advice or content of users, clubs, organisers, advertisers or other third parties.</p>
+        <p>If you use MatMaps for business purposes, our aggregate liability arising from the Services will, to the extent lawful, be limited to the amount you paid MatMaps for the affected service during the 12 months before the event giving rise to the claim.</p>
+      </section>
 
-                <!-- 10. GOVERNING LAW -->
-                <div id="section-10" class="space-y-2 pt-2 scroll-mt-24">
-                    <h3 class="text-base font-bold text-gray-900 border-b border-gray-100 pb-1">10. GOVERNING LAW</h3>
-                    <p class="text-gray-600">These Legal Terms shall be governed by and construed in accordance with the
-                        laws of England and Wales. You and we irrevocably consent that the courts of England and Wales
-                        shall have exclusive jurisdiction to resolve any dispute which may arise in connection with
-                        these Legal Terms.</p>
-                </div>
-
-                <!-- 11. DISPUTE RESOLUTION -->
-                <div id="section-11" class="space-y-3 pt-2 scroll-mt-24">
-                    <h3 class="text-base font-bold text-gray-900 border-b border-gray-100 pb-1">11. DISPUTE RESOLUTION
-                    </h3>
-
-                    <p class="text-gray-600"><strong>Informal Negotiations:</strong> To expedite resolution and control
-                        the cost of any dispute, controversy, or claim related to these Legal Terms (each a "Dispute"
-                        and collectively, the "Disputes") brought by either you or us (individually, a "Party" and
-                        collectively, the "Parties"), the Parties agree to first attempt to negotiate any Dispute
-                        informally for at least thirty (30) days before initiating legal proceedings. Such informal
-                        negotiations commence upon written notice from one Party to the other Party.</p>
-
-                    <p class="text-gray-600"><strong>Jurisdiction:</strong> Any dispute arising out of or in connection
-                        with these Legal Terms shall be subject to the exclusive jurisdiction of the courts of England
-                        and Wales.</p>
-
-                    <p class="text-gray-600"><strong>Restrictions:</strong> The Parties agree that any arbitration
-                        shall be limited to the Dispute between the Parties individually. To the full extent permitted
-                        by law, (a) no arbitration shall be joined with any other proceeding; (b) there is no right or
-                        authority for any Dispute to be arbitrated on a class-action basis or to utilize class action
-                        procedures; and (c) there is no right or authority for any Dispute to be brought in a
-                        purported representative capacity on behalf of the general public or any other persons.</p>
-
-                    <p class="text-gray-600"><strong>Exceptions to Informal Negotiations and Arbitration:</strong>
-                        The Parties agree that the following Disputes are not subject to the above provisions concerning
-                        informal negotiations binding arbitration: (a) any Disputes seeking to enforce or protect, or
-                        concerning the validity of, any of the intellectual property rights of a Party; (b) any Dispute
-                        related to, or arising from, allegations of theft, piracy, invasion of privacy, or unauthorized
-                        use; and (c) any claim for injunctive relief. If this provision is found to be illegal or
-                        unenforceable, then neither Party will elect to arbitrate any Dispute falling within that
-                        portion
-                        of this provision found to be illegal or unenforceable and such Dispute shall be decided by a
-                        court of competent jurisdiction within the courts listed for jurisdiction above, and the Parties
-                        agree to submit to the personal jurisdiction of that court.</p>
-                </div>
-
-                <!-- 12. CORRECTIONS -->
-                <div id="section-12" class="space-y-2 pt-2 scroll-mt-24">
-                    <h3 class="text-base font-bold text-gray-900 border-b border-gray-100 pb-1">12. CORRECTIONS</h3>
-                    <p class="text-gray-600">There may be information on the Services that contains typographical
-                        errors, inaccuracies, or omissions, including descriptions, pricing, availability, and
-                        various other information. We reserve the right to correct any errors, inaccuracies, or
-                        omissions and to change or update the information on the Services at any time, without prior
-                        notice.</p>
-                </div>
-
-                <!-- 13. DISCLAIMER -->
-                <div id="section-13" class="space-y-3 pt-2 scroll-mt-24">
-                    <h3 class="text-base font-bold text-gray-900 border-b border-gray-100 pb-1">13. DISCLAIMER</h3>
-                    <p
-                        class="text-gray-600 font-mono text-xs uppercase bg-gray-50 border border-gray-100 p-4 rounded-xl leading-relaxed">
-                        THE SERVICES ARE PROVIDED ON AN AS-IS AND AS-AVAILABLE BASIS. YOU AGREE THAT YOUR USE OF THE
-                        SERVICES WILL BE AT YOUR SOLE RISK. TO THE FULLEST EXTENT PERMITTED BY LAW, WE DISCLAIM ALL
-                        WARRANTIES, EXPRESS OR IMPLIED, IN CONNECTION WITH THE SERVICES AND YOUR USE THEREOF,
-                        INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
-                        PARTICULAR PURPOSE, AND NON-INFRINGEMENT. WE MAKE NO WARRANTIES OR REPRESENTATIONS ABOUT THE
-                        ACCURACY OR COMPLETENESS OF THE SERVICES' CONTENT OR THE CONTENT OF ANY WEBSITES OR MOBILE
-                        APPLICATIONS LINKED TO THE SERVICES AND WE WILL ASSUME NO LIABILITY OR RESPONSIBILITY FOR ANY
-                        (1) ERRORS, MISTAKES, OR INACCURACIES OF CONTENT AND MATERIALS, (2) PERSONAL INJURY OR
-                        PROPERTY DAMAGE, OF ANY NATURE WHATSOEVER, RESULTING FROM YOUR ACCESS TO AND USE OF THE
-                        SERVICES, (3) ANY UNAUTHORIZED ACCESS TO OR USE OF OUR SECURE SERVERS AND/OR ANY AND ALL
-                        PERSONAL INFORMATION AND/OR FINANCIAL INFORMATION STORED THEREIN, (4) ANY INTERRUPTION OR
-                        CESSATION OF TRANSMISSION TO OR FROM THE SERVICES, (5) ANY BUGS, VIRUSES, TROJAN HORSES, OR
-                        THE LIKE WHICH MAY BE TRANSMITTED TO OR THROUGH THE SERVICES BY ANY THIRD PARTY, AND/OR (6)
-                        ANY ERRORS OR OMISSIONS IN ANY CONTENT AND MATERIALS OR FOR ANY LOSS OR DAMAGE OF ANY KIND
-                        INCURRED AS A RESULT OF THE USE OF ANY CONTENT POSTED, TRANSMITTED, OR OTHERWISE MADE
-                        AVAILABLE VIA THE SERVICES. WE DO NOT WARRANT, ENDORSE, GUARANTEE, OR ASSUME RESPONSIBILITY
-                        FOR ANY PRODUCT OR SERVICE ADVERTISED OR OFFERED BY A THIRD PARTY THROUGH THE SERVICES, ANY
-                        HYPERLINKED WEBSITE, OR ANY WEBSITE OR MOBILE APPLICATION FEATURED IN ANY BANNER OR OTHER
-                        ADVERTISING, AND WE WILL NOT BE A PARTY TO OR IN ANY WAY BE RESPONSIBLE FOR MONITORING ANY
-                        TRANSACTION BETWEEN YOU AND ANY THIRD-PARTY PROVIDERS OF PRODUCTS OR SERVICES. AS WITH THE
-                        PURCHASE OF A PRODUCT OR SERVICE THROUGH ANY MEDIUM OR IN ANY ENVIRONMENT, YOU SHOULD USE YOUR
-                        BEST JUDGMENT AND EXERCISE CAUTION WHERE APPROPRIATE.
-                    </p>
-                    <p
-                        class="text-gray-600 border-l-4 border-indigo-500 pl-4 py-1 bg-gray-50/50 rounded-r-lg font-medium">
-                        Without limiting the above, we make no warranty or representation regarding the accuracy or
-                        reliability of any club or event information. We are not liable for any loss, injury, or damage
-                        suffered as a result of relying on directory information or attending any listed event.</p>
-                </div>
-
-                <!-- 14. LIMITATIONS OF LIABILITY -->
-                <div id="section-14" class="space-y-3 pt-2 scroll-mt-24">
-                    <h3 class="text-base font-bold text-gray-900 border-b border-gray-100 pb-1">14. LIMITATIONS OF
-                        LIABILITY</h3>
-                    <p
-                        class="text-gray-600 font-mono text-xs uppercase bg-gray-50 border border-gray-100 p-4 rounded-xl leading-relaxed">
-                        IN NO EVENT WILL WE OR OUR DIRECTORS, EMPLOYEES, OR AGENTS BE LIABLE TO YOU OR ANY THIRD
-                        PARTY FOR ANY DIRECT, INDIRECT, CONSEQUENTIAL, EXEMPLARY, INCIDENTAL, SPECIAL, OR PUNITIVE
-                        DAMAGES, INCLUDING LOST PROFIT, LOST REVENUE, LOSS OF DATA, OR OTHER DAMAGES ARISING FROM
-                        YOUR USE OF THE SERVICES, EVEN IF WE HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
-                        NOTWITHSTANDING ANYTHING TO THE CONTRARY CONTAINED HEREIN, OUR LIABILITY TO YOU FOR ANY
-                        CAUSE WHATSOEVER AND REGARDLESS OF THE FORM OF THE ACTION, WILL AT ALL TIMES BE LIMITED TO
-                        THE LESSER OF THE AMOUNT PAID, IF ANY, BY YOU TO US OR . CERTAIN US STATE LAWS AND INTERNATIONAL
-                        LAWS DO NOT ALLOW LIMITATIONS ON IMPLIED WARRANTIES OR THE EXCLUSION OR LIMITATION OF CERTAIN
-                        DAMAGES. IF THESE LAWS APPLY TO YOU, SOME OR ALL OF THE ABOVE DISCLAIMERS OR LIMITATIONS MAY
-                        NOT APPLY TO YOU, AND YOU MAY HAVE ADDITIONAL RIGHTS.
-                    </p>
-                    <p
-                        class="text-gray-600 border-l-4 border-indigo-500 pl-4 py-1 bg-gray-50/50 rounded-r-lg font-medium">
-                        In particular, we shall not be liable for any loss, injury, or damage arising from your
-                        attendance at any event or your interaction with any club listed in the directory.</p>
-                </div>
-
-                <!-- 15. INDEMNIFICATION -->
-                <div id="section-15" class="space-y-2 pt-2 scroll-mt-24">
-                    <h3 class="text-base font-bold text-gray-900 border-b border-gray-100 pb-1">15. INDEMNIFICATION
-                    </h3>
-                    <p class="text-gray-600">You agree to defend, indemnify, and hold us harmless, including our
-                        subsidiaries, affiliates, and all of our respective officers, agents, partners, and
-                        employees, from and against any loss, damage, liability, claim, or demand, including
-                        reasonable attorneys' fees and expenses, made by any third party due to or arising out of:
-                        (1) use of the Services; (2) breach of these Legal Terms; (3) any breach of your
-                        representations and warranties set forth in these Legal Terms; (4) your violation of the
-                        rights of a third party, including but not limited to intellectual property rights; or (5)
-                        any overt harmful act toward any other user of the Services with whom you connected via the
-                        Services.</p>
-                </div>
-
-                <!-- 16. USER DATA -->
-                <div id="section-16" class="space-y-2 pt-2 scroll-mt-24">
-                    <h3 class="text-base font-bold text-gray-900 border-b border-gray-100 pb-1">16. USER DATA</h3>
-                    <p class="text-gray-600">We will maintain certain data that you transmit to the Services for the
-                        purpose of managing the performance of the Services, as well as data relating to your use of
-                        the Services. Although we perform regular routine backups of data, you are solely
-                        responsible for all data that you transmit or that relates to any activity you have
-                        undertaken using the Services. You agree that we shall have no liability to you for any loss
-                        or corruption of any such data, and you hereby waive any right of action against us arising
-                        from any such loss or corruption of such data.</p>
-                </div>
-
-                <!-- 17. ELECTRONIC COMMUNICATIONS, TRANSACTIONS, AND SIGNATURES -->
-                <div id="section-17" class="space-y-2 pt-2 scroll-mt-24">
-                    <h3 class="text-base font-bold text-gray-900 border-b border-gray-100 pb-1">17. ELECTRONIC
-                        COMMUNICATIONS, TRANSACTIONS, AND SIGNATURES</h3>
-                    <p class="text-gray-600">Visiting the Services, sending us emails, and completing online forms
-                        constitute electronic communications. You consent to receive electronic communications, and
-                        you agree that all agreements, notices, disclosures, and other communications we provide to
-                        you electronically, via email and on the Services, satisfy any legal requirement that such
-                        communication be in writing. <strong class="text-gray-900">YOU HEREBY AGREE TO THE USE OF
-                            ELECTRONIC SIGNATURES, CONTRACTS, ORDERS, AND OTHER RECORDS, AND TO ELECTRONIC DELIVERY
-                            OF NOTICES, POLICIES, AND RECORDS OF TRANSACTIONS INITIATED OR COMPLETED BY US OR VIA
-                            THE SERVICES.</strong> You hereby waive any rights or requirements under any statutes,
-                        regulations, rules, ordinances, or other laws in any jurisdiction which require an original
-                        signature or delivery or retention of non-electronic records, or to payments or the granting
-                        of credits by any means other than electronic means.</p>
-                </div>
-
-                <!-- 18. MISCELLANEOUS -->
-                <div id="section-18" class="space-y-2 pt-2 scroll-mt-24">
-                    <h3 class="text-base font-bold text-gray-900 border-b border-gray-100 pb-1">18. MISCELLANEOUS</h3>
-                    <p class="text-gray-600">These Legal Terms and any policies or operating rules posted by us on
-                        the Services or in respect to the Services constitute the entire agreement and understanding
-                        between you and us. Our failure to exercise or enforce any right or provision of these Legal
-                        Terms shall not operate as a waiver of such right or provision. These Legal Terms operate to
-                        the fullest extent permissible by law. We may assign any or all of our rights and
-                        obligations to others at any time. We shall not be responsible or liable for any loss,
-                        damage, delay, or failure to act caused by any cause beyond our reasonable control. If any
-                        provision or part of a provision of these Legal Terms is determined to be unlawful, void, or
-                        unenforceable, that provision or part of the provision is deemed severable from these Legal
-                        Terms and does not affect the validity and enforceability of any remaining provisions. There
-                        is no joint venture, partnership, employment or agency relationship created between you and
-                        us because of these Legal Terms or use of the Services. You agree that these Legal Terms will
-                        not be construed against us by virtue of having drafted them. You hereby waive any and all
-                        defences you may have based on the electronic form of these Legal Terms and the lack of
-                        signing by the parties hereto to execute these Legal Terms.</p>
-                    <p class="text-gray-600">We shall not be liable for any delay or failure to perform resulting from
-                        causes
-                        beyond our reasonable control, including acts of God, war, terrorism, riots, embargoes, acts
-                        of civil or military authorities, fire, floods, accidents, network infrastructure failures, or
-                        labour disputes.</p>
-                </div>
-
-                <!-- 19. CONTACT US -->
-                <div id="section-19" class="space-y-2 pt-2 scroll-mt-24">
-                    <h3 class="text-base font-bold text-gray-900 border-b border-gray-100 pb-1">19. CONTACT US</h3>
-                    <p class="text-gray-600">In order to resolve a complaint regarding the Services or to receive
-                        further information regarding use of the Services, please contact us at: <a
-                            href="mailto:hello@matmaps.co.uk"
-                            class="text-indigo-600 font-mono hover:underline">hello@matmaps.co.uk</a>.</p>
-                </div>
-
-            </div>
+      <section id="law" class="space-y-3 scroll-mt-6">
+        <h2 class="text-xl font-bold text-gray-950">16. Governing law, complaints and contact</h2>
+        <p>These terms are governed by the laws of England and Wales. If you are a consumer resident elsewhere in the UK, you retain any mandatory protections and may bring proceedings in the courts available under applicable consumer law.</p>
+        <p>Please send complaints or questions to <a href="mailto:hello@matmaps.co.uk">hello@matmaps.co.uk</a>. We will try to resolve them informally before court proceedings.</p>
+        <div class="bg-gray-50 border border-gray-200 rounded-xl p-5 text-sm mt-4">
+          <p class="font-bold text-gray-950">MatMaps Team</p>
+          <p>483 Green Lanes, London, N13 5XT</p>
+          <p><a href="mailto:hello@matmaps.co.uk">hello@matmaps.co.uk</a></p>
         </div>
+      </section>
+    </article>
+  </main>
 
-        <!-- ফিক্সড ব্যাক-টু-টপ (Up Arrow) পপআপ বাটন ইলিমেন্ট -->
-        <button id="backToTopBtn"
-            class="fixed bottom-6 right-6 bg-indigo-600 hover:bg-indigo-500 text-white w-10 h-10 rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 translate-y-16 opacity-0 pointer-events-none z-40 focus:outline-none border border-indigo-500/30">
-            <i class="fa-solid fa-arrow-up"></i>
-        </button>
-
-    </main>
-
-    <!-- FOOTER SECTION -->
-    <footer
-        class="border-t border-white/[0.04] bg-[#030304] px-6 md:px-16 py-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500 font-mono tracking-wide relative z-10">
-        <div class="flex items-center space-x-4 flex-wrap justify-center gap-y-2">
-            <img src="assets/image/matMaps_logo.png" alt="logo" class="h-8" />
-            <div>
-                <span>Powered by</span>
-                <span class="font-bold tracking-tight uppercase">MatMaps</span>
-            </div>
-        </div>
-        <div class="flex items-center space-x-6">
-            <a href="privacy-policy.html" class="hover:text-white transition flex items-center space-x-1.5">
-                <i class="fa-solid fa-user-lock text-[10px]"></i> <span>Privacy Policy</span>
-            </a>
-            <a href="terms-of-use.html" class="hover:text-white transition flex items-center space-x-1.5">
-                <i class="fa-solid fa-file-shield text-[10px]"></i> <span>Terms of Use</span>
-            </a>
-        </div>
-    </footer>
-
-    <script>
-        const backToTopBtn = document.getElementById('backToTopBtn');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) {
-                backToTopBtn.classList.remove('translate-y-16', 'opacity-0', 'pointer-events-none');
-                backToTopBtn.classList.add('translate-y-0', 'opacity-100');
-            } else {
-                backToTopBtn.classList.add('translate-y-16', 'opacity-0', 'pointer-events-none');
-                backToTopBtn.classList.remove('translate-y-0', 'opacity-100');
-            }
-        });
-
-        backToTopBtn.addEventListener('click', () => {
-            const tableOfContents = document.getElementById('tableOfContents');
-            if (tableOfContents) {
-                tableOfContents.scrollIntoView({ behavior: 'smooth' });
-            } else {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        });
-    </script>
+  <footer class="border-t border-white/10 bg-[#030304] px-6 py-8">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-400">
+      <span>© 2026 MatMaps</span>
+      <div class="flex gap-6"><a href="privacy-policy.html" class="hover:text-white">Privacy Policy</a><a href="terms-of-use.html" class="text-white">Terms of Use</a><a href="index.html#download" class="hover:text-white">Get the App</a></div>
+    </div>
+  </footer>
 </body>
-
 </html>
