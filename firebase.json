@@ -6,7 +6,64 @@
       "**/.*",
       "**/node_modules/**"
     ],
+    "headers": [
+      {
+        "source": "/.well-known/apple-app-site-association",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ]
+      },
+      {
+        "source": "/.well-known/assetlinks.json",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ]
+      },
+      {
+        "source": "/staff-invite",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-store"
+          },
+          {
+            "key": "Referrer-Policy",
+            "value": "no-referrer"
+          }
+        ]
+      }
+    ],
     "rewrites": [
+      {
+        "source": "/.well-known/apple-app-site-association",
+        "destination": "/app-links/apple-app-site-association"
+      },
+      {
+        "source": "/.well-known/assetlinks.json",
+        "destination": "/app-links/assetlinks.json"
+      },
+      {
+        "source": "/staff-invite",
+        "destination": "/open-app.html"
+      },
+      {
+        "source": "/posts/**",
+        "destination": "/open-app.html"
+      },
+      {
+        "source": "/clubs/**",
+        "destination": "/open-app.html"
+      },
+      {
+        "source": "/profiles/**",
+        "destination": "/open-app.html"
+      },
       {
         "source": "**",
         "destination": "/index.html"

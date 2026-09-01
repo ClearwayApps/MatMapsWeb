@@ -60,3 +60,7 @@ temp/
 .AppleDouble
 .LSOverride
 .firebase/hosting.cHVibGlj.cache
+
+# Generated during Firebase Hosting deployment from public signing identities.
+public/app-links/apple-app-site-association
+public/app-links/assetlinks.json

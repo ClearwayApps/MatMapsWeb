@@ -13,6 +13,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Prepare verified app-link association files
+        env:
+          APPLE_APP_IDENTIFIER_PREFIX: ${{ vars.APPLE_APP_IDENTIFIER_PREFIX }}
+          ANDROID_APP_LINKS_SHA256: ${{ vars.ANDROID_APP_LINKS_SHA256 }}
+        run: node scripts/prepare-app-links.mjs
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
