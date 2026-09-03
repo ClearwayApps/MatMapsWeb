@@ -41,13 +41,17 @@
                 <div class="border-b border-gray-200 pb-5">
                     <p class="text-xs font-bold text-brandRed uppercase tracking-[0.2em] mb-2">MatMaps legal</p>
                     <h1 class="text-3xl font-extrabold text-gray-900">Privacy Policy</h1>
-                    <p class="text-xs text-gray-500 mt-1 font-mono">Last updated 29 August 2026</p>
+                    <p class="text-xs text-gray-500 mt-1 font-mono">Last updated 3 September 2026</p>
                 </div>
 
                 <section class="space-y-3">
-                    <p>This Privacy Policy explains how <strong class="text-gray-900">MatMaps</strong> ("MatMaps", "we", "us" or "our") collects and uses personal information when you use the MatMaps mobile app, website and related services (together, the "Services"). MatMaps is the controller responsible for the processing described in this policy.</p>
+                    <p>This Privacy Policy explains how <strong class="text-gray-900">MatMaps Team</strong> ("MatMaps", "we", "us" or "our") collects and uses personal information when you use the MatMaps mobile app, website and related services (together, the "Services"). MatMaps Team, owned and operated by Mrs Sadie-May Guntrip and Mr Glyn Guntrip, is the controller responsible for the processing described in this policy. Its contact address is 483 Green Lanes, London, N13 5XT.</p>
                     <p>We aim to handle personal information fairly and transparently in accordance with the UK General Data Protection Regulation (UK GDPR), the Data Protection Act 2018 and other applicable UK data protection law.</p>
                     <p>Questions or privacy requests can be sent to <a href="mailto:hello@matmaps.co.uk" class="text-indigo-600 font-mono hover:underline">hello@matmaps.co.uk</a>.</p>
+                </section>
+
+                <section class="bg-amber-50 border border-amber-200 rounded-xl p-4 text-amber-900 space-y-2">
+                    <p><strong>Publication hold:</strong> Didit retention is configured to one month, separate biometric-template retention is set to "Delete with session", and MatMaps has implemented an unticked, just-in-time explicit-consent control before either Didit verification method can begin. On 3 September 2026 Didit supplied its current subprocessor, hosting and transfer information, confirmed that MatMaps' opt-out from its optional aggregated fraud-prevention and model-training uses had been registered, and confirmed that duplicate-face detection activates automatically whenever Liveness is used and cannot currently be disabled. This draft must not be published as the final production notice until Didit confirms that the registered opt-out has taken effect, MatMaps assesses and documents the necessity, proportionality, bias risks and configured actions of the mandatory duplicate-face check in its DPIA and lawful-basis review, MatMaps documents the promised UK contractual update, and MatMaps completes production testing and legal sign-off.</p>
                 </section>
 
                 <nav id="tableOfContents" class="bg-gray-50 border border-gray-200 rounded-xl p-5 scroll-mt-24">
@@ -55,6 +59,7 @@
                     <ol class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 list-decimal pl-5 text-xs font-mono font-medium">
                         <li><a href="#information" class="text-indigo-600 hover:underline">Information we collect</a></li>
                         <li><a href="#sources" class="text-indigo-600 hover:underline">Where it comes from</a></li>
+                        <li><a href="#age-assurance" class="text-indigo-600 hover:underline">Age assurance and Junior access</a></li>
                         <li><a href="#purposes" class="text-indigo-600 hover:underline">Purposes and lawful bases</a></li>
                         <li><a href="#community" class="text-indigo-600 hover:underline">Community and messaging</a></li>
                         <li><a href="#location" class="text-indigo-600 hover:underline">Location information</a></li>
@@ -74,7 +79,10 @@
                     <h2 class="text-lg font-bold text-gray-900 border-b border-gray-100 pb-2">1. Information we collect</h2>
                     <ul class="list-disc pl-5 space-y-2">
                         <li><strong class="text-gray-900">Account and authentication information:</strong> email address, authentication identifiers, account status and security information.</li>
-                        <li><strong class="text-gray-900">Profile information:</strong> name, unique @username where the account is eligible, profile image, biography, sports, ability level, belts, affiliated club and account or subscription role.</li>
+                        <li><strong class="text-gray-900">Profile information:</strong> name, unique @username where the account is eligible, profile image, biography, sports, ability level, belts, affiliated club and account or subscription role, including Free Junior or Athlete Junior status. A Junior does not receive a public @username.</li>
+                        <li><strong class="text-gray-900">Private age information:</strong> the date of birth entered during sign-up, the resulting age band (under 13, teen or adult), the source or declaration method and any age-range signal supplied by Apple or Google. Date of birth is stored separately from the public profile and is not displayed to other users.</li>
+                        <li><strong class="text-gray-900">Age-assurance results:</strong> verification status and method, provider name, provider session and workflow identifiers, provider decision, whether an adult threshold was met, threshold applied, verification and expiry timestamps, error codes and attempt count. For facial age estimation, MatMaps receives the exact estimate through the signed provider response only long enough to apply its adult threshold; it does not store that exact estimate in its database. MatMaps does not intend to store raw face captures, ID images or document numbers in its own database.</li>
+                        <li><strong class="text-gray-900">Age-assurance capture handled by Didit:</strong> depending on the method chosen, Didit may process a live face image or short video, liveness signals, a passport or driving licence image and extracted document details, and a one-to-one comparison between the live image and the document photograph. These captures are sent directly to Didit through its official flow rather than being intentionally stored by MatMaps. Didit has confirmed that its duplicate-face check activates automatically whenever Liveness is used and cannot currently be disabled. The check compares the submitted face with faces from previously approved sessions in the same MatMaps application and can identify a possible or high similarity match, a duplicate face associated with a different name, or multiple faces in the liveness image. Didit states that this matching does not compare MatMaps users with another customer's data. MatMaps has asked Didit to add a way to disable the check. A face embedding may be available for this within-application duplicate detection during the session-retention period. Retaining a separate image-free template after session deletion is opt-in; MatMaps has selected "Delete with session" and has not enabled that separate retention.</li>
                         <li><strong class="text-gray-900">Friends and connections:</strong> friend requests, friendships, blocks, mentions, tags and associated timestamps.</li>
                         <li><strong class="text-gray-900">Messages:</strong> one-to-one messages, message requests, delivery/read state, staff group messages and the sender attached to a club notice. Messages are private to their participants, but they are not described as end-to-end encrypted.</li>
                         <li><strong class="text-gray-900">Community content:</strong> Arena posts, comments, photos, videos, likes, shares, saves, Travelling Fighter Hub text posts and reports.</li>
@@ -90,17 +98,32 @@
 
                 <section id="sources" class="space-y-3 scroll-mt-24">
                     <h2 class="text-lg font-bold text-gray-900 border-b border-gray-100 pb-2">2. Where information comes from</h2>
-                    <p>We receive information directly from you, automatically from your device and use of the Services, from other users when they invite, tag, report, review or interact with you, and from service providers that support authentication, hosting, analytics, advertising or subscriptions.</p>
+                    <p>We receive information directly from you, automatically from your device and use of the Services, from other users when they invite, tag, report, review or interact with you, and from service providers that support authentication, hosting, analytics, advertising, subscriptions or age assurance.</p>
+                    <p>Age information may come from the date of birth you enter, an age-range signal made available by Apple or Google, and the result returned by Didit after a facial age-estimation or photo-ID check. We use the stricter result where signals conflict. A subscription purchase is not treated as age proof.</p>
                     <p>Some club and event information is supplied by club owners, staff, users or existing data sources. Users should confirm time-sensitive club and event details directly with the organiser.</p>
                 </section>
 
+                <section id="age-assurance" class="space-y-3 scroll-mt-24">
+                    <h2 class="text-lg font-bold text-gray-900 border-b border-gray-100 pb-2">3. Age assurance and Junior access</h2>
+                    <p>MatMaps uses age assurance to keep adult social features away from children. A date of birth creates an initial age band only. It does not verify an adult or unlock Arena, the Travelling Fighter Hub, friends, general messaging or other adult social features.</p>
+                    <p>Users seeking adult access can choose a Didit facial age-estimation check or a photo-ID check. Facial estimation uses a live capture and liveness result. MatMaps currently auto-confirms adult status only where the returned estimate is at least 25. An adult-range estimate below that threshold requires step-up to photo ID. Photo-ID verification checks an eligible UK passport or driving licence, document authenticity and expiry, the extracted date of birth, liveness and whether the live face matches the document photograph.</p>
+                    <p>Before either method begins, the app presents an unticked checkbox asking for explicit consent to Didit processing facial images and biometric data for age assurance. A Didit session cannot start unless the user actively selects it. The notice identifies the purpose and explains that photo-ID verification includes comparing the live selfie with the document portrait.</p>
+                    <p>Didit sends MatMaps the relevant decision, warnings, node and session references through a secured webhook and, for facial estimation, the age estimate needed to apply the threshold. MatMaps uses the exact estimate transiently and records only the minimum result needed to apply access controls. A pending, failed, underage, inconclusive or expired result remains restricted. A verified-adult result is normally valid for 365 days. We may require another check earlier where Didit later identifies fraud, the result was wrong or account security requires it.</p>
+                    <p>Access is decided automatically from the age band, assurance status, expiry and relevant account entitlement. The practical effect is whether adult social features are enabled. You can request an explanation, challenge an inaccurate result and ask for human review by emailing <a href="mailto:hello@matmaps.co.uk" class="text-indigo-600 font-mono hover:underline">hello@matmaps.co.uk</a>. Where appropriate, we will offer the alternative verification method.</p>
+                    <p>Users under 13 are blocked. Users aged 13 to 17, adults who have only declared a date of birth, and users whose age signal is missing, unavailable, declined, conflicting or in error receive the Junior-safe experience. Free Juniors can use limited free training tools, Club Discovery, core club details, events and their own profile and sports preferences. They cannot affiliate, receive club notices or message staff. Paid Athlete Juniors may use private training tools, have one verified club affiliation, receive that club's notices and message only its owner or active staff. All Juniors are blocked from public social content and interaction, public usernames and media, club galleries and videos, reviews, tags, friends, general user search and general direct messages.</p>
+                    <p>A club owner or staff member involved with a Junior cannot access the Junior's notebook, training sessions, password, account recovery or deletion controls. If the Junior's affiliation or the adult's staff role ends, the restricted message history becomes read-only and new messages are blocked.</p>
+                    <p>We do not use date of birth, face or ID information, the provider decision or a Junior/adult age-assurance status for advertising, marketing profiles or unrelated analytics.</p>
+                </section>
+
                 <section id="purposes" class="space-y-3 scroll-mt-24">
-                    <h2 class="text-lg font-bold text-gray-900 border-b border-gray-100 pb-2">3. Why we use information and our lawful bases</h2>
+                    <h2 class="text-lg font-bold text-gray-900 border-b border-gray-100 pb-2">4. Why we use information and our lawful bases</h2>
                     <div class="overflow-x-auto">
                         <table class="w-full text-xs border-collapse">
                             <thead><tr class="bg-gray-100 text-gray-900"><th class="text-left p-3 border">Purpose</th><th class="text-left p-3 border">Usual UK lawful basis</th></tr></thead>
                             <tbody>
                                 <tr><td class="p-3 border">Create accounts; provide profiles, discovery, events, Arena, friends, messaging, training and club tools</td><td class="p-3 border">Performance of our contract with you</td></tr>
+                                <tr><td class="p-3 border">Use a private date of birth and platform age-range signal to place the account in an age-appropriate experience without treating self-declaration as adult verification</td><td class="p-3 border">Performance of our contract; legitimate interests in providing a safe, age-appropriate service; and legal obligation where a specific online-safety duty applies</td></tr>
+                                <tr><td class="p-3 border">Use Didit facial age estimation or photo-ID matching to decide whether adult features may be enabled, prevent circumvention and retain evidence of the result</td><td class="p-3 border">Consent under Article 6(1)(a) for optional facial and biometric processing; where biometric data is used to uniquely identify or verify a person, explicit consent under Article 9(2)(a). Legitimate interests support the separate processing of minimum age-status metadata needed to protect children, prevent circumvention and secure accounts; legal obligation applies only where a specific duty requires the processing. These bases and the necessity and proportionality of the processing remain subject to the DPIA and final legal review before production</td></tr>
                                 <tr><td class="p-3 border">Operate security, prevent fraud and spam, enforce limits, investigate reports and protect users</td><td class="p-3 border">Legitimate interests in keeping MatMaps safe and reliable; legal obligation where applicable</td></tr>
                                 <tr><td class="p-3 border">Use device location for nearby clubs, distance ordering and location-based features</td><td class="p-3 border">Consent through the device permission and in-app choice; some approximate location use may be necessary to provide a requested search</td></tr>
                                 <tr><td class="p-3 border">Send requested service notifications, such as friend requests, messages, club notices, affiliation requests and staff activity</td><td class="p-3 border">Contract and legitimate interests; device notification permission where required</td></tr>
@@ -111,43 +134,45 @@
                             </tbody>
                         </table>
                     </div>
-                    <p>Where we rely on consent, you can withdraw it at any time. Withdrawal does not make earlier processing unlawful, but the related feature may stop working.</p>
+                    <p>Where we rely on consent, you can withdraw it at any time. Before a Didit session starts, you can do this by leaving or returning the consent checkbox to unticked. After a session has started or completed, use <strong class="text-gray-900">Withdraw biometric consent and delete verification data</strong> in the app's Settings or email <a href="mailto:hello@matmaps.co.uk" class="text-indigo-600 font-mono hover:underline">hello@matmaps.co.uk</a>. The in-app control removes adult social access, deletes the Didit verification sessions linked to the account and deletes Didit's linked user record, including any retained biometric templates attached to that record. If Didit does not confirm every operation, the app reports that deletion is pending so it can be retried or completed through support. Withdrawal does not make earlier processing unlawful. Choosing not to complete age assurance means adult social features remain unavailable; the Junior-safe experience remains available where the account otherwise qualifies.</p>
                 </section>
 
                 <section id="community" class="space-y-3 scroll-mt-24">
-                    <h2 class="text-lg font-bold text-gray-900 border-b border-gray-100 pb-2">4. Public content, friends and messaging</h2>
+                    <h2 class="text-lg font-bold text-gray-900 border-b border-gray-100 pb-2">5. Public content, friends and messaging</h2>
                     <p>Profile details, @usernames, Arena content, approved club reviews, public club and event details and public interaction counts may be visible to other users. Do not publish information you do not want others to see.</p>
-                    <p>Friends, direct messaging and tagging are limited to eligible account types. Messages from non-friends enter Message Requests until accepted. Users may decline requests or block another account. Club pages do not have a direct inbox; a club owner or staff member communicates through their personal account.</p>
+                    <p>Friends, general direct messaging, tagging and public community features are limited to eligible verified-adult account types. Messages from non-friends enter Message Requests until accepted. Users may decline requests or block another account. Club pages do not have a direct inbox; a club owner or staff member communicates through their personal account. Athlete Junior coach/staff messages are a separate restricted channel and are not a general inbox.</p>
                     <p>Club notices are shown to the relevant club members. Staff group chats are restricted to the owner and staff attached to that club. A club owner controls staff invitations and membership, subject to the plan's seat limits.</p>
                 </section>
 
                 <section id="location" class="space-y-3 scroll-mt-24">
-                    <h2 class="text-lg font-bold text-gray-900 border-b border-gray-100 pb-2">5. Location information</h2>
+                    <h2 class="text-lg font-bold text-gray-900 border-b border-gray-100 pb-2">6. Location information</h2>
                     <p>With permission, MatMaps uses device location to centre Club Discovery, calculate proximity and order nearby results. Location tags may also be added manually to events or Travelling Fighter Hub posts. You can change location permission in your device settings, but nearby results may then be less accurate.</p>
                     <p>The in-app map uses OpenStreetMap-based mapping rather than the Google Maps SDK. An optional "Open in Google Maps" web link may open an external service governed by that provider's privacy terms.</p>
                 </section>
 
                 <section id="ads-payments" class="space-y-3 scroll-mt-24">
-                    <h2 class="text-lg font-bold text-gray-900 border-b border-gray-100 pb-2">6. Advertising and subscriptions</h2>
+                    <h2 class="text-lg font-bold text-gray-900 border-b border-gray-100 pb-2">7. Advertising and subscriptions</h2>
                     <p>Eligible free accounts may see ads supplied through Google AdMob. Depending on your settings, consent and local law, ads may use an advertising identifier or may be contextual. You can use device privacy controls and any consent controls shown in the app.</p>
+                    <p>For production, advertising shown to a Junior will be configured as contextual or non-personalised and age appropriate. MatMaps does not provide Didit captures, identity-document information, date of birth or the age-assurance decision to AdMob for targeting. This advertising configuration must be technically verified before the Junior service is publicly released.</p>
                     <p>When subscriptions are connected, purchases are processed by the relevant app store and may be managed through RevenueCat. Those providers supply MatMaps with entitlement and transaction status needed to unlock features. Their own privacy policies also apply.</p>
                 </section>
 
                 <section id="moderation" class="space-y-3 scroll-mt-24">
-                    <h2 class="text-lg font-bold text-gray-900 border-b border-gray-100 pb-2">7. Reports, reviews and moderation</h2>
+                    <h2 class="text-lg font-bold text-gray-900 border-b border-gray-100 pb-2">8. Reports, reviews and moderation</h2>
                     <p>Arena posts normally appear immediately. Users can report posts or comments. Reports include the reported item, reporter, selected reason or description, timestamp and review status.</p>
                     <p>Automated checks may temporarily hide obvious sexual content, spam or repeated identical posts and create a flag for human review. These checks are intended to protect the community and do not make legal or similarly significant decisions about users. An administrator may keep, restore, dismiss or remove content.</p>
                     <p>New club reviews are held for administrator approval. Only approved reviews appear publicly. Owners and staff cannot review a club they run or remove its reviews.</p>
                 </section>
 
                 <section id="sharing" class="space-y-3 scroll-mt-24">
-                    <h2 class="text-lg font-bold text-gray-900 border-b border-gray-100 pb-2">8. Who receives information</h2>
+                    <h2 class="text-lg font-bold text-gray-900 border-b border-gray-100 pb-2">9. Who receives information</h2>
                     <p>We disclose information only as needed to operate, protect or comply with the law. Categories of recipients may include:</p>
                     <ul class="list-disc pl-5 space-y-2">
                         <li>other users, clubs and staff according to the visibility and sharing features you use;</li>
                         <li>Firebase and Google Cloud services used for authentication, databases, storage, notifications, analytics and crash reporting;</li>
+                        <li>Didit Identity Spain, S.L., acting as MatMaps' processor when providing age assurance and identity verification, which receives the capture and document information needed for the method you choose and returns the minimum configured verification output to MatMaps. Didit has identified two subprocessors for its services: AWS EMEA SARL supplies cloud infrastructure in Ireland (eu-west-1), and Google Maps Platform, provided by Google Cloud EMEA Ltd, is used solely for geocoding in Didit's separate Proof of Address feature. MatMaps does not use Proof of Address in its age-assurance workflows, and Didit states that Google Maps is not involved in ID Verification, Liveness, Face Match or Age Estimation and does not receive biometric or document data. Those four checks are operated by Didit on AWS infrastructure rather than by further verification-service subprocessors. Didit's terms also describe optional aggregated or pseudonymised fraud-prevention and model-training uses; Didit confirmed on 3 September 2026 that it registered MatMaps' opt-out, which it said may take up to three business days to become effective. MatMaps must confirm completion before production. Didit states that planned subprocessor changes are announced at least 30 days in advance on its subprocessor page and in the Business Console;</li>
                         <li>Google AdMob when advertising is enabled;</li>
-                        <li>Apple, Google Play and RevenueCat when subscriptions are connected;</li>
+                        <li>Apple or Google where the platform supplies an age-range signal, and Apple, Google Play and RevenueCat when subscriptions are connected;</li>
                         <li>professional advisers, regulators, law enforcement or courts where required; and</li>
                         <li>a purchaser or successor if MatMaps is reorganised, sold or transferred, subject to appropriate safeguards.</li>
                     </ul>
@@ -155,41 +180,46 @@
                 </section>
 
                 <section id="transfers" class="space-y-3 scroll-mt-24">
-                    <h2 class="text-lg font-bold text-gray-900 border-b border-gray-100 pb-2">9. International transfers</h2>
-                    <p>Some service providers may process information outside the UK. Where required, we use a recognised adequacy regulation or appropriate safeguards such as the UK International Data Transfer Agreement, the UK Addendum to approved standard contractual clauses, or another lawful transfer mechanism. Contact us for more information about the safeguard relevant to your data.</p>
+                    <h2 class="text-lg font-bold text-gray-900 border-b border-gray-100 pb-2">10. International transfers</h2>
+                    <p>Some service providers may process information outside the UK. Didit has stated that, in its standard configuration for MatMaps, verification data is processed and stored throughout its lifecycle on AWS infrastructure in Ireland across multiple availability zones. Google Maps geocoding is limited to Didit's separate Proof of Address feature, which MatMaps does not use for age assurance. MatMaps contracts with Didit Identity Spain, S.L. The UK has adequacy regulations covering transfers to EEA countries. Didit states that its standard configuration does not transfer this data outside the UK and EEA; if an onward transfer outside the EEA occurs, Didit says it uses the European Commission Standard Contractual Clauses and a transfer impact assessment where required. Where a transfer requires UK appropriate safeguards, a UK Addendum or International Data Transfer Agreement may be needed. Didit has said it will provide a date for its UK documents, and MatMaps will document the applicable mechanism as part of final legal review. Contact us for information about the safeguard relevant to your data.</p>
                 </section>
 
                 <section id="retention" class="space-y-3 scroll-mt-24">
-                    <h2 class="text-lg font-bold text-gray-900 border-b border-gray-100 pb-2">10. How long we keep information</h2>
+                    <h2 class="text-lg font-bold text-gray-900 border-b border-gray-100 pb-2">11. How long we keep information</h2>
                     <p>We keep account information while the account is active and retain other information only for as long as needed for the purpose collected. Retention depends on the feature, legal and accounting duties, safety and dispute needs, whether another user still needs a shared record, and our backup cycle.</p>
+                    <p>A successful adult verification result is normally treated as current for 365 days. MatMaps keeps the minimum verification metadata needed to apply the access decision, handle a challenge, prevent abuse and demonstrate the check while the account or related legal need remains. Expiry of adult access does not by itself delete every security or audit record.</p>
+                    <p><strong class="text-gray-900">Didit verification data:</strong> MatMaps has configured Didit to retain verification records, ID-document images and selfies for one month. Didit states that this application-level window applies uniformly to the verification data it holds, but that a shorter retention limit imposed by applicable biometric privacy law takes priority. The separate biometric-template option is set to "Delete with session", so MatMaps has not enabled retention of a reusable image-free face template after session deletion. Earlier deletion occurs when the Settings erasure control succeeds; it sends a privacy-erasure instruction for each session and deletes the linked Didit user record. Didit may retain limited information beyond the ordinary period only where applicable law or a restricted legal-hold, recovery or deletion-safeguard process requires it; information held beyond use must not remain available for active matching or ordinary service use.</p>
                     <p>Reports, moderation records, blocks, subscription records and security logs may be kept after account deletion where reasonably needed to prevent abuse, establish legal claims or comply with law. Backups are deleted or overwritten through normal retention cycles and are not used for ordinary product activity.</p>
                 </section>
 
                 <section id="deletion" class="space-y-3 scroll-mt-24">
-                    <h2 class="text-lg font-bold text-gray-900 border-b border-gray-100 pb-2">11. Account and club deletion</h2>
+                    <h2 class="text-lg font-bold text-gray-900 border-b border-gray-100 pb-2">12. Account and club deletion</h2>
                     <p>You can request account deletion through the in-app account controls or by emailing us. We will delete or anonymise profile information and, where the feature supports it, associated posts, comments, interactions and user-created events, subject to lawful retention needs and technical backup cycles.</p>
+                    <p>A biometric-consent withdrawal or age-verification erasure request also covers eligible verification information held by Didit. The dedicated Settings control automatically locates the account's Didit sessions, submits their deletion and deletes the linked Didit user record, including retained biometric templates attributable to that user. MatMaps keeps only a minimal record of the request and whether provider deletion completed or remains pending. A separate account-deletion request also covers eligible Didit information; where automated provider deletion has not been confirmed as part of that account-deletion route, MatMaps will locate and delete it manually and confirm the outcome, subject to any lawful retention requirement.</p>
                     <p>Messages already delivered to another user and records needed to preserve a conversation, report or safety decision may remain for the recipient or be anonymised. Deleting an account does not automatically delete content another user independently created.</p>
                     <p>Eligible club owners may separately delete club data without deleting their personal account. This may remove club content, events, staff access, affiliations and related operational records. We may retain minimal records where needed to resolve disputes or comply with law.</p>
                 </section>
 
                 <section id="rights" class="space-y-3 scroll-mt-24">
-                    <h2 class="text-lg font-bold text-gray-900 border-b border-gray-100 pb-2">12. Your UK data protection rights</h2>
+                    <h2 class="text-lg font-bold text-gray-900 border-b border-gray-100 pb-2">13. Your UK data protection rights</h2>
                     <p>Depending on the circumstances, you may have rights to be informed, access your information, correct inaccurate information, erase information, restrict processing, receive portable information, object to processing, and withdraw consent.</p>
                     <p class="bg-red-50 border border-red-100 rounded-xl p-4 text-red-800"><strong>Right to object:</strong> where we rely on legitimate interests, you may object to that processing. You may always object to direct marketing.</p>
+                    <p>You may also challenge an automated age-assurance decision, explain why you believe it is wrong, request meaningful human review and ask for an alternative method. We will not treat a date of birth as verification while a challenge is pending.</p>
                     <p>To exercise a right, email <a href="mailto:hello@matmaps.co.uk" class="text-indigo-600 font-mono hover:underline">hello@matmaps.co.uk</a>. We may need to verify your identity. Rights can be limited by law, including where information concerns another person.</p>
                     <p>You may complain to the Information Commissioner's Office (ICO) at <a href="https://ico.org.uk/make-a-complaint/" target="_blank" rel="noopener" class="text-indigo-600 hover:underline">ico.org.uk/make-a-complaint</a>. We would appreciate the opportunity to address your concern first.</p>
                 </section>
 
                 <section id="security" class="space-y-3 scroll-mt-24">
-                    <h2 class="text-lg font-bold text-gray-900 border-b border-gray-100 pb-2">13. Security and younger users</h2>
+                    <h2 class="text-lg font-bold text-gray-900 border-b border-gray-100 pb-2">14. Security and younger users</h2>
                     <p>We use reasonable technical and organisational measures designed to protect information, including access controls and managed cloud services. No internet or storage system can be guaranteed completely secure. Keep your password and device secure and tell us if you suspect unauthorised access.</p>
-                    <p>Users must be at least 13. A user under 18 may only use MatMaps with the consent and supervision of a parent or legal guardian. We do not knowingly seek to collect information from children who do not meet these requirements. Contact us if you believe a child's information has been collected incorrectly.</p>
+                    <p>Users must be at least 13. Under-13 accounts are blocked. Users aged 13 to 17 receive high privacy and restricted features by default and should use MatMaps with the involvement of a parent or legal guardian. A parent or guardian must authorise and pay for Athlete Junior. We do not knowingly seek to collect information from children who do not meet these requirements. Contact us if you believe a child's information has been collected incorrectly.</p>
+                    <p>Junior users are not shown the adult social areas described in section 3. We provide age-assurance and Junior privacy information in plain language at the relevant point in the app. If this full policy is difficult to understand, a Junior may ask a trusted adult to read it with them or contact us directly.</p>
                 </section>
 
                 <section id="changes" class="space-y-3 scroll-mt-24">
-                    <h2 class="text-lg font-bold text-gray-900 border-b border-gray-100 pb-2">14. Changes and contact</h2>
+                    <h2 class="text-lg font-bold text-gray-900 border-b border-gray-100 pb-2">15. Changes and contact</h2>
                     <p>We may update this policy as MatMaps changes or to reflect legal requirements. We will change the "Last updated" date and provide an additional notice where a change materially affects users.</p>
-                    <p>Contact MatMaps about this policy, a privacy right or account deletion at <a href="mailto:hello@matmaps.co.uk" class="text-indigo-600 font-mono hover:underline">hello@matmaps.co.uk</a>.</p>
+                    <p>Contact MatMaps Team about this policy, a privacy right, an age-assurance challenge or account deletion at 483 Green Lanes, London, N13 5XT or <a href="mailto:hello@matmaps.co.uk" class="text-indigo-600 font-mono hover:underline">hello@matmaps.co.uk</a>.</p>
                 </section>
             </article>
         </div>
